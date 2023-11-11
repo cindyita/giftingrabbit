@@ -36,8 +36,8 @@ class PagesController
      * Revisar si hay una sesión
      */
     public static function checkSession() {
-        $acceptPages = array('');
-        $currentPage = $_GET['page'];
+        $acceptPages = array("");
+        $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
         if (!in_array($currentPage, $acceptPages)) {
 
             if (!isset($_SESSION['status_login'])) {
@@ -144,7 +144,6 @@ class PagesController
         }else{
             header('Location: home');
         }
-
     }
 
     /**
@@ -152,21 +151,59 @@ class PagesController
      */
     public static function exchange() {
         $db = new QueryModel();
-        $id = $_GET['id'];
-        $id_user = $_SESSION['userdata']['id'];
-        $access = $db->query("SELECT id FROM REL_USER_EXCHANGE WHERE id_exchange = :id AND id_user = :id_user",[":id"=>$id,":id_user"=>$id_user]);
-        if($access){
-            $exchange = $db->query("SELECT e.*,u.username username_create,us.username username_admin FROM VIEW_EXCHANGES e LEFT JOIN SYS_USER u ON e.id_user = u.id LEFT JOIN SYS_USER us ON e.id_admin = us.id WHERE e.id = :id",[":id"=>$id])[0];
-            $users = $db->query("SELECT e.*,u.username,u.img_profile FROM REL_USER_EXCHANGE e LEFT JOIN SYS_USER u ON e.id_user = u.id WHERE e.id_exchange = :id",[":id"=>$id]);
-            $comments = $db->query("SELECT c.*, u.username, u.img_profile 
-                        FROM REG_COMMENTS c 
-                        LEFT JOIN SYS_USER u ON c.id_user = u.id 
-                        WHERE c.id_exchange = :id_exchange
-                        ORDER BY c.timestamp_create DESC",[":id_exchange"=>$id]);
-            require_once "./src/views/pages/exchange.php";
+        if(!isset($_GET['id'])){
+            echo "Link inválido";
         }else{
-            echo "No puedes ver esta página";
+            $id = $_GET['id'];
+            $id_user = $_SESSION['userdata']['id'];
+            $access = $db->query("SELECT role FROM REL_USER_EXCHANGE WHERE id_exchange = :id AND id_user = :id_user",[":id"=>$id,":id_user"=>$id_user]);
+            if($access){
+                $exchange = $db->query("SELECT e.*,u.username username_create,us.username username_admin FROM VIEW_EXCHANGES e LEFT JOIN SYS_USER u ON e.id_user = u.id LEFT JOIN SYS_USER us ON e.id_admin = us.id WHERE e.id = :id",[":id"=>$id])[0];
+                $users = $db->query("SELECT e.*,u.username,u.img_profile FROM REL_USER_EXCHANGE e LEFT JOIN SYS_USER u ON e.id_user = u.id WHERE e.id_exchange = :id",[":id"=>$id]);
+                $contacts = $db->query("SELECT * FROM REG_CONTACTS WHERE id_exchange = :id",[":id"=>$id]);
+                $comments = $db->query("SELECT c.*, u.username, u.img_profile 
+                            FROM REG_COMMENTS c 
+                            LEFT JOIN SYS_USER u ON c.id_user = u.id 
+                            WHERE c.id_exchange = :id_exchange
+                            ORDER BY c.timestamp_create DESC",[":id_exchange"=>$id]);
+                $wantGiftYou = $db->query("SELECT w.*,u.username,u.img_profile FROM REG_WISHGIFTS w LEFT JOIN SYS_USER u ON w.id_user = u.id WHERE w.id_user = :id_user AND w.id_exchange = :id",[":id_user"=>$id_user,":id"=>$id]);
+                if($access[0]['role'] == 1 && $exchange['admin_participates'] == 0){
+                    $wantGiftAll = $db->query("SELECT w.*,u.username,u.img_profile FROM REG_WISHGIFTS w LEFT JOIN SYS_USER u ON w.id_user = u.id WHERE w.id_exchange = :id",[":id"=>$id]);
+                }else{
+                    $wantGiftAll = 0;
+                    $wantGiftNames = $db->query("SELECT u.username FROM REG_WISHGIFTS w LEFT JOIN SYS_USER u ON w.id_user = u.id WHERE w.id_exchange = :id GROUP BY u.username",[":id"=>$id]);
+                }
+                if ($exchange['drawn_on']) {
+                    $resultRaffle = $db->query("SELECT r.id_result,r.type_result,
+                                                    CASE 
+                                                        WHEN r.type_result = 'USER' THEN u.username
+                                                        WHEN r.type_result = 'CONTACT' THEN c.name
+                                                    END AS result_name,
+                                                    CASE 
+                                                        WHEN r.type_result = 'USER' THEN u.img_profile
+                                                        WHEN r.type_result = 'CONTACT' THEN NULL
+                                                    END AS result_profile,
+                                                    CASE 
+                                                        WHEN r.type_result = 'USER' THEN NULL
+                                                        WHEN r.type_result = 'CONTACT' THEN c.note
+                                                    END AS result_note,
+                                                    CASE 
+                                                        WHEN r.type_result = 'USER' THEN w.comment
+                                                        WHEN r.type_result = 'CONTACT' THEN c.wantgift
+                                                    END AS result_comment
+                                                FROM REL_RESULT_RAFFLE r
+                                                LEFT JOIN SYS_USER u ON r.id_result = u.id AND r.type_result = 'USER'
+                                                LEFT JOIN REG_CONTACTS c ON r.id_result = c.id AND r.type_result = 'CONTACT'
+                                                LEFT JOIN REG_WISHGIFTS w ON r.id_result = w.id_user AND r.type_result = 'USER' AND w.id_exchange = :id_exchange
+                                                WHERE r.type_user = 'USER' AND r.id_user = :id_user AND r.id_exchange = :id_exchange
+                                    ",[":id_user"=>$id_user,':id_exchange'=>$id])[0];
+                }
+                require_once "./src/views/pages/exchange.php";
+            }else{
+                echo "No puedes ver esta página";
+            }    
         }
+        
         
     }
 

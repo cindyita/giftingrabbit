@@ -100,6 +100,10 @@
                 <input type="text" class="form-control" id="type_gift" placeholder="Ejemplo: Físico, digital, de broma, suéteres, etc." name="type_gift">
             </div>
             <div class="mb-3 mt-3">
+                <label for="main_question" class="form-label">Pregunta central:</label>
+                <input type="text" class="form-control" id="main_question" placeholder="Lo verán las personas que van a regalar dependiendo de quien les tocó" name="main_question" value="¿Qué te gustaría de regalo?" required>
+            </div>
+            <div class="mb-3 mt-3">
                 <label for="min_price" class="form-label">Precio mínimo:</label>
                 <input type="number" class="form-control" id="min_price" placeholder="Opcional, Precio mínimo de regalo" name="min_price">
             </div>

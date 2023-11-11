@@ -130,6 +130,81 @@ $(document).ready(function () {
         });
     });
 
+    $("#wantGiftForm").submit(function (event) {
+        event.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            url: './src/controllers/actionsController.php?action=newWantGift',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res == 1) {
+                    message("success", "Se ha agregado tu respuesta");
+                    $("#wantGift_comment").val("");
+                    updateWantGift();
+                } else {
+                    message("error", "Algo salió mal");
+                    console.log(res);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error en la solicitud. Código de estado: ' + xhr.status);
+            }
+        });
+    });
+
+    $("#deleteWantGift").submit(function (event) {
+        event.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            url: './src/controllers/actionsController.php?action=deleteWantGift',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res == 1) {
+                    message("success", "Se ha borrado tu respuesta");
+                    updateWantGift();
+                } else {
+                    message("error", "Algo salió mal");
+                    console.log(res);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error en la solicitud. Código de estado: ' + xhr.status);
+            }
+        });
+    });
+
+    $("#newContactForm").submit(function (event) {
+        event.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            url: './src/controllers/actionsController.php?action=newContact',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res == 1) {
+                    message("success", "Se ha agregado el contacto");
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    message("error", "Algo salió mal");
+                    console.log(res);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error en la solicitud. Código de estado: ' + xhr.status);
+            }
+        });
+    });
+
 });
 
 function kickUserExchange(id_exchange, id_user, name_user) {
@@ -162,6 +237,30 @@ function updateComments() {
     });
 }
 
+function updateWantGift() {
+    $("#updateWantGift").empty();
+    $("#updateWantGift").html('<div class="spinner-border"></div>');
+    const id_exchange = $("#id_exchange").val();
+    $.ajax({
+        url: './src/controllers/actionsController.php?action=updateWantGift',
+        type: 'POST',
+        data: {id_exchange: id_exchange},
+        success: function (res) {
+            if (res == 2) {
+                message("error", "There was an error");
+                console.log(res);
+            } else {
+                res = JSON.parse(res);
+                $("#updateWantGift").html(res);
+                changeToRelativeTime('relativedate');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error en la solicitud. Código de estado: ' + xhr.status);
+        }
+    });
+}
+
 function deleteComment(id_user, id_comm) {
     $("#delete-iduser").val(id_user);
     $("#delete-idcomm").val(id_comm);
@@ -170,4 +269,73 @@ function deleteComment(id_user, id_comm) {
 function giveAdmin(id_user, username) {
     $("#giveAdmin_id_user").val(id_user);
     $("#giveAdmin_text").text(username);
+}
+
+function deleteWantGift(id_wantgift) {
+    $("#deleteWantGift-idcomm").val(id_wantgift);
+}
+
+function deleteContact(id,name) {
+    $("#deleteContact-text").text(name);
+    $("#deleteContact-id").val(id);
+}
+
+function viewContact(info) {
+    $("#viewContact-name").text(info['name']);
+    $("#viewContact-email").text(info['email']);
+    $("#viewContact-wantgift").text(info['wantgift']);
+    $("#viewContact-note").text(info['note']);
+}
+
+function makeRaffle(id_exchange) {
+    $("#raffle-loading").show();
+    $.ajax({
+        url: './src/controllers/actionsController.php?action=makeRaffle',
+        type: 'POST',
+        data: {id_exchange: id_exchange},
+        success: function (res) {
+            console.log(res);
+            if (res == 1) {
+                message("success", "¡Se ha realizado el sorteo!");
+                setTimeout(function() {
+                    window.location.reload();
+                }, 2000);
+            } else if (res == 5) {
+                message("error", "Inicia sesión para realizar esta acción");
+            } else if (res == 6) {
+                message("error", "No tienes permisos para realizar esta acción");
+            } else if (res == 7) {
+                message("error", "¡Los participantes no pueden ser menos de 3!");
+            } else {
+                message("error", "Algo salió mal");
+                console.log(res);
+            }
+            $("#raffle-loading").fadeOut();
+            hideModal("makeRaffle");
+        },
+        error: function (xhr, status, error) {
+            console.error('Error en la solicitud. Código de estado: ' + xhr.status);
+        }
+    });
+}
+
+function viewResultsRaffle(id_exchange) {
+    $("#viewResultsRaffle-content").empty();
+    $("#viewResultsRaffle-content").html('<div class="spinner-border"></div>');
+    $.ajax({
+        url: './src/controllers/actionsController.php?action=viewResultsRaffle',
+        type: 'POST',
+        data: {id_exchange: id_exchange},
+        success: function (res) {
+            res = JSON.parse(res);
+            var html = "";
+            res.forEach(element => {
+                html += '<p>' + element['user_name'] + ' ['+element['type_user']+']' + ' => '+element['result_name']+' ['+element['type_result']+']' +'</p>';
+            });
+            $("#viewResultsRaffle-content").html(html);
+        },
+        error: function (xhr, status, error) {
+            console.error('Error en la solicitud. Código de estado: ' + xhr.status);
+        }
+    });
 }

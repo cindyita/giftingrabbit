@@ -62,6 +62,24 @@ switch ($action) {
     case 'editExchange':
         editExchange();
     break;
+    case 'newWantGift':
+        newWantGift();
+    break;
+    case 'deleteWantGift':
+        deleteWantGift();
+    break;
+    case 'updateWantGift':
+        updateWantGift();
+    break;
+    case 'newContact':
+        newContact();
+    break;
+    case 'makeRaffle':
+        makeRaffle();
+    break;
+    case 'viewResultsRaffle':
+        viewResultsRaffle();
+    break;
     /*---------------------*/
     default:
         echo json_encode("No action defined: ".$action);
@@ -310,6 +328,7 @@ function createExchange(){
         'about' => $data['about'],
         'rules' => $data['rules'],
         'type_gift' => $data['type_gift'],
+        'main_question' => $data['main_question'],
         'min_price' => $data['min_price'],
         'max_price' => $data['max_price'],
         'img' => $newFileName,
@@ -351,7 +370,7 @@ function joinExchange(){
 
 function updateFeedExchanges(){
     $db = new QueryModel();
-    $exchanges_user = $db->query("SELECT e.*,r.* FROM REL_USER_EXCHANGE r JOIN REG_EXCHANGES e ON r.id_exchange = e.id WHERE r.id_user = :id_user",[":id_user"=>$_SESSION['userdata']['id']]);
+    $exchanges_user = $db->query("SELECT e.*,r.* FROM REL_USER_EXCHANGE r JOIN VIEW_EXCHANGES e ON r.id_exchange = e.id WHERE r.id_user = :id_user",[":id_user"=>$_SESSION['userdata']['id']]);
     $html = "";
     foreach ($exchanges_user as $key => $value) {
         $html .= '<div class="green-card">
@@ -518,8 +537,8 @@ function giveAdmin(){
     $db = new QueryModel();
     $id_user = $_SESSION['userdata']['id'];
     try {
-        $register = $db->update('REG_COMMENTS', ["role"=>0],"id_exchange = ".$data['id_exchange']." AND id_user = ".$id_user);
-        $register = $db->update('REG_COMMENTS', ["role"=>1],"id_exchange = ".$data['id_exchange']." AND id_user = ".$data['id_user']);
+        $register = $db->update('REL_USER_EXCHANGE', ["role"=>0],"id_exchange = ".$data['id_exchange']." AND id_user = ".$id_user);
+        $register = $db->update('REL_USER_EXCHANGE', ["role"=>1],"id_exchange = ".$data['id_exchange']." AND id_user = ".$data['id_user']);
         echo json_encode($register);
 
     } catch (Exception $e) {
@@ -537,8 +556,11 @@ function editExchange(){
         'about' => $data['about'],
         'rules' => $data['rules'],
         'type_gift' => $data['type_gift'],
+        'main_question' => $data['main_question'],
         'min_price' => $data['min_price'],
         'max_price' => $data['max_price'],
+        'admin_participates' => $data['admin_participates'],
+        'admin_view_raffle' => $data['admin_view_raffle'],
         'event_date' => $data['event_date'],
         'timestamp_update'=>timestamp()
     ];
@@ -568,6 +590,221 @@ function editExchange(){
     }else{
         echo json_encode("Error");
     }
+}
+
+function newWantGift(){
+    $data = getData();
+    $db = new QueryModel();
+    $id_user = $_SESSION['userdata']['id'];
+
+    $insertData = [
+        'id_exchange' => $data['id_exchange'],
+        'id_user' => $id_user,
+        'comment' => $data['comment'],
+        'timestamp_create'=>timestamp()
+    ];
+
+    $res = $db->select('REG_WISHGIFTS', 'id_exchange = '. $data['id_exchange'].' AND id_user = '.$id_user);
+    if ($res) {
+        $res = $db->update('REG_WISHGIFTS', $insertData,'id = '.$res[0]['id']);
+    }else{
+        $res = $db->insert('REG_WISHGIFTS', $insertData);
+    }
+
+    echo json_encode($res);
+}
+
+function deleteWantGift(){
+    $data = getData();
+    $id_comm = $data['id_comm'];
+    $id_user = $_SESSION['userdata']['id'];
+    if (isset($_SESSION['status_login'])) {
+
+            $db = new QueryModel();
+            try {
+                $register = $db->select('REG_WISHGIFTS', 'id = ' . $id_comm);
+                if(isset($register) && $register[0]['id_user'] == $id_user){
+                    $register = $db->delete('REG_WISHGIFTS', 'id = ' . $id_comm);
+                    echo json_encode($register);
+                }else{
+                    echo json_encode('Acción no permitida');
+                }
+
+            } catch (Exception $e) {
+                echo json_encode('error: ' . $e->getMessage());
+            }
+
+    }else{
+        echo 5;
+    }
+}
+
+function updateWantGift(){
+    $data = getData();
+    $db = new QueryModel();
+    $id_user = $_SESSION['userdata']['id'];
+    $id = $data['id_exchange'];
+    if (isset($_SESSION['status_login'])) {
+        $wantGiftYou = $db->query("SELECT w.*,u.username,u.img_profile FROM REG_WISHGIFTS w LEFT JOIN SYS_USER u ON w.id_user = u.id WHERE w.id_user = :id_user AND w.id_exchange = :id",[":id_user"=>$id_user,":id"=>$id]);
+
+        $html = "";
+
+        if ($wantGiftYou) {
+                $html .= '<div class="w-100">
+                    <div class="d-flex gap-2">
+                        <div>
+                            <div class="img-user">
+                                <a href="user?id='.$wantGiftYou[0]['id_user'].'"><img src="./assets/img/'.($wantGiftYou[0]['img_profile'] ? 'user/img-profile/' . $wantGiftYou[0]['img_profile'] : 'system/defaultimgsq.jpg').'" alt="image profile" onerror="this.src = \'./assets/img/system/defaultimgsq.jpg\'"></a>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-column w-100">
+                            <div class="d-flex justify-content-between">
+                                <span class="user-name d-flex gap-1 flex-column flex-md-row">
+                                    <a href="user?id=1">'.$wantGiftYou[0]['username'].'</a> <span class="ms-0 ms-md-2 text-secondary relativedate">'.$wantGiftYou[0]['timestamp_create'].'</span>
+                                </span>
+                                <span>
+                                    <a class="text-danger cursor-pointer" data-bs-toggle="modal" data-bs-target="#confirmDeleteWantGift" onclick="deleteWantGift('.$wantGiftYou[0]['id'].')"><i class="fa-solid fa-trash"></i></a>
+                                </span>
+                            </div>
+                            <span class="py-2 p-md-2">'.$wantGiftYou[0]['comment'].'</span>
+                        </div>
+                    </div>
+                </div>';
+        }else{
+                $html .= '<p>Aún no has agregado ninguna respuesta</p>';
+        }
+        echo json_encode($html);
+    }
+}
+
+function newContact(){
+    $data = getData();
+    $db = new QueryModel();
+    $id_user = $_SESSION['userdata']['id'];
+
+    $insertData = [
+        'name' => $data['name'],
+        'email' => $data['email'],
+        'note' => $data['note'],
+        'wantgift' => $data['wantgift'],
+        'id_exchange'=> $data['id_exchange'],
+        'id_user' => $id_user,
+        'timestamp_create'=>timestamp()
+    ];
+
+    $res = $db->insert('REG_CONTACTS', $insertData);
+
+    echo json_encode($res);
+}
+
+function deleteContact(){
+    $data = getData();
+    $id_contact = $data['id_contact'];
+    if (isset($_SESSION['status_login'])) {
+
+            $db = new QueryModel();
+            try {
+                $register = $db->delete('REG_CONTACTS', 'id = ' . $id_contact);
+                echo json_encode($register);
+
+            } catch (Exception $e) {
+                echo json_encode('error: ' . $e->getMessage());
+            }
+
+    }else{
+        echo 5;
+    }
+}
+
+function makeRaffle(){
+    $data = getData();
+    
+    if (isset($_SESSION['status_login'])) {
+
+        $id_user = $_SESSION['userdata']['id'];
+        $id_exchange = $data['id_exchange'];
+        $db = new QueryModel();
+        $access = $db->query("SELECT role FROM REL_USER_EXCHANGE WHERE id_exchange = :id_exchange AND id_user = :id_user",[":id_exchange"=>$id_exchange,":id_user"=>$id_user]);
+
+        if ($access[0]['role'] == 1) {
+
+            $exchange = $db->select('REG_EXCHANGES', 'id = ' . $id_exchange);
+            $admin_participates = $exchange[0]['admin_participates'];
+
+            if ($admin_participates == 1) {
+                $users = $db->query('SELECT id_user AS id,"USER" AS type FROM REL_USER_EXCHANGE WHERE id_exchange = :id_exchange', [':id_exchange' => $id_exchange]);
+            } else {
+                $users = $db->query('SELECT id_user AS id,"USER" AS type FROM REL_USER_EXCHANGE WHERE id_exchange = :id_exchange AND role = 0', [':id_exchange' => $id_exchange]);
+            }
+
+            $contacts = $db->query('SELECT id,"CONTACT" AS type FROM REG_CONTACTS WHERE id_exchange = :id_exchange', [':id_exchange' => $id_exchange]);
+
+            if ($contacts) {
+                $participantes = array_merge($users, $contacts);
+            } else {
+                $participantes = $users;
+            }
+
+            if (count($participantes) > 2) {
+
+                $resultRaffle = doRaffle($participantes);
+
+                try {
+                    foreach ($resultRaffle as $key => $value) {
+                        $insertData = [
+                            'id_exchange'=> $id_exchange,
+                            'id_user' => $value['id'],
+                            'type_user' => $value['type'],
+                            'id_result' => $value['result'],
+                            'type_result' => $value['result_type'],
+                            'timestamp_create' => timestamp()
+                        ];
+
+                        $db->insert('REL_RESULT_RAFFLE', $insertData);
+                    }
+
+                    $update = $db->update('REG_EXCHANGES', ['drawn_on' => timestamp()], 'id = ' . $id_exchange);
+
+                    echo json_encode($update);
+
+                } catch (Exception $e) {
+                    echo json_encode('error: ' . $e->getMessage());
+                }
+
+            } else {
+                echo 7;
+            }
+        }else{
+            echo 6;
+        }
+
+    }else{
+        echo 5;
+    }
+}
+
+function viewResultsRaffle(){
+    $data = getData();
+    $id_exchange = $data['id_exchange'];
+    $db = new QueryModel();
+    $resultRaffle = $db->query("SELECT r.id_user,r.id_result,r.type_user,r.type_result,
+                                CASE 
+                                    WHEN r.type_user = 'USER' THEN us.username
+                                    WHEN r.type_user = 'CONTACT' THEN co.name
+                                END AS user_name,
+                                CASE 
+                                    WHEN r.type_result = 'USER' THEN u.username
+                                    WHEN r.type_result = 'CONTACT' THEN c.name
+                                END AS result_name
+                                FROM REL_RESULT_RAFFLE r
+                                LEFT JOIN SYS_USER u ON r.id_result = u.id AND r.type_result = 'USER'
+                                LEFT JOIN REG_CONTACTS c ON r.id_result = c.id AND r.type_result = 'CONTACT'
+                                LEFT JOIN SYS_USER us ON r.id_user = us.id AND r.type_user = 'USER'
+                                LEFT JOIN REG_CONTACTS co ON r.id_user = co.id AND r.type_user = 'CONTACT'
+                                WHERE r.id_exchange = :id_exchange
+                                ",[':id_exchange'=>$id_exchange]);
+    echo json_encode($resultRaffle);
+
 }
 
 /*------------------------------------*/
@@ -618,3 +855,57 @@ function reducirTexto($texto, $longitudMaxima) {
 
     return $textoReducido;
 }
+
+
+// function doRaffle($users) {
+
+//     $usersRaffle = $users;
+//     $raffles = array();
+//     $randomKeys = array_keys($usersRaffle);
+//     shuffle($randomKeys);
+
+//     foreach ($randomKeys as $clave) {
+//         $user = $users[$clave];
+//         $possibleRaffle = null;
+
+//         do {
+//             $keyPossibleRaffle = array_shift($randomKeys);
+//             $possibleRaffle = $usersRaffle[$keyPossibleRaffle];
+//         } while ($keyPossibleRaffle === $clave && count($randomKeys) > 0);
+
+//         if ($possibleRaffle !== null) {
+//             $raffles[$user] = $possibleRaffle;
+//         } else {
+//             //return doRaffle($users);
+//         }
+//     }
+
+//     return $raffles;
+// }
+
+function doRaffle($users){
+    $randomKeys = array_keys($users);
+    shuffle($randomKeys);
+    $resultRaffle = $users;
+
+    foreach ($users as $key => $value) {
+
+        while ($randomKeys[$key] == $key) {
+            shuffle($randomKeys);
+        }
+
+        if(isset($resultRaffle[$randomKeys[$key]])){
+            $resultRaffle[$key]['result'] = $resultRaffle[$randomKeys[$key]]['id'];
+            $resultRaffle[$key]['result_type'] = $resultRaffle[$randomKeys[$key]]['type'];
+            $randomKeys[$key] = null;
+        }else{
+            return doRaffle($users);
+        }
+
+    }
+    
+    return $resultRaffle;
+}
+
+
+

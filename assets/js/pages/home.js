@@ -110,7 +110,7 @@ function updateExchanges() {
             url: './src/controllers/actionsController.php?action=updateFeedExchanges',
             type: 'POST',
             data: {},
-            success: function (res) {
+        success: function (res) {
                 $("#feedExchanges").html(JSON.parse(res));
             },
             error: function(xhr, status, error) {

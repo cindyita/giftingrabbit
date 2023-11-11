@@ -20,7 +20,8 @@
 #custom_type_idol,
 #name_custom_brand,
 #loading,
-#text-post-input {
+#text-post-input,
+#raffle-loading {
     display: none;
 }
 

@@ -8,6 +8,9 @@
             <?php if ($exchange['id_admin'] == $id_user) { ?>
             <button class="button-secondary" data-bs-toggle="modal" data-bs-target="#editExchange">Editar <i class="fa-solid fa-pen-to-square"></i></button>
             <?php } ?>
+            <?php if ($exchange['drawn_on'] && $exchange['admin_view_raffle'] == 1) { ?>
+                <button class="button-primary" data-bs-toggle="modal" data-bs-target="#viewResultsRaffle" onclick="viewResultsRaffle(<?php echo $id; ?>)">Ver resultados <i class="fa-solid fa-file-lines"></i></button>
+            <?php } ?>
         </div>
     </div>
 
@@ -23,6 +26,15 @@
                         <img src="./assets/img/exchanges/<?php echo $exchange['img']; ?>" onerror="this.src = './assets/img/system/defaultimg.jpg'">
                     </div>
                 </div>
+
+                <?php if($exchange['drawn_on']){ ?>
+                    <hr>
+                    <div>
+                        <h6 class="text-danger">Se ha realizado el sorteo:</h6>
+                        <p class="relativedate"><?php echo $exchange['drawn_on']; ?></p>
+                    </div>
+                    <hr>
+                <?php } ?>
 
                 <div>
                     <h6>Fecha del evento:</h6>
@@ -63,7 +75,7 @@
                         echo "[El admin no participa en la dinámica]";
                     } ?></p>
                     <p><?php if ($exchange['admin_view_raffle']) {
-                        echo "[El admin Puede ver los resultados]";
+                        echo "[El admin puede ver los resultados]";
                     }else{
                         echo "[El admin no puede ver los resultados]";
                     } ?></p>
@@ -76,7 +88,7 @@
 
                 <div>
                     <h6>Administrado por:</h6>
-                    <p><a href="user?id=<?php echo $exchange['id_admin']; ?>"><?php echo $exchange['username_admin']; ?></a></p>
+                    <p><a href="user?id=<?php echo $exchange['id_admin']; ?>"><span class="text-warning"><i class="fa-solid fa-crown"></i></span> <?php echo $exchange['username_admin']; ?></a></p>
                 </div>
             </div>
             <?php if ($exchange['about']) { ?>
@@ -87,10 +99,10 @@
                 </div>
             </div>
             <?php } ?>
-            <?php if ($exchange['id_admin'] == $id_user) { ?>
+            <?php if ($exchange['id_admin'] == $id_user && !$exchange['drawn_on']) { ?>
             <div class="white-box">
                 <div>
-                    <button class="button-display"><span>Hacer sorteo <i class="fa-solid fa-dice"></i></span></button>
+                    <button class="button-display" data-bs-toggle="modal" data-bs-target="#makeRaffle"><span>Hacer sorteo <i class="fa-solid fa-dice"></i></span></button>
                 </div>
             </div>
             <?php } ?>
@@ -99,29 +111,137 @@
         <div class="w75 d-flex flex-column gap-4">
 
             <div class="white-box d-flex flex-column gap-3">
+            <?php if (!$wantGiftAll) { ?>
                 <div>
-                    <h6>Respuesta de quien te tocó:</h6>
-                    <p>Aún no se sortea</p>
+                    <h6 class="mb-3">Respuesta de quien te tocó:</h6>
+                    <?php if($exchange['drawn_on']){ ?>
+                        <?php if($resultRaffle['type_result'] == "USER"){ ?>
+                        <div class="w-100">
+                            <div class="d-flex gap-2">
+                                <div>
+                                    <div class="img-user">
+                                        <a href="user?id=<?php echo $resultRaffle['id_result']; ?>"><img src="./assets/img/<?php echo $resultRaffle['result_profile'] ? 'user/img-profile/' . $resultRaffle['result_profile'] : 'system/defaultimgsq.jpg'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.jpg'"></a>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column w-100">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="user-name d-flex gap-1 flex-column flex-md-row">
+                                            <a href="user?id=<?php echo $resultRaffle['id_result']; ?>"><?php echo $resultRaffle['result_name']; ?></a>
+                                        </span>
+                                    </div>
+                                    <span class="py-2 p-md-2"><?php echo $resultRaffle['result_comment']; ?></span>
+                                </div>
+                            </div>
+                        </div>
+                        <?php } ?>
+                        <?php if($resultRaffle['type_result'] == "CONTACT"){ ?>
+                        <div class="w-100">
+                            <div class="d-flex gap-2">
+                                <div>
+                                    <i class="fa-solid fa-user px-2"></i>
+                                </div>
+                                <div class="d-flex flex-column w-100">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="user-name d-flex gap-1 flex-column flex-md-row">
+                                            <a><?php echo $resultRaffle['result_name']; ?></a>
+                                        </span>
+                                    </div>
+                                    <span class="py-2 p-md-2"><?php echo $resultRaffle['result_comment']; ?></span>
+                                </div>
+                            </div>
+                            <h6>Notas del contacto:</h6>
+                            <p><?php echo $resultRaffle['result_note']; ?></p>
+                        </div>
+                        <?php } ?>
+                    <?php }else{ ?>
+                        <p>Aún no se sortea</p>
+                    <?php } ?>
                 </div>
                 <hr>
                 <div>
-                    <h6>Tu respuesta:</h6>
-                    <p>Aún no has agregado ninguna respuesta</p>
+                    <h6 class="mb-3">Tu respuesta:</h6>
+                    <div id="updateWantGift">
+                        <?php if ($wantGiftYou) { ?>
+                        <div class="w-100">
+                            <div class="d-flex gap-2">
+                                <div>
+                                    <div class="img-user">
+                                        <a href="user?id=<?php echo $wantGiftYou[0]['id_user']; ?>"><img src="./assets/img/<?php echo $wantGiftYou[0]['img_profile'] ? 'user/img-profile/' . $wantGiftYou[0]['img_profile'] : 'system/defaultimgsq.jpg'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.jpg'"></a>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column w-100">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="user-name d-flex gap-1 flex-column flex-md-row">
+                                            <a><?php echo $wantGiftYou[0]['username']; ?></a> <span class="ms-0 ms-md-2 text-secondary relativedate"><?php echo $wantGiftYou[0]['timestamp_create']; ?></span>
+                                        </span>
+                                        <span>
+                                            <a class="text-danger cursor-pointer" data-bs-toggle="modal" data-bs-target="#confirmDeleteWantGift" onclick="deleteWantGift(<?php echo $wantGiftYou[0]['id']; ?>)"><i class="fa-solid fa-trash"></i></a>
+                                        </span>
+                                    </div>
+                                    <span class="py-2 p-md-2"><?php echo $wantGiftYou[0]['comment']; ?></span>
+                                </div>
+                            </div>
+                        </div>
+                        <?php } else { ?>
+                        <p>Aún no has agregado ninguna respuesta</p>
+                        <?php } ?>
+                    </div>
                 </div>
+                <?php if($access[0]['role'] == 1){ ?>
+                    <hr>
+                    <div class="mt-3 d-flex gap-2 align-items-center">
+                        <h6>Han agregado respuestas:</h6><span class="text-secondary d-flex gap-1 flex-wrap">
+                            <?php foreach ($wantGiftNames as $key => $value) {
+                                echo '<span class="card px-1">'.$value['username'] . '</span>';
+                                } ?>
+                        </span>
+                    </div>
+                <?php } ?>
                 <hr>
 
                 <div>
-                    <h6>¿Qué te gustaría de regalo?</h6>
+                    <h6><?php echo $exchange['main_question']; ?></h6>
                     <div>
                         <form method="post" id="wantGiftForm">
                             <input type="hidden" name="id_exchange" value="<?php echo $id; ?>">
-                            <textarea class="form-control" name="comment" id="wantGift_comment" rows="3" placeholder="Esta respuesta solo la verá la persona que te va a regalar"></textarea>
+                            <textarea class="form-control" name="comment" id="wantGift_comment" rows="3" placeholder="Tu respuesta solo la verá la persona que te va a regalar"></textarea>
                             <div class="d-flex justify-content-end">
                                 <button class="button-primary mt-2">Enviar</button>
                             </div>
                         </form>
                     </div>
                 </div>
+                <?php }else{ ?>
+                    <div>
+                        <h6><?php echo $exchange['main_question']; ?></h6>
+                        <h6>Respuestas:</h6>
+                        <div id="updateWantGift">
+                            <?php foreach ($wantGiftAll as $key => $value) { ?>
+                            <div class="w-100">
+                                <div class="d-flex gap-2">
+                                    <div>
+                                        <div class="img-user">
+                                            <a href="user?id=<?php echo $value['id_user']; ?>"><img src="./assets/img/<?php echo $value['img_profile'] ? 'user/img-profile/' . $value['img_profile'] : 'system/defaultimgsq.jpg'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.jpg'"></a>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-column w-100">
+                                        <div class="d-flex justify-content-between">
+                                            <span class="user-name d-flex gap-1 flex-column flex-md-row">
+                                                <a href="user?id=1"><?php echo $value['username']; ?></a> <span class="ms-0 ms-md-2 text-secondary relativedate"><?php echo $value['timestamp_create']; ?></span>
+                                            </span>
+                                            <span>
+                                                <a class="text-danger cursor-pointer" data-bs-toggle="modal" data-bs-target="#confirmDeleteWantGift" onclick="deleteWantGift(<?php echo $value['id']; ?>)"><i class="fa-solid fa-trash"></i></a>
+                                            </span>
+                                        </div>
+                                        <span class="py-2 p-md-2"><?php echo $value['comment']; ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php } ?>
+                        </div>
+
+                    </div>
+                <?php } ?>
             </div>
 
             <div class="white-box d-flex flex-column gap-3">
@@ -191,13 +311,39 @@
             <div class="white-box">
                 <h6>Le vas a regalar a:</h6>
                 <div>
+                <?php if($exchange['drawn_on']){ ?>
+                    <?php if ($resultRaffle['type_result'] == "USER") { ?>
+                    <div class="green-card-min">
+                        <div class="d-flex gap-2 align-items-center">
+                            <div class="img-user">
+                                <a href="user?id=<?php echo $resultRaffle['id_result']; ?>"><img src="./assets/img/<?php echo $resultRaffle['result_profile'] ? 'user/img-profile/' . $resultRaffle['result_profile'] : 'system/defaultimgsq.jpg'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.jpg'"></a>
+                            </div>
+                            <div>
+                                <strong><?php echo $resultRaffle['result_name']; ?></strong>
+                            </div>
+                        </div>
+                    </div>
+                    <?php } if($resultRaffle['type_result'] == "CONTACT"){ ?>
+                            <div class="yellow-card-min">
+                                <div class="d-flex gap-2 align-items-center">
+                                    <div>
+                                        <a><strong><i class="fa-solid fa-user mx-2"></i> <?php echo $resultRaffle['result_name'] ?></strong></a>
+                                    </div>
+                                </div>
+                            </div>
+                    <?php } ?>
+                    
+                <?php }else{ ?>
                     <p>Aún no se sortea</p>
+                <?php } ?>
                 </div>
             </div>
             
             <div class="white-box">
 
                 <h6 class="mb-3">Usuarios que participan:</h6>
+                <?php if ($exchange['admin_participates'] == 0) {
+                    echo "[Admin no participa]";} ?>
                 <div class="d-flex flex-column gap-2">
                 <?php foreach ($users as $key => $value) { ?>
                     <div class="green-card-min">
@@ -218,7 +364,7 @@
                                     <li><a class="dropdown-item" href="user?id=<?php echo $value['id_user']; ?>">Ver usuario <i class="fa-solid fa-eye"></i></a></li>
                                     <?php if ($exchange['id_admin'] == $id_user) { ?>
                                         <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#kickUserExchange" onclick="kickUserExchange(<?php echo $id . ',' . $value['id_user'] . ',\'' . $value['username'] . '\''; ?>)">Sacar del intercambio <i class="fa-solid fa-right-from-bracket"></i></a></li>
-                                        <li><a class="dropdown-item text-danger"   onclick="giveAdmin(<?php echo $value['id_user'].',\'' . $value['username'] . '\''; ?>)">delegar administración <i class="fa-solid fa-handshake"></i></a></li>
+                                        <li><a class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#giveAdmin" onclick="giveAdmin(<?php echo $value['id_user'].',\'' . $value['username'] . '\''; ?>)">delegar administración <i class="fa-solid fa-handshake"></i></a></li>
                                     <?php } ?>
                                 </ul>
                             </div>
@@ -226,6 +372,38 @@
                     </div>
                 <?php } ?>
                 </div>
+                <hr>
+                <h6 class="mb-3 mt-3">Contactos que participan:</h6>
+                
+                <div class="d-flex flex-column gap-2">
+                <?php foreach ($contacts as $key => $value) { ?>
+                    <div class="yellow-card-min">
+                        <div class="d-flex gap-2 align-items-center">
+                            <div>
+                                <a data-bs-toggle="modal" data-bs-target="#viewContact" class="cursor-pointer" onclick="viewContact(<?php echo htmlspecialchars(json_encode($value)); ?>)"><strong><i class="fa-solid fa-user mx-2"></i> <?php echo $value['name']; ?></strong></a>
+                            </div>
+                        </div>
+                        <?php if ($exchange['id_admin'] == $id_user) { ?>
+                        <div class="options">
+                            <div class="dropdown">
+                                <a class="btn button-options" data-bs-toggle="dropdown">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#viewContact" onclick="viewContact(<?php echo htmlspecialchars(json_encode($value)); ?>)">Ver contacto <i class="fa-solid fa-eye"></i></a></li>
+                                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteContact" onclick="deleteContact(<?php echo $value['id'] . ',' . $value['name'] . '\''; ?>)">Borrar contacto <i class="fa-solid fa-trash"></i></a></li>
+                                    </ul>
+                            </div>
+                        </div>
+                        <?php } ?>
+                    </div>
+                <?php } ?>
+                </div>
+                <?php if ($exchange['id_admin'] == $id_user) { ?>
+                <div class="mt-3">
+                    <button class="button-primary" data-bs-toggle="modal" data-bs-target="#newContact">Agregar contacto</button>
+                </div>
+                <?php } ?>
 
             </div>
         </div>
@@ -311,7 +489,7 @@
         <form id="deleteComment" method="post">
             <input type="hidden" name="id_user" id="delete-iduser">
             <input type="hidden" name="id_comm" id="delete-idcomm">
-            <button type="submit" class="button-primary" data-bs-dismiss="modal">Confirm</button>
+            <button type="submit" class="button-primary" data-bs-dismiss="modal">Confirmar</button>
         </form>
       </div>
 
@@ -357,6 +535,10 @@
                 <input type="text" class="form-control" id="type_gift" placeholder="Ejemplo: Físico, digital, de broma, suéteres, etc." name="type_gift" value="<?php echo $exchange['type_gift']; ?>">
             </div>
             <div class="mb-3 mt-3">
+                <label for="main_question" class="form-label">Pregunta central*:</label>
+                <input type="text" class="form-control" id="main_question" placeholder="Pregunta default: ¿Qué te gustaría de regalo?" name="main_question" value="<?php echo $exchange['main_question']; ?>" required>
+            </div>
+            <div class="mb-3 mt-3">
                 <label for="min_price" class="form-label">Precio mínimo:</label>
                 <input type="number" class="form-control" id="min_price" placeholder="Opcional, Precio mínimo de regalo" name="min_price" value="<?php echo $exchange['min_price'] ? $exchange['min_price'] : ""; ?>">
             </div>
@@ -368,7 +550,7 @@
                 <label for="event_date" class="form-label">Día del evento*:</label>
                 <input type="date" class="form-control" id="event_date" placeholder="Día en que se realizará la dinámica" name="event_date" value="<?php echo $exchange['event_date']; ?>" required>
             </div>
-            <div class="mb-3 mt-3">
+            <!-- <div class="mb-3 mt-3">
               <label for="admin_participates" class="form-label">¿El admin participa en la dinámica?:</label>
               <select class="form-select" id="admin_participates" name="admin_participates"> 
                   <option value="1" <?php if ($exchange['admin_participates']) {
@@ -385,7 +567,7 @@
                   <option value="0" <?php if (!$exchange['admin_view_raffle']) {
                       echo "selected";}; ?>>No</option>
               </select>
-            </div>
+            </div> -->
             <div class="mb-3 mt-3">
                 <label for="img" class="form-label">Imagen del intercambio:</label>
                 <input type="file" class="form-control" id="img" name="img" onchange="handleFileImage(this.files, 'img-exchange-preview')">
@@ -393,6 +575,182 @@
             <input type="hidden" name="id_exchange" value="<?php echo $exchange['id']; ?>">
             <button type="submit" class="button-primary" data-bs-dismiss="modal">Editar</button>
         </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!--------------------------------------->
+<!------------- Confirm delete -------------->
+<div class="modal" id="confirmDeleteWantGift">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">¿Segur@ que quieres borrar tu respuesta?</h4>
+        <a type="button" class="button-close" data-bs-dismiss="modal">
+            <i class="fa-solid fa-xmark"></i>
+        </a>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form id="deleteWantGift" method="post">
+            <input type="hidden" name="id_comm" id="deleteWantGift-idcomm">
+            <button type="submit" class="button-primary" data-bs-dismiss="modal">Confirmar</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!--------------------------------------->
+<!------------- View contact -------------->
+<div class="modal" id="viewContact">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h4 class="modal-title">Contacto: <span id="viewContact-name"></span></h4>
+        <a type="button" class="button-close" data-bs-dismiss="modal">
+            <i class="fa-solid fa-xmark"></i>
+        </a>
+      </div>
+
+      <div class="modal-body">
+        <div>
+            <div class="mb-3">
+                <strong>Email: </strong><span id="viewContact-email"></span>
+            </div>
+            <div class="mb-3">
+                <strong>Respuesta: </strong><span id="viewContact-wantgift"></span>
+            </div>
+            <div class="mb-3">
+                <strong>Notas: </strong><span id="viewContact-note"></span>
+            </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!--------------------------------------->
+<!------------- Add contact ------------>
+<div class="modal" id="newContact">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Agregar contacto nuevo</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form method="post" id="newContactForm">
+            <div class="mb-3 mt-3">
+                <label for="name" class="form-label">Nombre del contacto*:</label>
+                <input type="text" class="form-control" placeholder="Ejemplo: Mi tio roberto" name="name" required>
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="email" class="form-label">Email del contacto:</label>
+                <input type="email" class="form-control" name="email" placeholder="Opcional, por si quieres que le llegue por correo sus resultados">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="wantgift" class="form-label">Respuesta del contacto:</label>
+                <textarea class="form-control" placeholder="Opcional, que quiere de regalo (Respuesta a la pregunta central)" name="wantgift"></textarea>
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="notes" class="form-label">Notas:</label>
+                <textarea class="form-control" placeholder="Opcional, Ejemplo: Ojo no le gustan los dulces" name="note"></textarea>
+            </div>
+            <input type="hidden" name="id_exchange" value="<?php echo $exchange['id']; ?>">
+            <button type="submit" class="button-primary" data-bs-dismiss="modal">Crear</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!--------------------------------------->
+<!------------- Confirm delete -------------->
+<div class="modal" id="deleteContact">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">¿Segur@ que quieres borrar el contacto?</h4>
+        <a type="button" class="button-close" data-bs-dismiss="modal">
+            <i class="fa-solid fa-xmark"></i>
+        </a>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form id="deleteContactForm" method="post">
+            <label class="form-label" id="deleteContact-text"></label>
+            <input type="hidden" name="id" id="deleteContact-id">
+            <button type="submit" class="button-primary" data-bs-dismiss="modal">Confirmar</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!--------------------------------------->
+<!------------- make raffle -------------->
+<div class="modal" id="makeRaffle">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">¿Quiéres realizar el sorteo?</h4>
+        <a type="button" class="button-close" data-bs-dismiss="modal">
+            <i class="fa-solid fa-xmark"></i>
+        </a>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div>
+            <p>Antes de realizarlo revisa que todo esté correcto, todas las personas estén participando y hayan agregado sus respuestas. Una vez realizado el sorteo, no se puede volver a sortear.</p>
+            <h6 id="raffle-loading">Realizando sorteo.. Espera... <div class="spinner-border"></div></h6>
+            <button type="submit" class="button-primary" onclick="makeRaffle(<?php echo $id; ?>)">Realizar sorteo <i class="fa-solid fa-dice"></i></button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!--------------------------------------->
+<!------------- make raffle -------------->
+<div class="modal" id="viewResultsRaffle">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Resultados del sorteo</h4>
+        <a type="button" class="button-close" data-bs-dismiss="modal">
+            <i class="fa-solid fa-xmark"></i>
+        </a>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div id="viewResultsRaffle-content">    
+        </div>
       </div>
 
     </div>

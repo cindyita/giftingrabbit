@@ -189,3 +189,13 @@ function copyToClipboard(text) {
       message('error', 'No se pudo copiar');
     });
 }
+
+/**
+ * The function `hideModal` is used to hide a Bootstrap modal by its ID.
+ * @param modal - The parameter "modal" is the ID of the modal element that you want to hide.
+ */
+function hideModal(modal) {
+    var modalElement = document.getElementById(modal);
+    var bootstrapModal = bootstrap.Modal.getInstance(modalElement);
+    bootstrapModal.hide();
+}

@@ -261,7 +261,7 @@ a:hover {
     padding: 20px;
 }
 
-.green-card,.green-card-min {
+.green-card,.green-card-min,.yellow-card-min {
     background-color: var(--fontSecondary);
     border: 3px solid var(--secondary);
     border-radius: var(--radius);
@@ -275,7 +275,13 @@ a:hover {
     position: relative;
     color: var(--primary);
 }
-.green-card-min {
+.yellow-card-min {
+    background-color: lightyellow;
+    border: 3px solid rgb(255, 204, 77);
+    color: rgb(255, 204, 77);
+}
+.green-card-min,
+.yellow-card-min {
     height: initial;
 }
 .green-card .head,
