@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta property="description" content="Pripara idol land photo space gallery and friends" />
+    <meta property="description" content="Intercambios de regalos con amigos y familia. Navideño, san valentin y todo tipo de ocasión" />
     <meta property="locale" content="es_ES" />
-	<meta property="title" content="PRICTURE" />
-    <meta property="site_name" content="PRICTURE" />
+	<meta property="title" content="Gifting Rabbit" />
+    <meta property="site_name" content="Gifting Rabbit" />
     <title>Gifting Rabbit | Intercambio de regalos</title>
     <link rel="shortcut icon" href="./assets/img/system/favicon.png" type="image/PNG">
 

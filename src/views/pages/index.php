@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta property="description" content="Pripara idol land photo space gallery and friends" />
+    <meta property="description" content="Intercambios de regalos con amigos y familia. Navideño, san valentin y todo tipo de ocasión" />
+    <meta name="keywords" content="intercambio de regalos, Navidad, San Valentín, celebraciones, regalos, eventos">
+    <meta name="author" content="Cindy ita">
     <meta property="locale" content="es_ES" />
-	<meta property="title" content="PRICTURE" />
-    <meta property="site_name" content="PRICTURE" />
+	<meta property="title" content="Gifting Rabbit" />
+    <meta property="site_name" content="Gifting Rabbit" />
     <title>Gifting Rabbit | Intercambio de regalos</title>
     <link rel="shortcut icon" href="./assets/img/system/favicon.png" type="image/PNG">
 
@@ -206,6 +208,50 @@
                     </div>
                 </div>
             </section>
+        </div>
+
+        <br><br><br>
+
+        <div class="white-box d-flex flex-column flex-lg-row gap-3">
+            <div class="w25 d-flex align-items-center">
+                <img src="assets/img/system/gift_green.png" alt="regalos intercambio" width="100%">
+            </div>
+            <div>
+                <section>
+                    <h1>Bienvenid@ a Gifting Rabbit</h1>
+                    <p>Donde la magia de los regalos se encuentra con la tecnología.</p>
+                </section>
+
+                <section>
+                    <h2>Versatilidad para Todas las Celebraciones</h2>
+                    <p>Ya sea una fiesta de navidad en casa, una fiesta navideña en la oficina, un intercambio de regalos entre amigos o una celebración romántica en San Valentín, nuestro programa se adapta a cualquier ocasión. ¡La diversión está garantizada!</p>
+                </section>
+
+                <section>
+                    <h2>Fácil de Usar, Increíblemente Divertido</h2>
+                    <p>Olvídate de las complicaciones. Con solo unos clics, estarás listo para organizar un intercambio de regalos que todos recordarán. Nuestra interfaz intuitiva y amigable hace que la planificación sea tan emocionante como el evento en sí.</p>
+                </section>
+
+                <section>
+                    <h2>Conecta con Seres Queridos en Todo el Mundo</h2>
+                    <p>¿Tienes amigos o familiares dispersos por el mundo? No hay problema. Nuestro programa permite la participación global, haciendo que cada intercambio de regalos sea una experiencia única, sin importar la distancia.</p>
+                </section>
+
+                <section>
+                    <h2>Personalización sin Límites</h2>
+                    <p>Desde temas festivos hasta reglas personalizadas, tú defines las reglas del juego. ¿Quieres añadir un toque especial? Puedes hacerlo. ¡La creatividad es tu única limitación!</p>
+                </section>
+
+                <section>
+                    <h2>Garantía de Alegría</h2>
+                    <p>En Gifting Rabbit, nos comprometemos a hacer que cada intercambio de regalos sea un éxito. La felicidad de nuestros usuarios es nuestra prioridad número uno.</p>
+                </section>
+
+                <section>
+                    <p>¿Estás listo para transformar tus celebraciones en momentos inolvidables? <a href="signup">Regístrate ahora</a> en Gifting Rabbit y comienza a planificar tu próximo intercambio de regalos. ¡La magia está a solo un clic de distancia!</p>
+                </section>
+            </div>
+            
         </div>
 
         <br><br><br>
