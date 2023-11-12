@@ -2,15 +2,15 @@ $(window).on("load", function () {
     $(".page-overlay").fadeOut(100);
     changeLogoTheme();
     changeToRelativeTime('relativedate');
-    dateFormat('dateFormat');
+    // dateFormat('dateFormat');
 
-    // if (localStorage.getItem('notice-betaweb') !== 'true') {
-    //     $('#superiorBanner').show();
-    // }
-    // $('#closeBanner').click(function () {
-    //     $('#superiorBanner').hide();
-    //     localStorage.setItem('notice-betaweb', 'true');
-    // });
+    if (localStorage.getItem('notice-betaweb') !== 'true') {
+        $('#superiorBanner').show();
+    }
+    $('#closeSuperiorBanner').click(function () {
+        $('#superiorBanner').hide();
+        localStorage.setItem('notice-betaweb', 'true');
+    });
 
 });
 

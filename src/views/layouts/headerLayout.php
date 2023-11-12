@@ -81,3 +81,13 @@
         </div>
     </div>
 </div>
+
+<div id="superiorBanner">
+    <div class="superior-banner d-flex justify-content-between">
+        <span></span>
+        <span>Nuestra página está aún en una versión de desarrollo. Por favor, si encuentra algún error o tiene alguna sugerencia, <a href="contact">escríbanos.</a></span>
+        <a class="cursor-pointer" id="closeSuperiorBanner"><i class="fa-solid fa-circle-xmark text-danger"></i></a>
+    </div>
+</div>
+
+<div class="body">

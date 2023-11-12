@@ -10,11 +10,11 @@
         <div class="menu-right d-flex gap-3 align-items-center">
             <?php if (isset($_SESSION['status_login'])) { ?>
                 <div class="mt-3">
-                    <h6><?php echo $_SESSION['userdata']['username']; ?></h6>
+                    <h5><?php echo $_SESSION['userdata']['username']; ?></h5>
                 </div>
                 <div class="menu-user">
                     <div class="dropdown dropdown-menu-end">
-                        <div class="img-user" data-bs-toggle="dropdown">
+                        <div class="menu-img-user" data-bs-toggle="dropdown">
                             <img src="./assets/img/<?php echo $_SESSION['userdata']['img_profile'] ? 'user/img-profile/'.$_SESSION['userdata']['img_profile'].'?upd='.time() : "system/defaultimgsq.jpg"; ?>" alt="profile" onerror="this.src = './assets/img/system/defaultimgsq.jpg'">
                         </div>
                         <ul class="dropdown-menu">

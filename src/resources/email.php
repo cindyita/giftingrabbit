@@ -29,21 +29,21 @@ function sendEmailSMTP($sender, $senderName, $recipient, $recipientName, $subjec
     try {
 
         if($template != []){
-            $body = '<div style="padding:70px 0 70px 0;">
-                <table width="600" height="auto" cellpadding="0" cellspacing="0" style="background-color:white; border:3px solid #e351c5; border-radius:3px !important;">
+            $body = '<div>
+                <table width="100%" height="auto" cellpadding="0" cellspacing="0" style="background-color:white; border:3px solid #FF8211;">
                 <tr>
-                    <td width="600" height="auto" style="padding:36px 48px; display:block; margin: 0px auto;background:#d0ffef;">
-                    <h1 style="color:#e351c5; font-size:30px; line-height:150%; font-weight:300; margin:0; text-align:left;">'.$template['title'].'</h1>
+                    <td width="100%" height="auto" style="background:#CFEEDE;">
+                        <h2 style="text-align:center;padding:48px 10px;color:#FF8211; font-size:25px;  font-weight:600; margin:0;">'.$template['title'].'</h2>
                     </td>
                 </tr>
                 <tr>
-                    <td width="600" style="color:#e351c5; font-size:14px; line-height:150%; text-align:left; padding:48px;">
-                    <p style="margin:0 0 16px;color:#e351c5;">'.$template['content'].'</p>
+                    <td width="100%" style="color:#FF8211; font-size:15px; text-align:left; padding:40px 30px;">
+                        <p style="color:#FF8211;">'.$template['content'].'</p>
                     </td>
                 </tr>
                 <tr>
-                    <td width="600" style="padding:0 48px 48px 48px; color:#707070; font-family:Arial; font-size:12px; line-height:125%; text-align:center;">
-                    <p style="color:#29cf98">Pricture @ 2023</p>
+                    <td width="100%" style="padding:48px 10px; background-color:#CFEEDE; font-family:Arial; font-size:12px; line-height:125%; text-align:center;">
+                        <a href="'.MAINURL.'" style="text-decoration:none;"><p style="color:#FF8211">Ir a Gifting Rabbit</p></a>
                     </td>
                 </tr>
                 </table>
@@ -63,6 +63,7 @@ function sendEmailSMTP($sender, $senderName, $recipient, $recipientName, $subjec
         $mail->addAddress($recipient, $recipientName);
 
         $mail->isHTML(true);
+        $mail->CharSet = 'UTF-8';
         $mail->Subject = $subject;
         $mail->Body    = $body;
 

@@ -29,8 +29,8 @@
                     <label for="cpwd" class="form-label">Confirmar contraseña</label>
                     <input type="password" class="form-control" id="cpass" placeholder="Confirma la contraseña" name="cpass" onblur="confirmpass()" required>
                 </div>
-                <div class="txt-secondary py-2 pb-4 d-flex flex-column">
-                    <a href="login"><span>Ya tengo una cuenta</span></a>
+                <div class="py-2 pb-4 d-flex flex-column">
+                    <a href="login"><strong>¿Ya tienes una cuenta? Inicia sesión.</strong></a>
                 </div>
                 <div class="d-flex justify-content-center"><div class="g-recaptcha" data-sitekey="<?php echo RECAPTCHA_SITE; ?>"></div></div>
                 <button type="submit" class="button-primary mt-2">Registrarse</button>

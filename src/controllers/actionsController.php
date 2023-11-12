@@ -80,6 +80,9 @@ switch ($action) {
     case 'viewResultsRaffle':
         viewResultsRaffle();
     break;
+    case 'sendResultsByEmail':
+        sendResultsByEmail();
+    break;
     /*---------------------*/
     default:
         echo json_encode("No action defined: ".$action);
@@ -154,11 +157,12 @@ function checkemail(){
         die();
     }
 
-    list($user, $domain) = explode('@', $email);
-    if(!checkdnsrr($domain, 'MX')){
-        echo 2;
-        die();
-    }
+    // Se ha comentado porque daba error con emails privados
+    // list($user, $domain) = explode('@', $email);
+    // if(!checkdnsrr($domain, 'MX')){
+    //     echo 2;
+    //     die();
+    // }
 
     $value = $db->selectUnique("SYS_USER", "email = '".$email."'","email");
     if($value){
@@ -243,6 +247,9 @@ function saveprofile(){
     }
     if ($data['birthday']) {
         $updateData['birthday'] = $data['birthday'];
+    }
+    if ($data['email']) {
+        $updateData['email'] = $data['email'];
     }
     if ($newimgprofile) {
         $updateData['img_profile'] = $profileFileName;
@@ -360,8 +367,14 @@ function joinExchange(){
 
     $query = $db->query('SELECT id FROM REG_EXCHANGES WHERE code = :code', ['code' =>$data['code']]);
     if($query){
-        $res = $db->insert('REL_USER_EXCHANGE', ['id_exchange'=>$query[0]['id'],'id_user'=>$id_user,'role'=>0]);
-        echo json_encode($res);
+        $reg = $db->select('REL_USER_EXCHANGE', 'id_exchange = '.$query[0]['id'].' AND id_user = '.$id_user);
+        if(!$reg){
+            $res = $db->insert('REL_USER_EXCHANGE', ['id_exchange'=>$query[0]['id'],'id_user'=>$id_user,'role'=>0]);
+            echo json_encode($res);
+        }else{
+            echo 4;
+        }
+        
     }else{
         echo 3;
     }
@@ -420,7 +433,16 @@ function exitExchange(){
 function deleteExchange(){
     $data = getData();
     $db = new QueryModel();
+
+    $query = $db->query('SELECT img FROM REG_EXCHANGES WHERE id = :id', [':id = '=>$data['id']]);
+    $filePath = '../../assets/img/exchanges/'.$query[0]['img'];
+    deleteFile($filePath);
+
+    $query = $db->delete('REL_RESULT_RAFFLE', 'id_exchange = '.$data['id']);
+    $query = $db->delete('REG_WISHGIFTS', 'id_exchange = '.$data['id']);
     $query = $db->delete('REL_USER_EXCHANGE', 'id_exchange = '.$data['id']);
+    $query = $db->delete('REG_CONTACTS', 'id_exchange = '.$data['id']);
+    $query = $db->delete('REG_COMMENTS', 'id_exchange = '.$data['id']);
     $query = $db->delete('REG_EXCHANGES', 'id = '.$data['id']);
     echo json_encode($query);
 }
@@ -559,11 +581,11 @@ function editExchange(){
         'main_question' => $data['main_question'],
         'min_price' => $data['min_price'],
         'max_price' => $data['max_price'],
-        'admin_participates' => $data['admin_participates'],
-        'admin_view_raffle' => $data['admin_view_raffle'],
         'event_date' => $data['event_date'],
         'timestamp_update'=>timestamp()
     ];
+    // 'admin_participates' => $data['admin_participates'],
+    //     'admin_view_raffle' => $data['admin_view_raffle'],
 
     if (isset($_FILES['img']) && $_FILES['img']['name']) {
         $uploadDirectory = '../../assets/img/exchanges/';
@@ -807,6 +829,69 @@ function viewResultsRaffle(){
 
 }
 
+function sendResultsByEmail(){
+    $data = getData();
+    $id_exchange = $data['id_exchange'];
+    $db = new QueryModel();
+
+    $id_user = $_SESSION['userdata']['id'];
+    $access = $db->query("SELECT role FROM REL_USER_EXCHANGE WHERE id_exchange = :id AND id_user = :id_user",[":id"=>$id_exchange,":id_user"=>$id_user]);
+
+    if ($access[0]['role'] == 1) {
+        try {
+            $exchange = $db->query('SELECT name,main_question FROM REG_EXCHANGES WHERE id = :id_exchange', [':id_exchange' => $id_exchange]);
+
+            $dataRaffle = $db->query("SELECT r.id_result,r.type_result,
+                                            CASE 
+                                                WHEN r.type_result = 'USER' THEN u.username
+                                                WHEN r.type_result = 'CONTACT' THEN c.name
+                                            END AS result_name,
+                                            CASE 
+                                                WHEN r.type_result = 'USER' THEN NULL
+                                                WHEN r.type_result = 'CONTACT' THEN c.note
+                                            END AS result_note,
+                                            CASE 
+                                                WHEN r.type_result = 'USER' THEN w.comment
+                                                WHEN r.type_result = 'CONTACT' THEN c.wantgift
+                                            END AS result_comment,
+                                            CASE 
+                                                WHEN r.type_user = 'USER' THEN u.email
+                                                WHEN r.type_user = 'CONTACT' THEN c.email
+                                            END AS user_email,
+                                            CASE 
+                                                WHEN r.type_user = 'USER' THEN u.username
+                                                WHEN r.type_user = 'CONTACT' THEN c.name
+                                            END AS user_name
+                                        FROM REL_RESULT_RAFFLE r
+                                        LEFT JOIN SYS_USER u ON r.id_result = u.id AND r.type_result = 'USER'
+                                        LEFT JOIN REG_CONTACTS c ON r.id_result = c.id AND r.type_result = 'CONTACT'
+                                        LEFT JOIN REG_WISHGIFTS w ON r.id_result = w.id_user AND r.type_result = 'USER' AND w.id_exchange = :id_exchange
+                                        WHERE r.id_exchange = :id_exchange
+                                        ", [':id_exchange' => $id_exchange]);
+
+            require_once("../resources/email.php");
+            foreach ($dataRaffle as $value) {
+                $content = "<strong>Te ha tocado regalar a:</strong> " . $value['result_name'] . '<br> <strong>y su respuesta a "' . $exchange[0]['main_question'] . '"<br>fue:</strong> ' . $value['result_comment'] . '<br><br><strong>Notas:</strong> ' . $value['result_note'];
+
+                if ($value['user_email']) {
+                    sendEmailSMTP('admin@giftingrabbit.theblux.com', 'Gifting Rabbit', $value['user_email'], $value['user_name'], "Resultados del intercambio: " . $exchange[0]['name'], "Ha habido un error", ["host" => HOST_EMAIL, "username" => CONTACT_EMAIL, "password" => PASSWORD_EMAIL, "port" => PORT_EMAIL], ['title' => 'Resultados del intercambio: ' . $exchange[0]['name'], 'content' => $content]);
+                }
+            }
+
+            $update = $db->update('REG_EXCHANGES', ['send_emails' => timestamp()], 'id = ' . $id_exchange);
+
+            echo $update;
+
+        } catch (Exception $e) {
+            echo json_encode("Error: " . $e->getMessage());
+        }
+    }else{
+        echo 6;
+    }
+
+    
+}
+
 /*------------------------------------*/
 function timestamp(){
     date_default_timezone_set('UTC');
@@ -844,6 +929,17 @@ function uploadFile($file, $directory, $fileName) {
     }
     return null;
 }
+
+function deleteFile($filePath) {
+    if (file_exists($filePath)) {
+        if (unlink($filePath)) {
+            return true;
+        } else {
+            return 'Error eliminando la imagen';
+        }
+    }
+}
+
 
 function reducirTexto($texto, $longitudMaxima) {
     $texto = strip_tags($texto);

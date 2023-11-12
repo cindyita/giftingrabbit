@@ -147,7 +147,7 @@ class PagesController
     }
 
     /**
-     * Shows exchange
+     * Shows exchange page
      */
     public static function exchange() {
         $db = new QueryModel();
@@ -203,7 +203,6 @@ class PagesController
                 echo "No puedes ver esta página";
             }    
         }
-        
         
     }
 

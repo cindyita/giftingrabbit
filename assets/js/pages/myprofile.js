@@ -62,14 +62,14 @@ function checkExist(inputv, element, actual) {
                         if (res == 1) {
                             $(input).css('color', 'red');
                             $(input).css('border', '1px solid red');
-                            message("error", "Ese nombre de usuario ya existe.");
+                            message("error", "Ese "+element+" ya existe.");
                             reject();
                         } else if (res == 0) {
                             resolve();
                         } else if (res == 2) {
                             $(input).css('color', 'red');
                             $(input).css('border', '1px solid red');
-                            message("error", "Ese nombre de usuario es inválido.");
+                            message("error", "Ese "+element+" es inválido.");
                             reject();
                         } else {
                             $(input).css('color', 'red');
@@ -109,6 +109,7 @@ function updateData() {
             $("#view-dislikes").html(user.dislikes);
 
             $("#view-biography").html(user.biography);
+            $("#view-email").html(user.email);
 
             if (user.img_profile) {
                 $(".img-profile img").attr("src", "./assets/img/user/img-profile/" + user.img_profile+'?upd=<?php echo time(); ?>');
@@ -121,6 +122,7 @@ function updateData() {
             $("#username").val(user.username);
             $("#actual_username").val(user.username);
             $("#birthday").val(user.birthday);
+            $("#email").val(user.email);
 
             dateFormatting2("view-birthday");
 
@@ -131,3 +133,4 @@ function updateData() {
         }
     });
 }
+

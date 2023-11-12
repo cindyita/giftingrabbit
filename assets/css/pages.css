@@ -5,6 +5,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
 }
 .login {
     text-align: center;
@@ -13,6 +14,7 @@
 .login .logo img {
     width: 160px;
 }
+
 #error-login,
 #success-login,
 #edit-mode,
@@ -21,7 +23,8 @@
 #name_custom_brand,
 #loading,
 #text-post-input,
-#raffle-loading {
+#raffle-loading,
+#sendEmail-loading {
     display: none;
 }
 
@@ -139,20 +142,16 @@
     display: flex;
     gap: 1.5rem;
 }
-.content-3-boxes .w25,
-.content-3-boxes .w25-1 {
+.w25,
+.w25-1 {
     width: 25%;
 }
-.content-3-boxes .w75 {
-    width: 75%;
+.w50 {
+    width: 50%;
 }
 
 @media (max-width: 1500px){
-    .content-3-boxes .w25-1
-    {
-        width: 50%;
-    }
-    .content-3-boxes .w75 {
+    .w25-1 {
         width: 50%;
     }
     .img{
@@ -164,9 +163,7 @@
     .content-3-boxes {
         flex-direction: column;
     }
-    .content-3-boxes .w25,
-    .content-3-boxes .w25-1,
-    .content-3-boxes .w75 {
+    .w25, .w25-1, .w50 {
         width: 100%;
     }
     .img{

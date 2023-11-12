@@ -38,7 +38,7 @@ $(document).ready(function () {
             processData: false,
             success: function (res) {
                 if (res == 1) {
-                    $("#comment").val("");
+                    $("#comment_exchange").val("");
                     updateComments();
                 }else if (res == "5") {
                     message("warning", "you need to log in or register");
@@ -333,6 +333,36 @@ function viewResultsRaffle(id_exchange) {
                 html += '<p>' + element['user_name'] + ' ['+element['type_user']+']' + ' => '+element['result_name']+' ['+element['type_result']+']' +'</p>';
             });
             $("#viewResultsRaffle-content").html(html);
+        },
+        error: function (xhr, status, error) {
+            console.error('Error en la solicitud. Código de estado: ' + xhr.status);
+        }
+    });
+}
+
+function sendResultsByEmail(id_exchange) {
+    $("#sendEmail-loading").show();
+    $.ajax({
+        url: './src/controllers/actionsController.php?action=sendResultsByEmail',
+        type: 'POST',
+        data: {id_exchange: id_exchange},
+        success: function (res) {
+            if (res == 1 || res == 11) {
+                message("success", "¡Se han enviado los resultados por email!");
+                setTimeout(function() {
+                    window.location.reload();
+                }, 2000);
+            } else if (res == 5) {
+                message("error", "Inicia sesión para realizar esta acción");
+            } else if (res == 6) {
+                message("error", "No tienes permisos para realizar esta acción");
+            } else {
+                message("error", "Algo salió mal");
+                console.log(res);
+            }
+            $("#sendEmail-loading").fadeOut();
+            hideModal("sendResultsByEmail");
+            $("#send_email_success").text("Los emails fueron enviados");
         },
         error: function (xhr, status, error) {
             console.error('Error en la solicitud. Código de estado: ' + xhr.status);

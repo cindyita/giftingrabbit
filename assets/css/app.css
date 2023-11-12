@@ -5,12 +5,16 @@
     padding:0;
     box-sizing: border-box;
 }
+html,body {
+    width: 100%;
+}
 body {
     position:relative;
 }
-body,html {
+.body {
+    position:relative;
     width: 100%;
-    height: 100vh;
+    height: 100%;
 }
 li{
     list-style: none;
@@ -39,11 +43,14 @@ a:focus {
 .main {
     padding: 2% 5%;
     min-height: 77.6vh;
+    height: 100%;
+    padding-bottom: 180px;
 }
 
 @media (max-width: 550px){
     .main {
-        padding: 2%;
+        padding: 3%;
+        padding-bottom: 180px;
     }
 }
 
@@ -60,7 +67,7 @@ header {
 header .logo img {
     width: 150px;
 }
-header .menu-user .img-user{
+header .menu-user .menu-img-user{
     width: 60px;
     height: 60px;
     border-radius: 50px;
@@ -74,20 +81,23 @@ header .menu-user img {
     border-radius: 50px;
 }
 
+header .menu h5 {
+    color: var(--primary);
+}
+
 @media (max-width: 550px){
     header .logo img {
         width: 100px;
-    }
-    header .menu-user .img-user{
-        width: 45px;
-        height: 45px;
     }
 }
 
 /*------------------------------------*/
 /*--------------Footer----------------*/
-
 footer {
+    width: 100%;
+    /* padding-top: 180px; */
+}
+.footer {
     width: 100%;
     padding: 50px;
     display: flex;
@@ -95,20 +105,19 @@ footer {
     justify-content: center;
     align-items: center;
     background-color: var(--fontPrimary);
-    margin-top: 180px;
     color: var(--primary);
     text-align: center;
 }
-footer span {
+.footer span {
     display: flex;
     gap: 10px;
 }
-footer span a i{
+.footer span a i{
     color: var(--secondary);
     font-size: 15pt;
     transition: 0.2s ease;
 }
-footer span a:hover i {
+.footer span a:hover i {
     color: var(--primary);
     font-size: 18pt;
 }

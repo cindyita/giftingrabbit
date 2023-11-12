@@ -23,9 +23,9 @@
                         <input class="form-check-input" type="checkbox" id="remember" name="remember"> Recuerdame
                     </label>
                 </div>
-                <div class="txt-secondary py-2 pb-4 d-flex flex-column">
+                <div class="py-2 pb-4 d-flex flex-column">
                     <!-- <a href=""><span>I forgot the password</span></a> -->
-                    <a href="signup"><span>No tengo una cuenta</span></a>
+                    <a href="signup"><strong>¿Aún no tienes una cuenta? Regístrate.</strong></a>
                 </div>
                 <div class="d-flex justify-content-center"><div class="g-recaptcha" data-sitekey="<?php echo RECAPTCHA_SITE; ?>"></div></div>
                 <button type="submit" class="mt-2 button-primary">Login</button>

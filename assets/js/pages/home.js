@@ -41,6 +41,8 @@ $(document).ready(function () {
                     message("error", "El código es inválido");
                 } else if (res == 3) {
                     message("error", "No hay ningún intercambio con ese código");
+                } else if (res == 4) {
+                    message("warning", "Ya te has unido al intercambio");
                 } else {
                     message("danger", "Error uniendote al intercambio :(");
                     console.log(res);

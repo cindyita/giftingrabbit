@@ -42,6 +42,10 @@
                             <p id="view-biography"><?php echo $user['biography']; ?></p>
                         </div>
                         <div>
+                            <strong>Email:</strong>
+                            <p id="view-email"><span><?php echo $user['email']; ?></span></p>
+                        </div>
+                        <div>
                             <strong>Usuario desde:</strong>
                             <p id="view-registration"><span class="relativedate"><?php echo $user['timestamp_create']; ?></span></p>
                         </div>
@@ -97,6 +101,10 @@
                             <div>
                                 <strong>Biografía</strong>
                                 <p><textarea class="form-control" name="biography" id="biography" cols="30" rows="10"><?php echo $user['biography']; ?></textarea></p>
+                            </div>
+                            <div>
+                                <strong>Email</strong>
+                                <p><input class="form-control" type="email" name="email" id="email" value="<?php echo $user['email']; ?>" onblur="checkExist('email','email','<?php echo $user['email']; ?>')" required></p>
                             </div>
                         </div>
                     </div>

@@ -84,6 +84,10 @@
                 </div>
             </div>
             <div class="mb-3 mt-3">
+                <label for="img" class="form-label">Imagen del intercambio:</label>
+                <input type="file" class="form-control" id="img" name="img" onchange="handleFileImage(this.files, 'img-exchange-preview')">
+            </div>
+            <div class="mb-3 mt-3">
                 <label for="name" class="form-label">Nombre del intercambio*:</label>
                 <input type="text" class="form-control" id="name" placeholder="Ejemplo: Navidad Familia Ayala" name="name" required>
             </div>
@@ -128,10 +132,6 @@
                   <option value="1">Si</option>
                   <option value="0" selected>No</option>
               </select>
-            </div>
-            <div class="mb-3 mt-3">
-                <label for="img" class="form-label">Imagen del intercambio:</label>
-                <input type="file" class="form-control" id="img" name="img" onchange="handleFileImage(this.files, 'img-exchange-preview')">
             </div>
             <button type="submit" class="button-primary" data-bs-dismiss="modal">Crear</button>
         </form>

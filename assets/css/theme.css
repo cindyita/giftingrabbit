@@ -6,6 +6,7 @@
     --tertiary: #c9640c;
     --fontSecondary: #d1ffe7;
     --fontPrimary:#fff5eb;
+    --fontYellow: lightyellow;
     --defaultText: black;
     --boxPrimary: #f8f0e6;
     --boxFont: rgba(255,255,255,0.7);
@@ -15,6 +16,7 @@
     --radius: 1.5rem;
     --radius2: 1.3rem;
     --font: url(../img/system/font.jpg);
+    --fontBg: #CFEEDE;
 } 
 [data-theme="dark"] {
     --primary:#FF8211;
@@ -23,6 +25,7 @@
     --tertiary: #248d55;
     --fontSecondary: #111b16;
     --fontPrimary:#301800;
+    --fontYellow: #301800;
     --defaultText: white;
     --boxPrimary: rgba(65, 50, 35, 0.7);
     --boxFont: rgba(27,74,58,0.7);
@@ -32,18 +35,23 @@
     --radius: 1.5rem;
     --radius2: 1.3rem;
     --font: url(../img/system/font_dark.jpg);
+    --fontBg: #323F38;
 }
 
 /*-------------------------*/
 /*-------FONT IMAGE--------*/
 
-body {
+html {
+    background: var(--fontBg);
+}
+
+.body {
     background: var(--font);
     background-position: center center;
     background-repeat: repeat;
     background-size:contain;
-    color: var(--defaultText);
     background-attachment: fixed;
+    color: var(--defaultText);
 }
 
 /*-------------------------*/
@@ -276,9 +284,12 @@ a:hover {
     color: var(--primary);
 }
 .yellow-card-min {
-    background-color: lightyellow;
-    border: 3px solid rgb(255, 204, 77);
-    color: rgb(255, 204, 77);
+    background-color: var(--fontYellow);
+    border: 3px solid rgb(226, 162, 0);
+    color: rgb(226, 162, 0);
+}
+.yellow-card-min a {
+    color: rgb(226, 162, 0);
 }
 .green-card-min,
 .yellow-card-min {
@@ -477,7 +488,12 @@ a:hover {
     color: var(--primary);
     width: 100%;
     padding: 15px;
+    position: fixed;
+    top:0;
+    left:0;
+    z-index:999;
 }
+
 #superiorBanner {
     display: none;
 }

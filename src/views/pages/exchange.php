@@ -1,16 +1,16 @@
 <div class="main">
 
-    <div class="my-3 d-flex justify-content-between">
+    <div class="my-3 d-flex justify-content-between align-items-center">
         <div>
             <a class="button-secondary" href="home"><i class="fa-solid fa-arrow-left"></i> Regresar a la lista</a>
         </div>
         <div>
             <?php if ($exchange['id_admin'] == $id_user) { ?>
             <button class="button-secondary" data-bs-toggle="modal" data-bs-target="#editExchange">Editar <i class="fa-solid fa-pen-to-square"></i></button>
-            <?php } ?>
-            <?php if ($exchange['drawn_on'] && $exchange['admin_view_raffle'] == 1) { ?>
-                <button class="button-primary" data-bs-toggle="modal" data-bs-target="#viewResultsRaffle" onclick="viewResultsRaffle(<?php echo $id; ?>)">Ver resultados <i class="fa-solid fa-file-lines"></i></button>
-            <?php } ?>
+                <?php if ($exchange['drawn_on'] && $exchange['admin_view_raffle'] == 1) { ?>
+                    <button class="button-primary" data-bs-toggle="modal" data-bs-target="#viewResultsRaffle" onclick="viewResultsRaffle(<?php echo $id; ?>)">Ver resultados <i class="fa-solid fa-file-lines"></i></button>
+                <?php }
+            } ?>
         </div>
     </div>
 
@@ -91,14 +91,6 @@
                     <p><a href="user?id=<?php echo $exchange['id_admin']; ?>"><span class="text-warning"><i class="fa-solid fa-crown"></i></span> <?php echo $exchange['username_admin']; ?></a></p>
                 </div>
             </div>
-            <?php if ($exchange['about']) { ?>
-            <div class="white-box">
-                <div>
-                    <h6>Descripción:</h6>
-                    <p><?php echo $exchange['about']; ?></p>
-                </div>
-            </div>
-            <?php } ?>
             <?php if ($exchange['id_admin'] == $id_user && !$exchange['drawn_on']) { ?>
             <div class="white-box">
                 <div>
@@ -108,9 +100,55 @@
             <?php } ?>
         </div>
 
-        <div class="w75 d-flex flex-column gap-4">
+        <div class="w50 d-flex flex-column gap-4">
+
+            <?php if ($exchange['about']) { ?>
+            <div class="white-box">
+                <div>
+                    <h6>Descripción:</h6>
+                    <p><?php echo $exchange['about']; ?></p>
+                </div>
+            </div>
+            <?php } ?>
+
+            <div class="white-box">
+            
+                <div>
+                    <h6>Le vas a regalar a:</h6>
+                    <div>
+                    <?php if($exchange['drawn_on']){ ?>
+                        <?php if ($resultRaffle['type_result'] == "USER") { ?>
+                        <div class="green-card-min">
+                            <div class="d-flex gap-2 align-items-center">
+                                <div class="img-user">
+                                    <a href="user?id=<?php echo $resultRaffle['id_result']; ?>"><img src="./assets/img/<?php echo $resultRaffle['result_profile'] ? 'user/img-profile/' . $resultRaffle['result_profile'] : 'system/defaultimgsq.jpg'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.jpg'"></a>
+                                </div>
+                                <div>
+                                    <strong><?php echo $resultRaffle['result_name']; ?></strong>
+                                </div>
+                            </div>
+                        </div>
+                        <?php } if($resultRaffle['type_result'] == "CONTACT"){ ?>
+                                <div class="yellow-card-min">
+                                    <div class="d-flex gap-2 align-items-center">
+                                        <div>
+                                            <a><strong><i class="fa-solid fa-user mx-2"></i> <?php echo $resultRaffle['result_name'] ?></strong></a>
+                                        </div>
+                                    </div>
+                                </div>
+                        <?php } ?>
+                        
+                    <?php }else{ ?>
+                        <p>Aún no se sortea</p>
+                    <?php } ?>
+                    </div>
+                </div>
+            </div>
 
             <div class="white-box d-flex flex-column gap-3">
+
+            <h4><?php echo $exchange['main_question']; ?></h4>
+
             <?php if (!$wantGiftAll) { ?>
                 <div>
                     <h6 class="mb-3">Respuesta de quien te tocó:</h6>
@@ -137,12 +175,12 @@
                         <?php if($resultRaffle['type_result'] == "CONTACT"){ ?>
                         <div class="w-100">
                             <div class="d-flex gap-2">
-                                <div>
+                                <div class="text-warning">
                                     <i class="fa-solid fa-user px-2"></i>
                                 </div>
                                 <div class="d-flex flex-column w-100">
                                     <div class="d-flex justify-content-between">
-                                        <span class="user-name d-flex gap-1 flex-column flex-md-row">
+                                        <span class="user-name d-flex gap-1 flex-column flex-md-row text-warning">
                                             <a><?php echo $resultRaffle['result_name']; ?></a>
                                         </span>
                                     </div>
@@ -172,7 +210,7 @@
                                 <div class="d-flex flex-column w-100">
                                     <div class="d-flex justify-content-between">
                                         <span class="user-name d-flex gap-1 flex-column flex-md-row">
-                                            <a><?php echo $wantGiftYou[0]['username']; ?></a> <span class="ms-0 ms-md-2 text-secondary relativedate"><?php echo $wantGiftYou[0]['timestamp_create']; ?></span>
+                                            <a href="user?id=<?php echo $wantGiftYou[0]['id_user']; ?>"><?php echo $wantGiftYou[0]['username']; ?></a> <span class="ms-0 ms-md-2 text-secondary relativedate"><?php echo $wantGiftYou[0]['timestamp_create']; ?></span>
                                         </span>
                                         <span>
                                             <a class="text-danger cursor-pointer" data-bs-toggle="modal" data-bs-target="#confirmDeleteWantGift" onclick="deleteWantGift(<?php echo $wantGiftYou[0]['id']; ?>)"><i class="fa-solid fa-trash"></i></a>
@@ -244,6 +282,88 @@
                 <?php } ?>
             </div>
 
+        </div>
+
+        <div class="w50 d-flex flex-column gap-4">
+
+            <?php if ($exchange['id_admin'] == $id_user && $exchange['drawn_on']) { ?>
+            <div class="white-box">
+                <div class="d-flex flex-column gap-2">
+                    <div><button class="button-display" data-bs-toggle="modal" data-bs-target="#sendResultsByEmail"><span>Enviar resultados por email <i class="fa-solid fa-envelope-open-text"></i></span></button></div>
+                    <span class="text-secondary" id="send_email_success"></span>
+                    <?php if ($exchange['send_emails']) { ?><span class="text-secondary">Emails enviados el: <?php echo $exchange['send_emails']; ?></span><?php } ?>
+                </div>
+            </div>
+            <?php } ?>
+            
+            <div class="white-box">
+
+                <h6 class="mb-3">Usuarios que participan:</h6>
+                <?php if ($exchange['admin_participates'] == 0) {
+                    echo "[Admin no participa]";} ?>
+                <div class="d-flex flex-column gap-2">
+                <?php foreach ($users as $key => $value) { ?>
+                    <div class="green-card-min">
+                        <div class="d-flex gap-2 align-items-center">
+                            <div class="img-user">
+                                <a href="user?id=<?php echo $value['id_user']; ?>"><img src="./assets/img/<?php echo $value['img_profile'] ? 'user/img-profile/'.$value['img_profile'] : 'system/defaultimgsq.jpg'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.jpg'"></a>
+                            </div>
+                            <div>
+                                <strong><?php echo $value['username']; ?> <?php if($value['id_user'] == $exchange['id_admin']){echo '<span class="text-warning"><i class="fa-solid fa-crown"></i></span>';} ?></strong>
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="dropdown">
+                                <a class="btn button-options" data-bs-toggle="dropdown">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="user?id=<?php echo $value['id_user']; ?>">Ver usuario <i class="fa-solid fa-eye"></i></a></li>
+                                    <?php if ($exchange['id_admin'] == $id_user) { ?>
+                                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#kickUserExchange" onclick="kickUserExchange(<?php echo $id . ',' . $value['id_user'] . ',\'' . $value['username'] . '\''; ?>)">Sacar del intercambio <i class="fa-solid fa-right-from-bracket"></i></a></li>
+                                        <li><a class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#giveAdmin" onclick="giveAdmin(<?php echo $value['id_user'].',\'' . $value['username'] . '\''; ?>)">delegar administración <i class="fa-solid fa-handshake"></i></a></li>
+                                    <?php } ?>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+                </div>
+                <hr>
+                <h6 class="mb-3 mt-3">Contactos que participan:</h6>
+                
+                <div class="d-flex flex-column gap-2">
+                <?php foreach ($contacts as $key => $value) { ?>
+                    <div class="yellow-card-min">
+                        <div class="d-flex gap-2 align-items-center">
+                            <div>
+                                <a <?php if ($exchange['id_admin'] == $id_user) { ?> class="cursor-pointer"  data-bs-toggle="modal" data-bs-target="#viewContact" onclick="viewContact(<?php echo htmlspecialchars(json_encode($value)); ?>)" <?php } ?>><strong><i class="fa-solid fa-user mx-2"></i> <?php echo $value['name']; ?></strong></a>
+                            </div>
+                        </div>
+                        <?php if ($exchange['id_admin'] == $id_user) { ?>
+                        <div class="options">
+                            <div class="dropdown">
+                                <a class="btn button-options" data-bs-toggle="dropdown">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#viewContact" onclick="viewContact(<?php echo htmlspecialchars(json_encode($value)); ?>)">Ver contacto <i class="fa-solid fa-eye"></i></a></li>
+                                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteContact" onclick="deleteContact(<?php echo $value['id'] . ',' . $value['name'] . '\''; ?>)">Borrar contacto <i class="fa-solid fa-trash"></i></a></li>
+                                    </ul>
+                            </div>
+                        </div>
+                        <?php } ?>
+                    </div>
+                <?php } ?>
+                </div>
+                <?php if ($exchange['id_admin'] == $id_user) { ?>
+                <div class="mt-3">
+                    <button class="button-primary" data-bs-toggle="modal" data-bs-target="#newContact">Agregar contacto</button>
+                </div>
+                <?php } ?>
+
+            </div>
+
             <div class="white-box d-flex flex-column gap-3">
                 <div>
                     <div>
@@ -290,7 +410,7 @@
                                         <div class="mb-3 mt-3">
                                             <input type="hidden" id="id_exchange" name="id_exchange" value="<?php echo $id; ?>">
                                             <label for="comment">Deja un comentario:</label>
-                                            <textarea class="form-control" rows="3" id="comment" name="comment" required></textarea>
+                                            <textarea class="form-control" rows="3" id="comment_exchange" name="comment" required></textarea>
                                         </div>
                                         <div class="d-flex justify-content-end"><button type="submit" class="button-primary">Enviar</button></div>
                                     </form>
@@ -305,107 +425,6 @@
                 </div>
             </div>
 
-        </div>
-
-        <div class="w25 d-flex flex-column gap-4">
-            <div class="white-box">
-                <h6>Le vas a regalar a:</h6>
-                <div>
-                <?php if($exchange['drawn_on']){ ?>
-                    <?php if ($resultRaffle['type_result'] == "USER") { ?>
-                    <div class="green-card-min">
-                        <div class="d-flex gap-2 align-items-center">
-                            <div class="img-user">
-                                <a href="user?id=<?php echo $resultRaffle['id_result']; ?>"><img src="./assets/img/<?php echo $resultRaffle['result_profile'] ? 'user/img-profile/' . $resultRaffle['result_profile'] : 'system/defaultimgsq.jpg'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.jpg'"></a>
-                            </div>
-                            <div>
-                                <strong><?php echo $resultRaffle['result_name']; ?></strong>
-                            </div>
-                        </div>
-                    </div>
-                    <?php } if($resultRaffle['type_result'] == "CONTACT"){ ?>
-                            <div class="yellow-card-min">
-                                <div class="d-flex gap-2 align-items-center">
-                                    <div>
-                                        <a><strong><i class="fa-solid fa-user mx-2"></i> <?php echo $resultRaffle['result_name'] ?></strong></a>
-                                    </div>
-                                </div>
-                            </div>
-                    <?php } ?>
-                    
-                <?php }else{ ?>
-                    <p>Aún no se sortea</p>
-                <?php } ?>
-                </div>
-            </div>
-            
-            <div class="white-box">
-
-                <h6 class="mb-3">Usuarios que participan:</h6>
-                <?php if ($exchange['admin_participates'] == 0) {
-                    echo "[Admin no participa]";} ?>
-                <div class="d-flex flex-column gap-2">
-                <?php foreach ($users as $key => $value) { ?>
-                    <div class="green-card-min">
-                        <div class="d-flex gap-2 align-items-center">
-                            <div class="img-user">
-                                <a href="user?id=<?php echo $value['id_user']; ?>"><img src="./assets/img/<?php echo $value['img_profile'] ? 'user/img-profile/'.$value['img_profile'] : 'system/defaultimgsq.jpg'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.jpg'"></a>
-                            </div>
-                            <div>
-                                <strong><?php echo $value['username']; ?> <?php if($value['id_user'] == $exchange['id_admin']){echo '<span class="text-warning"><i class="fa-solid fa-crown"></i></span>';} ?></strong>
-                            </div>
-                        </div>
-                        <div class="options">
-                            <div class="dropdown">
-                                <a class="btn button-options" data-bs-toggle="dropdown">
-                                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="user?id=<?php echo $value['id_user']; ?>">Ver usuario <i class="fa-solid fa-eye"></i></a></li>
-                                    <?php if ($exchange['id_admin'] == $id_user) { ?>
-                                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#kickUserExchange" onclick="kickUserExchange(<?php echo $id . ',' . $value['id_user'] . ',\'' . $value['username'] . '\''; ?>)">Sacar del intercambio <i class="fa-solid fa-right-from-bracket"></i></a></li>
-                                        <li><a class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#giveAdmin" onclick="giveAdmin(<?php echo $value['id_user'].',\'' . $value['username'] . '\''; ?>)">delegar administración <i class="fa-solid fa-handshake"></i></a></li>
-                                    <?php } ?>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                <?php } ?>
-                </div>
-                <hr>
-                <h6 class="mb-3 mt-3">Contactos que participan:</h6>
-                
-                <div class="d-flex flex-column gap-2">
-                <?php foreach ($contacts as $key => $value) { ?>
-                    <div class="yellow-card-min">
-                        <div class="d-flex gap-2 align-items-center">
-                            <div>
-                                <a data-bs-toggle="modal" data-bs-target="#viewContact" class="cursor-pointer" onclick="viewContact(<?php echo htmlspecialchars(json_encode($value)); ?>)"><strong><i class="fa-solid fa-user mx-2"></i> <?php echo $value['name']; ?></strong></a>
-                            </div>
-                        </div>
-                        <?php if ($exchange['id_admin'] == $id_user) { ?>
-                        <div class="options">
-                            <div class="dropdown">
-                                <a class="btn button-options" data-bs-toggle="dropdown">
-                                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                                </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#viewContact" onclick="viewContact(<?php echo htmlspecialchars(json_encode($value)); ?>)">Ver contacto <i class="fa-solid fa-eye"></i></a></li>
-                                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteContact" onclick="deleteContact(<?php echo $value['id'] . ',' . $value['name'] . '\''; ?>)">Borrar contacto <i class="fa-solid fa-trash"></i></a></li>
-                                    </ul>
-                            </div>
-                        </div>
-                        <?php } ?>
-                    </div>
-                <?php } ?>
-                </div>
-                <?php if ($exchange['id_admin'] == $id_user) { ?>
-                <div class="mt-3">
-                    <button class="button-primary" data-bs-toggle="modal" data-bs-target="#newContact">Agregar contacto</button>
-                </div>
-                <?php } ?>
-
-            </div>
         </div>
 
     </div>
@@ -519,6 +538,10 @@
                 </div>
             </div>
             <div class="mb-3 mt-3">
+                <label for="img" class="form-label">Imagen del intercambio:</label>
+                <input type="file" class="form-control" id="img" name="img" onchange="handleFileImage(this.files, 'img-exchange-preview')">
+            </div>
+            <div class="mb-3 mt-3">
                 <label for="name" class="form-label">Nombre del intercambio*:</label>
                 <input type="text" class="form-control" id="name" placeholder="Ejemplo: Navidad Familia Ayala" name="name" value="<?php echo $exchange['name']; ?>" required>
             </div>
@@ -553,25 +576,17 @@
             <!-- <div class="mb-3 mt-3">
               <label for="admin_participates" class="form-label">¿El admin participa en la dinámica?:</label>
               <select class="form-select" id="admin_participates" name="admin_participates"> 
-                  <option value="1" <?php if ($exchange['admin_participates']) {
-                      echo "selected";}; ?>>Si</option>
-                  <option value="0" <?php if (!$exchange['admin_participates']) {
-                      echo "selected";}; ?>>No</option>
+                  <option value="1" <?php //if ($exchange['admin_participates']) { echo "selected";} ?>>Si</option>
+                  <option value="0" <?php //if (!$exchange['admin_participates']) { echo "selected";} ?>>No</option>
               </select>
             </div>
             <div class="mb-3 mt-3">
               <label for="admin_view_raffle" class="form-label">¿El admin podrá ver los resultados?:</label>
               <select class="form-select" id="admin_view_raffle" name="admin_view_raffle">
-                  <option value="1" <?php if ($exchange['admin_view_raffle']) {
-                      echo "selected";}; ?>>Si</option>
-                  <option value="0" <?php if (!$exchange['admin_view_raffle']) {
-                      echo "selected";}; ?>>No</option>
+                  <option value="1" <?php //if ($exchange['admin_view_raffle']) { echo "selected";}; ?>>Si</option>
+                  <option value="0" <?php //if (!$exchange['admin_view_raffle']) { echo "selected";}; ?>>No</option>
               </select>
             </div> -->
-            <div class="mb-3 mt-3">
-                <label for="img" class="form-label">Imagen del intercambio:</label>
-                <input type="file" class="form-control" id="img" name="img" onchange="handleFileImage(this.files, 'img-exchange-preview')">
-            </div>
             <input type="hidden" name="id_exchange" value="<?php echo $exchange['id']; ?>">
             <button type="submit" class="button-primary" data-bs-dismiss="modal">Editar</button>
         </form>
@@ -734,7 +749,7 @@
 </div>
 
 <!--------------------------------------->
-<!------------- make raffle -------------->
+<!------------- view raffle -------------->
 <div class="modal" id="viewResultsRaffle">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
@@ -756,3 +771,33 @@
     </div>
   </div>
 </div>
+
+<!--------------------------------------->
+<!--------- send results email ---------->
+<div class="modal" id="sendResultsByEmail">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">¿Quiéres enviar los resultados del sorteo a los usuarios por email?</h4>
+        <a type="button" class="button-close" data-bs-dismiss="modal">
+            <i class="fa-solid fa-xmark"></i>
+        </a>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div>
+            <div class="mb-3 mt-3">
+                <label class="form-label">Si confirmas, se enviará un email a cada participante (En caso de los contactos, se enviará solo si tienen un email disponible) con los resultados del sorteo (Solo se enviará sus resultados y no podrán ver el resto).</label>
+            </div>
+            <h6 id="sendEmail-loading">Enviando emails.. Espera... <div class="spinner-border"></div></h6>
+            <button type="submit" class="button-primary" onclick="sendResultsByEmail(<?php echo $id; ?>)">Enviar <i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
