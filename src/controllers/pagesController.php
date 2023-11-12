@@ -223,7 +223,6 @@ class PagesController
      * Shows contact page
      */
     public static function contact() {
-        self::checkSession();
         require_once "./src/views/pages/contact.php";
     }
 
