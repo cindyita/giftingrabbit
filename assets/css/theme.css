@@ -41,15 +41,14 @@
 /*-------------------------*/
 /*-------FONT IMAGE--------*/
 
-html {
+html,body {
     background: var(--fontBg);
 }
 
 .body {
     background: var(--font);
-    background-position: center center;
+    background-size: contain;
     background-repeat: repeat;
-    background-size:contain;
     background-attachment: fixed;
     color: var(--defaultText);
 }
@@ -111,7 +110,12 @@ html {
 .dropdown-divider{
     border-top: 1px solid var(--primary);
 }
-
+.text-primary {
+    color: var(--primary) !important;
+}
+.text-secondary {
+    color: var(--secondary) !important;
+}
 /*-------------------------*/
 /*-----------TEXT---------*/
 

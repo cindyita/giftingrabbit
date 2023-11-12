@@ -22,6 +22,10 @@ $pages->topHTML();
 if(isset($_GET['page'])){
 
     switch ($_GET['page']) {
+        case 'home':
+            $pages->updateScripts(["./assets/js/pages/home.js"]);
+            $pages->menuHTML();
+        break;
         case 'login':
             $pages->updateScripts(["./assets/js/pages/login.js"]);
         break;
@@ -34,10 +38,6 @@ if(isset($_GET['page'])){
         break;
         case 'user':
             $pages->updateScripts(["./assets/js/pages/user.js"]);
-            $pages->menuHTML();
-        break;
-        case 'home':
-            $pages->updateScripts(["./assets/js/pages/home.js"]);
             $pages->menuHTML();
         break;
         case 'termsandconditions':
@@ -59,14 +59,11 @@ if(isset($_GET['page'])){
         break;
     }
 
-}else{
-    $pages->menuHTML();
-    $pages->updateScripts(["./assets/js/pages/home.js"]);
 }
 
 /*-------------------------------------*/
 
-$router->add('/', 'PagesController@home');
+$router->add('/', 'PagesController@index');
 
 $router->add('/home', 'PagesController@home');
 

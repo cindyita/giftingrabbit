@@ -106,6 +106,13 @@ class PagesController
     /**
      * Shows home
      */
+    public static function index() {
+        require_once "./src/views/pages/index.php";
+    }
+
+    /**
+     * Shows home
+     */
     public static function home() {
         self::checkSession();
         $db = new QueryModel();
