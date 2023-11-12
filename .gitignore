@@ -10,9 +10,6 @@ composer.lock
 #ignorar config
 config.php
 
-#ignorar info
-info.php
-
 #ignorar doc e img
 /assets/img/user/
 /assets/img/exchanges/
