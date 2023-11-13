@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5204471202830622"
+     crossorigin="anonymous"></script>
+
     <meta property="description" content="Intercambios de regalos con amigos y familia. Navideño, san valentin y todo tipo de ocasión" />
     <meta name="keywords" content="intercambio de regalos, Navidad, San Valentín, celebraciones, regalos, eventos">
     <meta name="author" content="Cindy ita">
