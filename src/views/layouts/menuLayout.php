@@ -4,7 +4,7 @@
     <div class="menu d-flex justify-content-between align-items-center">
         <a href="home">
             <div class="logo">
-                <img src="./assets/img/system/logov2.png" alt="logo" id="imglogo">
+                <img src="./assets/img/system/logov2.webp" alt="logo" id="imglogo">
             </div>
         </a>
         <div class="menu-right d-flex gap-3 align-items-center">
@@ -15,7 +15,7 @@
                 <div class="menu-user">
                     <div class="dropdown dropdown-menu-end">
                         <div class="menu-img-user" data-bs-toggle="dropdown">
-                            <img src="./assets/img/<?php echo $_SESSION['userdata']['img_profile'] ? 'user/img-profile/'.$_SESSION['userdata']['img_profile'].'?upd='.time() : "system/defaultimgsq.jpg"; ?>" alt="profile" onerror="this.src = './assets/img/system/defaultimgsq.jpg'">
+                            <img src="./assets/img/<?php echo $_SESSION['userdata']['img_profile'] ? 'user/img-profile/'.$_SESSION['userdata']['img_profile'].'?upd='.time() : "system/defaultimgsq.webp"; ?>" alt="profile" onerror="this.src = './assets/img/system/defaultimgsq.webp'">
                         </div>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="myprofile">

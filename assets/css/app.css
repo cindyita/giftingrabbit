@@ -112,7 +112,7 @@ footer {
     display: flex;
     gap: 10px;
 }
-.footer span a i{
+/* .footer span a i{
     color: var(--secondary);
     font-size: 15pt;
     transition: 0.2s ease;
@@ -120,4 +120,4 @@ footer {
 .footer span a:hover i {
     color: var(--primary);
     font-size: 18pt;
-}
+} */

@@ -30,12 +30,12 @@
             if (themeDark) {
                 localStorage.setItem('theme', 'dark');
                 document.documentElement.setAttribute("data-theme", "dark");
-                $("#imglogo").attr("src", "./assets/img/system/logo.png");
+                $("#imglogo").attr("src", "./assets/img/system/logo.webp");
                 themeDark = false;
             } else {
                 localStorage.setItem('theme', 'light');
                 document.documentElement.setAttribute("data-theme", "light");
-                $("#imglogo").attr("src", "./assets/img/system/logov2.png");
+                $("#imglogo").attr("src", "./assets/img/system/logov2.webp");
                 themeDark = true;
             }
         }
@@ -44,9 +44,10 @@
 
     <!-------------required------------>
 
-    <link href="./assets/library/fontawesome/css/fontawesome.min.css" rel="stylesheet">
+    <!-- <link href="./assets/library/fontawesome/css/fontawesome.min.css" rel="stylesheet">
     <link href="./assets/library/fontawesome/css/brands.min.css" rel="stylesheet">
-    <link href="./assets/library/fontawesome/css/solid.min.css" rel="stylesheet">
+    <link href="./assets/library/fontawesome/css/solid.min.css" rel="stylesheet"> -->
+    <script src="https://kit.fontawesome.com/e0df5df9e9.js" crossorigin="anonymous"></script>
 
     <link href="./assets/library/bootstrap5/bootstrap.min.css" rel="stylesheet">
 

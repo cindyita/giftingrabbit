@@ -486,7 +486,7 @@ function updateFeedExchanges(){
             <div class="head">
                 <div class="img">
                     <a href="exchange?id='.$value['id'].'">
-                        <img src="./assets/img/exchanges/'.$value['img'].'" alt="img intercambio" onerror="this.src = \'./assets/img/system/defaultimg.jpg\'">
+                        <img src="./assets/img/exchanges/'.$value['img'].'" alt="img intercambio" onerror="this.src = \'./assets/img/system/defaultimg.webp\'">
                     </a>
                 </div>
                 <div class="info">
@@ -595,7 +595,7 @@ function updateCommentPost(){
                     <div class="d-flex gap-2">
                         <div>
                             <div class="img-user">
-                                <a href="user?id='.$value['id_user'].'"><img src="./assets/img/'.($value['img_profile'] ? 'user/img-profile/'.$value['img_profile'] : 'system/defaultprofile.jpg').'" alt="image profile" onerror="this.src = \'./assets/img/system/defaultimgsq.jpg\'"></a>
+                                <a href="user?id='.$value['id_user'].'"><img src="./assets/img/'.($value['img_profile'] ? 'user/img-profile/'.$value['img_profile'] : 'system/defaultprofile.webp').'" alt="image profile" onerror="this.src = \'./assets/img/system/defaultimgsq.webp\'"></a>
                             </div>
                         </div>
                         <div class="d-flex flex-column w-100">
@@ -772,7 +772,7 @@ function updateWantGift(){
                     <div class="d-flex gap-2">
                         <div>
                             <div class="img-user">
-                                <a href="user?id='.$wantGiftYou[0]['id_user'].'"><img src="./assets/img/'.($wantGiftYou[0]['img_profile'] ? 'user/img-profile/' . $wantGiftYou[0]['img_profile'] : 'system/defaultimgsq.jpg').'" alt="image profile" onerror="this.src = \'./assets/img/system/defaultimgsq.jpg\'"></a>
+                                <a href="user?id='.$wantGiftYou[0]['id_user'].'"><img src="./assets/img/'.($wantGiftYou[0]['img_profile'] ? 'user/img-profile/' . $wantGiftYou[0]['img_profile'] : 'system/defaultimgsq.webp').'" alt="image profile" onerror="this.src = \'./assets/img/system/defaultimgsq.webp\'"></a>
                             </div>
                         </div>
                         <div class="d-flex flex-column w-100">

@@ -113,9 +113,9 @@ function processDatetime(datetime, format = null, relative = false) {
  */
 function changeLogoTheme() {
     if (!themeDark) {
-        $("#imglogo").attr("src", "./assets/img/system/logo.png");
+        $("#imglogo").attr("src", "./assets/img/system/logo.webp");
     } else {
-        $("#imglogo").attr("src", "./assets/img/system/logov2.png");
+        $("#imglogo").attr("src", "./assets/img/system/logov2.webp");
     }
 }
 

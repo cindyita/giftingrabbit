@@ -15,7 +15,7 @@
     --white: white;
     --radius: 1.5rem;
     --radius2: 1.3rem;
-    --font: url(../img/system/font.jpg);
+    --font: url(../img/system/font.webp);
     --fontBg: #CFEEDE;
 } 
 [data-theme="dark"] {
@@ -34,7 +34,7 @@
     --white: rgb(80, 36, 25);
     --radius: 1.5rem;
     --radius2: 1.3rem;
-    --font: url(../img/system/font_dark.jpg);
+    --font: url(../img/system/font_dark.webp);
     --fontBg: #323F38;
 }
 
@@ -59,6 +59,7 @@ html,body {
 @font-face {
   font-family: 'Varela';
   src: url('../fonts/VarelaRound-Regular.ttf') format('truetype');
+  font-display: swap;
 }
 
 * {

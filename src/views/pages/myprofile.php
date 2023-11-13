@@ -13,7 +13,7 @@
 
                 <div>
                     <div class="img-profile">
-                        <img src="./assets/img/<?php echo isset($user['img_profile']) ? 'user/img-profile/'.$user['img_profile'].'?upd='.time() : "system/defaultimgsq.jpg"; ?>" alt="profileimg" onerror="this.src = './assets/img/system/defaultimgsq.jpg'">
+                        <img src="./assets/img/<?php echo isset($user['img_profile']) ? 'user/img-profile/'.$user['img_profile'].'?upd='.time() : "system/defaultimgsq.webp"; ?>" alt="profileimg" onerror="this.src = './assets/img/system/defaultimgsq.webp'">
                     </div>
                     <br>
                     <div class="ribon" id="view-username">
@@ -71,7 +71,7 @@
 
                     <div class="d-flex flex-column align-items-center">
                         <div class="img-profile">
-                             <img src="./assets/img/<?php echo $user['img_profile'] ? 'user/img-profile/'.$user['img_profile'].'?upd='.time() : "system/defaultimgsq.jpg"; ?>" alt="profileimg" id="img-preview" onerror="this.src = './assets/img/system/defaultimgsq.jpg'">
+                             <img src="./assets/img/<?php echo $user['img_profile'] ? 'user/img-profile/'.$user['img_profile'].'?upd='.time() : "system/defaultimgsq.webp"; ?>" alt="profileimg" id="img-preview" onerror="this.src = './assets/img/system/defaultimgsq.webp'">
                         </div>
                         Imagen de perfil:
                         <input type="file" name="img-profile" id="img-profile" class="form-control" onchange="handleFileImage(this.files, 'img-preview')">

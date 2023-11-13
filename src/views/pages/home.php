@@ -20,7 +20,7 @@
                             <div class="head">
                                 <div class="img">
                                     <a href="exchange?id=<?php echo $value['id']; ?>">
-                                        <img src="./assets/img/exchanges/<?php echo $value['img'] ?>" alt="img intercambio" onerror="this.src = './assets/img/system/defaultimg.jpg'">
+                                        <img src="./assets/img/exchanges/<?php echo $value['img'] ?>" alt="img intercambio" onerror="this.src = './assets/img/system/defaultimg.webp'">
                                     </a>
                                 </div>
                                 <div class="info">
@@ -80,7 +80,7 @@
         <form method="post" id="newExchangeForm">
             <div class="mb-3 mt-3">
                 <div class="content-img">
-                    <img src="./assets/img/system/defaultimg.jpg" id="img-exchange-preview" onerror="this.src = './assets/img/system/defaultimg.jpg'" class="img" max-width="100%">
+                    <img src="./assets/img/system/defaultimg.webp" id="img-exchange-preview" onerror="this.src = './assets/img/system/defaultimg.webp'" class="img" max-width="100%">
                 </div>
             </div>
             <div class="mb-3 mt-3">

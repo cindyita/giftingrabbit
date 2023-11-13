@@ -32,12 +32,12 @@
             if (themeDark) {
                 localStorage.setItem('theme', 'dark');
                 document.documentElement.setAttribute("data-theme", "dark");
-                $("#imglogo").attr("src", "./assets/img/system/logo.png");
+                $("#imglogo").attr("src", "./assets/img/system/logo.webp");
                 themeDark = false;
             } else {
                 localStorage.setItem('theme', 'light');
                 document.documentElement.setAttribute("data-theme", "light");
-                $("#imglogo").attr("src", "./assets/img/system/logov2.png");
+                $("#imglogo").attr("src", "./assets/img/system/logov2.webp");
                 themeDark = true;
             }
         }
@@ -46,13 +46,14 @@
 
     <!-------------required------------>
 
-    <link href="./assets/library/fontawesome/css/fontawesome.min.css" rel="stylesheet">
+    <!-- <link href="./assets/library/fontawesome/css/fontawesome.min.css" rel="stylesheet">
     <link href="./assets/library/fontawesome/css/brands.min.css" rel="stylesheet">
-    <link href="./assets/library/fontawesome/css/solid.min.css" rel="stylesheet">
+    <link href="./assets/library/fontawesome/css/solid.min.css" rel="stylesheet"> -->
+    <script src="https://kit.fontawesome.com/e0df5df9e9.js" crossorigin="anonymous"></script>
 
     <link href="./assets/library/bootstrap5/bootstrap.min.css" rel="stylesheet">
     
-    <link href="./assets/library/swiperjs/swiper-bundle.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/swiper@11.0.4/swiper-bundle.min.css" rel="stylesheet">
 
     <!-------------/required------------>
 
@@ -76,7 +77,7 @@
         <div class="menu d-flex justify-content-between align-items-center">
             <a href="/">
                 <div class="logo">
-                    <img src="./assets/img/system/logov2.png" alt="logo" id="imglogo">
+                    <img src="./assets/img/system/logov2.webp" alt="logo" id="imglogo">
                 </div>
             </a>
             <div class="menu-right d-flex gap-3 align-items-center">
@@ -93,21 +94,21 @@
             <div class="swiper mySwiper">
                 <div class="swiper-wrapper">
                 <div class="swiper-slide">
-                    <img src="assets/img/system/slider/6.jpg" />
+                    <img src="assets/img/system/slider/6.webp" />
                     <div class="swiper-text">
                         <h1>Crea intercambios de regalos fácilmente <br>y comparte con tus seres queridos.</h1>
                         <a href="signup"><button class="button-display mt-3"><span>Registrate</span></button></a>
                     </div>
                 </div>
                 <div class="swiper-slide">
-                    <img src="assets/img/system/slider/2.jpg" />
+                    <img src="assets/img/system/slider/2.webp" />
                     <div class="swiper-text">
                         <h1>¡Realiza un intercambio de regalos esta navidad!</h1>
                         <a href="signup"><button class="button-display mt-3"><span>Registrate</span></button></a>
                     </div>
                 </div>
                 <div class="swiper-slide">
-                    <img src="assets/img/system/slider/3.jpg" />
+                    <img src="assets/img/system/slider/3.webp" />
                     <div class="swiper-text">
                         <h1>La felicidad está en dar ¡Y también en recibir!</h1>
                         <a href="signup"><button class="button-display mt-3"><span>Registrate</span></button></a>
@@ -166,7 +167,7 @@
                     <div class="col-lg-4 order-lg-0">
                         <div class="features-device-mockup">
                             <div class="device-wrapper">
-                                <img src="assets/img/system/gift1.png" width="100%">
+                                <img src="assets/img/system/gift1.webp" width="100%">
                             </div>
                         </div>
                     </div>
@@ -217,7 +218,7 @@
 
         <div class="white-box d-flex flex-column flex-lg-row gap-3">
             <div class="w25 d-flex align-items-center">
-                <img src="assets/img/system/gift_green.png" alt="regalos intercambio" width="100%">
+                <img src="assets/img/system/gift_green.webp" alt="regalos intercambio" width="100%">
             </div>
             <div>
                 <section>
@@ -265,5 +266,5 @@
 
     </div>
 
-    <script src="./assets/library/swiperjs/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11.0.4/swiper-bundle.min.js"></script>
     <script src="./assets/js/pages/index.js"></script>

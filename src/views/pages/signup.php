@@ -2,7 +2,7 @@
 
     <div class="login pink-box">
         <div class="logo">
-            <a href="home"><img src="./assets/img/system/logo.png" alt="logo"></a>
+            <a href="home"><img src="./assets/img/system/logo.webp" alt="logo"></a>
         </div>
         <div>
             <h4>Registro</h4>

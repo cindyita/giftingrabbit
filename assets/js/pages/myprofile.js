@@ -115,8 +115,8 @@ function updateData() {
                 $(".img-profile img").attr("src", "./assets/img/user/img-profile/" + user.img_profile+'?upd=<?php echo time(); ?>');
                 $("#img-preview").attr("src", "./assets/img/user/img-profile/" + user.img_profile+'?upd=<?php echo time(); ?>');
             } else {
-                $(".img-profile img").attr("src", "./assets/img/system/defaultimgsq.jpg");
-                $("#img-preview").attr("src", "./assets/img/system/defaultimgsq.jpg");
+                $(".img-profile img").attr("src", "./assets/img/system/defaultimgsq.webp");
+                $("#img-preview").attr("src", "./assets/img/system/defaultimgsq.webp");
             }
 
             $("#username").val(user.username);
