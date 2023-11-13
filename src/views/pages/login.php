@@ -11,8 +11,8 @@
                     <strong>Alerta:</strong> <span>Error al iniciar sesión</span>
                 </div>
                 <div class="mb-3 mt-3">
-                    <label for="username" class="form-label">Nombre de usuario</label>
-                    <input type="text" class="form-control" id="username" placeholder="Ingresa tu nombre de usuario" name="username">
+                    <label for="username" class="form-label">Nombre de usuario o email</label>
+                    <input type="text" class="form-control" id="username" placeholder="Ingresa tu nombre de usuario o tu email" name="username">
                 </div>
                 <div class="mb-3">
                     <label for="pass" class="form-label">Contraseña</label>
@@ -26,6 +26,7 @@
                 <div class="py-2 pb-4 d-flex flex-column">
                     <!-- <a href=""><span>I forgot the password</span></a> -->
                     <a href="signup"><strong>¿Aún no tienes una cuenta? Regístrate.</strong></a>
+                    <a href="forgotpassword"><strong>¿Olvidaste tu contraseña? Click aquí.</strong></a>
                 </div>
                 <div class="d-flex justify-content-center"><div class="g-recaptcha" data-sitekey="<?php echo RECAPTCHA_SITE; ?>"></div></div>
                 <button type="submit" class="mt-2 button-primary">Login</button>

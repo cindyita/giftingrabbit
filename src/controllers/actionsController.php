@@ -18,6 +18,13 @@ switch ($action) {
     case 'signup':
         signup();
     break;
+    case 'forgotPassword':
+        forgotPassword();
+    break;
+    case 'recoverPass':
+        recoverPass();
+    break;
+    /*--------------------*/
     case 'saveprofile':
         saveprofile();
     break;
@@ -109,7 +116,7 @@ function login(){
             $db = new QueryModel();
             $username = $data['username'];
             
-            $user = $db->query("SELECT u.*, r.name as rolname, r.status as rolstatus FROM SYS_USER u JOIN SYS_ROL r ON u.id_rol = r.id WHERE username = :username", [':username' => $username]);
+            $user = $db->query("SELECT u.*, r.name as rolname, r.status as rolstatus FROM SYS_USER u JOIN SYS_ROL r ON u.id_rol = r.id WHERE username = :username OR email = :username", [':username' => $username]);
             $user = $user[0];
 
             if ($user && isset($user) && isset($user['password']) && $user['password'] == md5($data['pass'])) {
@@ -198,11 +205,100 @@ function signup() {
 
             $register = $db->insert('SYS_USER', $insertData);
 
-            // if($register){
-            //     sendEmailSMTP("contact@pricture.theblux.com", $data['name'], $data['email'], $data['username'],"Thank you for registering on Pricture", '', ["host"=>"ngx341.inmotionhosting.com","username"=>"contact@pricture.theblux.com","password"=>"-K7prPb9#8=}","port"=>"465"],["title"=>"Thank you for registering on the page","content"=>"We hope that your stay is to your liking, remember that we are still in the development and testing phase. Stop by from time to time to see what's new on the page and if you have any problems with your account, send us an email."]);
-            // }
+            if($register){
+                require_once("../resources/email.php");
+
+                $sendemail = sendEmailSMTP('admin@giftingrabbit.theblux.com', 'Gifting Rabbit', $data['email'], $data['name'], "Gracias por tu registro en GiftingRabbit", "Ha habido un error", ["host" => HOST_EMAIL, "username" => CONTACT_EMAIL, "password" => PASSWORD_EMAIL, "port" => PORT_EMAIL], ['title' => 'Gracias por tu registro en GiftingRabbit', 'content' => $data['username'].', gracias por registrarte en la página, esperamos que la pases bien haciendo intercambios con tus seres queridos. Recuerda que aún estamos en fase de desarrollo y pruebas, así que, pásate de vez en cuando para ver las novedades de la página y si tienes algún problema con tu cuenta envíanos un correo electrónico.']);
+            }
             echo json_encode($register);
             
+        } else {
+            echo 6;
+        }
+
+
+    } catch (Exception $e) {
+        echo json_encode('error: '.$e->getMessage());
+    }
+}
+
+function forgotPassword(){
+    $data = getData();
+    try {
+        /*-ReCaptcha----------*/
+        $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify'; 
+        $recaptcha_secret = RECAPTCHA_SECRET; 
+        $recaptcha_response = $data['g-recaptcha-response']; 
+        $recaptcha = file_get_contents($recaptcha_url . '?secret=' . $recaptcha_secret . '&response=' . $recaptcha_response); 
+        $recaptcha = json_decode($recaptcha); 
+
+        if($recaptcha->success == true){
+
+            $db = new QueryModel();
+            $usernamemail = $data['usernamemail'];
+
+            $account = $db->query("SELECT id,username,email 
+                FROM SYS_USER 
+                WHERE username = :usernamemail OR email = :usernamemail", [":usernamemail" => $usernamemail]);
+
+            if (!empty($account)) {
+
+                $token = bin2hex(random_bytes(32)) . md5($account[0]['email'].date("Y-m-d H:i:s"));
+                $hashedToken = md5($token);
+
+                $expFormat = mktime(date("H"), date("i"), date("s"), date("m") ,date("d")+1, date("Y"));
+                
+                $reg = $db->insert('REG_TOKENS', ['token' => $hashedToken,'id_user'=>$account[0]['id'],'timestamp_create'=>date('Y-m-d H:i:s'),'expiration_date'=>date("Y-m-d H:i:s",$expFormat)]);
+
+                if($reg){
+                    require_once("../resources/email.php");
+
+                    $content = "<strong>Haz click aquí para recuperar tu contraseña:</strong><br>
+                    <form method='get' action='".MAINURL."/recoverpass'>
+                    <input type='hidden' name='token' value='".$token."'>
+                    <button style='background-color: #fff5eb;border-radius: 1.5rem;padding: 10px 15px;border:2px solid #FF8211;z-index: 0;font-weight: 600;font-size: 14pt;color: #FF8211;transition: 0.3s ease;cursor: pointer;' type='submit'>Recuperar contraseña</button>
+                    </form>";
+
+                    $send = sendEmailSMTP('admin@giftingrabbit.theblux.com', 'Gifting Rabbit', $account[0]['email'], $account[0]['username'], "Recuperación de contraseña", "Ha habido un error", ["host" => HOST_EMAIL, "username" => CONTACT_EMAIL, "password" => PASSWORD_EMAIL, "port" => PORT_EMAIL], ['title' => 'Recuperar contraseña de la cuenta: ' . $account[0]['username'], 'content' => $content]);
+
+                }
+
+                echo json_encode($send);
+            } else {
+                echo 9;
+            }
+
+        } else {
+            echo 6;
+        }
+
+
+    } catch (Exception $e) {
+        echo json_encode('error: '.$e->getMessage());
+    }
+}
+
+function recoverPass(){
+    $data = getData();
+    try {
+        /*-ReCaptcha----------*/
+        $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify'; 
+        $recaptcha_secret = RECAPTCHA_SECRET; 
+        $recaptcha_response = $data['g-recaptcha-response']; 
+        $recaptcha = file_get_contents($recaptcha_url . '?secret=' . $recaptcha_secret . '&response=' . $recaptcha_response); 
+        $recaptcha = json_decode($recaptcha); 
+
+        if($recaptcha->success == true){
+
+            $db = new QueryModel();
+            $newpass = $data['pass'];
+            $id_user = $data['id_user'];
+
+            $reg = $db->update('SYS_USER', ['password' => md5($newpass)],"id = ". $id_user);
+            $del = $db->query("DELETE FROM REG_TOKENS WHERE token = :token", [":token"=>md5($data['token'])]);
+
+            echo json_encode($reg);
+
         } else {
             echo 6;
         }
@@ -952,32 +1048,6 @@ function reducirTexto($texto, $longitudMaxima) {
     return $textoReducido;
 }
 
-
-// function doRaffle($users) {
-
-//     $usersRaffle = $users;
-//     $raffles = array();
-//     $randomKeys = array_keys($usersRaffle);
-//     shuffle($randomKeys);
-
-//     foreach ($randomKeys as $clave) {
-//         $user = $users[$clave];
-//         $possibleRaffle = null;
-
-//         do {
-//             $keyPossibleRaffle = array_shift($randomKeys);
-//             $possibleRaffle = $usersRaffle[$keyPossibleRaffle];
-//         } while ($keyPossibleRaffle === $clave && count($randomKeys) > 0);
-
-//         if ($possibleRaffle !== null) {
-//             $raffles[$user] = $possibleRaffle;
-//         } else {
-//             //return doRaffle($users);
-//         }
-//     }
-
-//     return $raffles;
-// }
 
 function doRaffle($users){
     $randomKeys = array_keys($users);

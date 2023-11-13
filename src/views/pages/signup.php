@@ -8,10 +8,10 @@
             <h4>Registro</h4>
             <form method="post" id="signup">
                 <div class="alert alert-danger" id="error-login">
-                    <strong>Alert:</strong> <span>Error al registrarse</span>
+                    <strong>Error:</strong> <span>Error al registrarse</span>
                 </div>
                 <div class="alert alert-success" id="success-login">
-                    <strong>¡Success!</strong> <span>Se ha registrado exitosamente. Ahora puedes iniciar sesión</span>
+                    <strong>¡Éxito!</strong> <span>Se ha registrado exitosamente. Ahora puedes iniciar sesión</span>
                 </div>
                 <div class="mb-3 mt-3">
                     <label for="email" class="form-label">Email</label>

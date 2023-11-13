@@ -49,6 +49,27 @@ class PagesController
 
     }
 
+    public function topHTML() {
+        $styles = $this->styles;
+        require_once "./src/views/layouts/headerLayout.php";
+    }
+
+    public function bottomHTML() { 
+        $scripts = $this->scripts;
+        require_once "./src/views/layouts/footerLayout.php";
+    }
+
+    public static function menuHTML() {   
+        require_once "./src/views/layouts/menuLayout.php";
+    }
+
+    /**
+     * Shows home
+     */
+    public static function index() {
+        require_once "./src/views/pages/index.php";
+    }
+
     /**
      * Check and shows login page
      */
@@ -88,27 +109,28 @@ class PagesController
         exit();
     }
 
-
-    public function topHTML() {
-        $styles = $this->styles;
-        require_once "./src/views/layouts/headerLayout.php";
-    }
-
-    public function bottomHTML() { 
-        $scripts = $this->scripts;
-        require_once "./src/views/layouts/footerLayout.php";
-    }
-
-    public static function menuHTML() {   
-        require_once "./src/views/layouts/menuLayout.php";
+    /**
+     * Shows forgotpassword
+     */
+    public static function forgotpassword() {
+        require_once "./src/views/pages/forgotpassword.php";
     }
 
     /**
-     * Shows home
+     * Shows recover password
      */
-    public static function index() {
-        require_once "./src/views/pages/index.php";
+    public static function recoverpass() {
+        $db = new QueryModel();
+        $token = $_GET['token'];
+        $tokens = $db->query("SELECT id_user,expiration_date FROM REG_TOKENS WHERE token = :token", [":token" => md5($token)]);
+
+        if ($tokens && $tokens[0]['expiration_date'] >= date("Y-m-d H:i:s")) {
+            require_once "./src/views/pages/recoverpass.php";
+        } else {
+            echo '<div class="main"><div class="white-box d-flex justify-content-center align-items-center"><p>El token es inválido o ya se ha utilizado.</p></div></div>';
+        }
     }
+
 
     /**
      * Shows home
