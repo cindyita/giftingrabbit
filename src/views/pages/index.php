@@ -19,7 +19,7 @@
     <script src="./assets/library/jquery/jquery-3.7.0.min.js"></script>
 
      <!-- Dark/light theme -->
-    <script>
+    <script defer>
         var themeDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     
         if (localStorage.getItem("theme") === 'dark') {
@@ -46,10 +46,7 @@
 
     <!-------------required------------>
 
-    <!-- <link href="./assets/library/fontawesome/css/fontawesome.min.css" rel="stylesheet">
-    <link href="./assets/library/fontawesome/css/brands.min.css" rel="stylesheet">
-    <link href="./assets/library/fontawesome/css/solid.min.css" rel="stylesheet"> -->
-    <script src="https://kit.fontawesome.com/e0df5df9e9.js" crossorigin="anonymous"></script>
+    <script async src="https://kit.fontawesome.com/e0df5df9e9.js" crossorigin="anonymous"></script>
 
     <link href="./assets/library/bootstrap5/bootstrap.min.css" rel="stylesheet">
     
@@ -94,21 +91,21 @@
             <div class="swiper mySwiper">
                 <div class="swiper-wrapper">
                 <div class="swiper-slide">
-                    <img src="assets/img/system/slider/6.webp" />
+                    <img src="assets/img/system/slider/6.webp" alt="img slide 1" loading="lazy" />
                     <div class="swiper-text">
                         <h1>Crea intercambios de regalos fácilmente <br>y comparte con tus seres queridos.</h1>
                         <a href="signup"><button class="button-display mt-3"><span>Registrate</span></button></a>
                     </div>
                 </div>
                 <div class="swiper-slide">
-                    <img src="assets/img/system/slider/2.webp" />
+                    <img src="assets/img/system/slider/2.webp" alt="img slide 2" loading="lazy" />
                     <div class="swiper-text">
                         <h1>¡Realiza un intercambio de regalos esta navidad!</h1>
                         <a href="signup"><button class="button-display mt-3"><span>Registrate</span></button></a>
                     </div>
                 </div>
                 <div class="swiper-slide">
-                    <img src="assets/img/system/slider/3.webp" />
+                    <img src="assets/img/system/slider/3.webp" alt="img slide 3" loading="lazy" />
                     <div class="swiper-text">
                         <h1>La felicidad está en dar ¡Y también en recibir!</h1>
                         <a href="signup"><button class="button-display mt-3"><span>Registrate</span></button></a>
@@ -167,7 +164,7 @@
                     <div class="col-lg-4 order-lg-0">
                         <div class="features-device-mockup">
                             <div class="device-wrapper">
-                                <img src="assets/img/system/gift1.webp" width="100%">
+                                <img src="assets/img/system/gift1.webp" width="100%" alt="imagen regalo" loading="lazy">
                             </div>
                         </div>
                     </div>
@@ -218,7 +215,7 @@
 
         <div class="white-box d-flex flex-column flex-lg-row gap-3">
             <div class="w25 d-flex align-items-center">
-                <img src="assets/img/system/gift_green.webp" alt="regalos intercambio" width="100%">
+                <img src="assets/img/system/gift_green.webp" alt="regalos intercambio verde" width="100%" loading="lazy">
             </div>
             <div>
                 <section>
@@ -267,4 +264,4 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11.0.4/swiper-bundle.min.js"></script>
-    <script src="./assets/js/pages/index.js"></script>
+    <script async src="./assets/js/pages/index.js"></script>

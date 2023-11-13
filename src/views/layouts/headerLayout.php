@@ -17,7 +17,7 @@
     <script src="./assets/library/jquery/jquery-3.7.0.min.js"></script>
 
      <!-- Dark/light theme -->
-    <script>
+    <script defer>
         var themeDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     
         if (localStorage.getItem("theme") === 'dark') {
@@ -47,15 +47,15 @@
     <!-- <link href="./assets/library/fontawesome/css/fontawesome.min.css" rel="stylesheet">
     <link href="./assets/library/fontawesome/css/brands.min.css" rel="stylesheet">
     <link href="./assets/library/fontawesome/css/solid.min.css" rel="stylesheet"> -->
-    <script src="https://kit.fontawesome.com/e0df5df9e9.js" crossorigin="anonymous"></script>
+    <script async src="https://kit.fontawesome.com/e0df5df9e9.js" crossorigin="anonymous"></script>
 
     <link href="./assets/library/bootstrap5/bootstrap.min.css" rel="stylesheet">
 
-    <script src="./assets/library/momentjs/momentjs-locales.js"></script>
-    <script src="./assets/library/momentjs/momentjs-timezone.js"></script>
+    <script async src="./assets/library/momentjs/momentjs-locales.js"></script>
+    <script async src="./assets/library/momentjs/momentjs-timezone.js"></script>
 
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script async src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
     <!-----------ReCaptcha------------>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>

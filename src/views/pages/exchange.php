@@ -23,7 +23,7 @@
                 </div>
                 <div class="mb-3">
                     <div class="img">
-                        <img src="./assets/img/exchanges/<?php echo $exchange['img']; ?>" onerror="this.src = './assets/img/system/defaultimg.webp'">
+                        <img src="./assets/img/exchanges/<?php echo $exchange['img']; ?>" onerror="this.src = './assets/img/system/defaultimg.webp'" loading="lazy">
                     </div>
                 </div>
 
@@ -121,7 +121,7 @@
                         <div class="green-card-min">
                             <div class="d-flex gap-2 align-items-center">
                                 <div class="img-user">
-                                    <a href="user?id=<?php echo $resultRaffle['id_result']; ?>"><img src="./assets/img/<?php echo $resultRaffle['result_profile'] ? 'user/img-profile/' . $resultRaffle['result_profile'] : 'system/defaultimgsq.webp'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.webp'"></a>
+                                    <a href="user?id=<?php echo $resultRaffle['id_result']; ?>"><img src="./assets/img/<?php echo $resultRaffle['result_profile'] ? 'user/img-profile/' . $resultRaffle['result_profile'] : 'system/defaultimgsq.webp'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.webp'" loading="lazy"></a>
                                 </div>
                                 <div>
                                     <strong><?php echo $resultRaffle['result_name']; ?></strong>
@@ -158,7 +158,7 @@
                             <div class="d-flex gap-2">
                                 <div>
                                     <div class="img-user">
-                                        <a href="user?id=<?php echo $resultRaffle['id_result']; ?>"><img src="./assets/img/<?php echo $resultRaffle['result_profile'] ? 'user/img-profile/' . $resultRaffle['result_profile'] : 'system/defaultimgsq.webp'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.webp'"></a>
+                                        <a href="user?id=<?php echo $resultRaffle['id_result']; ?>"><img src="./assets/img/<?php echo $resultRaffle['result_profile'] ? 'user/img-profile/' . $resultRaffle['result_profile'] : 'system/defaultimgsq.webp'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.webp'" loading="lazy"></a>
                                     </div>
                                 </div>
                                 <div class="d-flex flex-column w-100">
@@ -204,7 +204,7 @@
                             <div class="d-flex gap-2">
                                 <div>
                                     <div class="img-user">
-                                        <a href="user?id=<?php echo $wantGiftYou[0]['id_user']; ?>"><img src="./assets/img/<?php echo $wantGiftYou[0]['img_profile'] ? 'user/img-profile/' . $wantGiftYou[0]['img_profile'] : 'system/defaultimgsq.webp'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.webp'"></a>
+                                        <a href="user?id=<?php echo $wantGiftYou[0]['id_user']; ?>"><img src="./assets/img/<?php echo $wantGiftYou[0]['img_profile'] ? 'user/img-profile/' . $wantGiftYou[0]['img_profile'] : 'system/defaultimgsq.webp'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.webp'" loading="lazy"></a>
                                     </div>
                                 </div>
                                 <div class="d-flex flex-column w-100">
@@ -259,7 +259,7 @@
                                 <div class="d-flex gap-2">
                                     <div>
                                         <div class="img-user">
-                                            <a href="user?id=<?php echo $value['id_user']; ?>"><img src="./assets/img/<?php echo $value['img_profile'] ? 'user/img-profile/' . $value['img_profile'] : 'system/defaultimgsq.webp'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.webp'"></a>
+                                            <a href="user?id=<?php echo $value['id_user']; ?>"><img src="./assets/img/<?php echo $value['img_profile'] ? 'user/img-profile/' . $value['img_profile'] : 'system/defaultimgsq.webp'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.webp'" loading="lazy"></a>
                                         </div>
                                     </div>
                                     <div class="d-flex flex-column w-100">
@@ -306,7 +306,7 @@
                     <div class="green-card-min">
                         <div class="d-flex gap-2 align-items-center">
                             <div class="img-user">
-                                <a href="user?id=<?php echo $value['id_user']; ?>"><img src="./assets/img/<?php echo $value['img_profile'] ? 'user/img-profile/'.$value['img_profile'] : 'system/defaultimgsq.webp'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.webp'"></a>
+                                <a href="user?id=<?php echo $value['id_user']; ?>"><img src="./assets/img/<?php echo $value['img_profile'] ? 'user/img-profile/'.$value['img_profile'] : 'system/defaultimgsq.webp'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.webp'" loading="lazy"></a>
                             </div>
                             <div>
                                 <strong><?php echo $value['username']; ?> <?php if($value['id_user'] == $exchange['id_admin']){echo '<span class="text-warning"><i class="fa-solid fa-crown"></i></span>';} ?></strong>
@@ -378,7 +378,7 @@
                                         <div class="d-flex gap-2">
                                             <div>
                                                 <div class="img-user">
-                                                    <a href="user?id=<?php echo $value['id_user']; ?>"><img src="./assets/img/<?php echo $value['img_profile'] ? 'user/img-profile/'.$value['img_profile'] : 'system/defaultimgsq.webp'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.webp'"></a>
+                                                    <a href="user?id=<?php echo $value['id_user']; ?>"><img src="./assets/img/<?php echo $value['img_profile'] ? 'user/img-profile/'.$value['img_profile'] : 'system/defaultimgsq.webp'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.webp'" loading="lazy"></a>
                                                 </div>
                                             </div>
                                             <div class="d-flex flex-column w-100">
@@ -534,7 +534,7 @@
         <form method="post" id="editExchangeForm">
             <div class="mb-3 mt-3">
                 <div class="content-img">
-                    <img src="./assets/img/<?php echo $exchange['img'] ? 'exchanges/'.$exchange['img'] : 'system/defaultimgsq.webp'; ?>" id="img-exchange-preview" onerror="this.src = './assets/img/system/defaultimg.webp'" class="img">
+                    <img src="./assets/img/<?php echo $exchange['img'] ? 'exchanges/'.$exchange['img'] : 'system/defaultimgsq.webp'; ?>" id="img-exchange-preview" onerror="this.src = './assets/img/system/defaultimg.webp'" class="img" loading="lazy">
                 </div>
             </div>
             <div class="mb-3 mt-3">

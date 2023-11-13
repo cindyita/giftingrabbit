@@ -13,7 +13,7 @@
 
                 <div>
                     <div class="img-profile">
-                        <img src="./assets/img/<?php echo isset($user['img_profile']) ? 'user/img-profile/'.$user['img_profile'].'?upd='.time() : "system/defaultimgsq.webp"; ?>" alt="profileimg" onerror="this.src = './assets/img/system/defaultimgsq.webp'">
+                        <img src="./assets/img/<?php echo isset($user['img_profile']) ? 'user/img-profile/'.$user['img_profile'].'?upd='.time() : "system/defaultimgsq.webp"; ?>" alt="profileimg" onerror="this.src = './assets/img/system/defaultimgsq.webp'" loading="lazy">
                     </div>
                     <br>
                     <div class="ribon" id="view-username">

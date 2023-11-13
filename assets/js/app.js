@@ -2,7 +2,7 @@ $(window).on("load", function () {
     $(".page-overlay").fadeOut(100);
     changeLogoTheme();
     changeToRelativeTime('relativedate');
-    // dateFormat('dateFormat');
+    dateFormat('dateFormat');
 
     if (localStorage.getItem('notice-betaweb') !== 'true') {
         $('#superiorBanner').show();

@@ -15,7 +15,7 @@
     --white: white;
     --radius: 1.5rem;
     --radius2: 1.3rem;
-    --font: url(../img/system/font.webp);
+    --font: url(../img/system/font_full.webp);
     --fontBg: #CFEEDE;
 } 
 [data-theme="dark"] {
@@ -34,7 +34,7 @@
     --white: rgb(80, 36, 25);
     --radius: 1.5rem;
     --radius2: 1.3rem;
-    --font: url(../img/system/font_dark.webp);
+    --font: url(../img/system/font_full_dark.webp);
     --fontBg: #323F38;
 }
 
