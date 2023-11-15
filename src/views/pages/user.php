@@ -16,8 +16,8 @@
                         <img src="./assets/img/<?php echo isset($user['img_profile']) ? 'user/img-profile/'.$user['img_profile'].'?upd='.time() : "system/defaultimgsq.webp"; ?>" alt="profileimg" onerror="this.src = './assets/img/system/defaultimgsq.webp'" loading="lazy">
                     </div>
                     <br>
-                    <div class="ribon" id="view-username">
-                        <?php echo $user['username']; ?>
+                    <div class="ribon" id="view-name">
+                        <?php echo $user['name']; ?>
                     </div>
                 </div>
 
@@ -37,6 +37,10 @@
                         </div>
                     </div>
                     <div class="biography">
+                        <div>
+                            <strong>Nombre de usuario</strong>
+                            <p id="view-username"><?php echo $user['username']; ?></p>
+                        </div>
                         <div>
                             <strong>Biografía</strong>
                             <p id="view-biography"><?php echo $user['biography']; ?></p>

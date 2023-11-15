@@ -38,6 +38,9 @@ switch ($action) {
     case 'saveSettings':
         saveSettings();
     break;
+    case 'deleteAccount':
+        deleteAccount();
+    break;
     /*--------------------*/
     case 'createExchange':
         createExchange();
@@ -197,13 +200,14 @@ function signup() {
 
             date_default_timezone_set('UTC');
 
-
             $db = new QueryModel();
             $pass = md5($data['pass']);
             $insertData = [
                 'email' => $data['email'],
                 'username' => $data['username'],
+                'name' => $data['name'],
                 'password' => $pass,
+                'timezone'=> $data['timezone'],
                 'timestamp_create'=>date('Y-m-d H:i:s')
             ];
 
@@ -212,7 +216,7 @@ function signup() {
             if($register){
                 require_once("../resources/email.php");
 
-                $sendemail = sendEmailSMTP('admin@giftingrabbit.theblux.com', 'Gifting Rabbit', $data['email'], $data['name'], "Gracias por tu registro en GiftingRabbit", "Ha habido un error", ["host" => HOST_EMAIL, "username" => CONTACT_EMAIL, "password" => PASSWORD_EMAIL, "port" => PORT_EMAIL], ['title' => 'Gracias por tu registro en GiftingRabbit', 'content' => $data['username'].', gracias por registrarte en la página, esperamos que la pases bien haciendo intercambios con tus seres queridos. Recuerda que aún estamos en fase de desarrollo y pruebas, así que, pásate de vez en cuando para ver las novedades de la página y si tienes algún problema con tu cuenta envíanos un correo electrónico.']);
+                sendEmailSMTP('admin@giftingrabbit.theblux.com', 'Gifting Rabbit', $data['email'], $data['name'], "Gracias por tu registro en GiftingRabbit", "Ha habido un error", ["host" => HOST_EMAIL, "username" => CONTACT_EMAIL, "password" => PASSWORD_EMAIL, "port" => PORT_EMAIL], ['title' => 'Gracias por tu registro en GiftingRabbit', 'content' => $data['username'].', gracias por registrarte en la página, esperamos que la pases bien haciendo intercambios con tus seres queridos. Recuerda que aún estamos en fase de desarrollo y pruebas, así que, pásate de vez en cuando para ver las novedades de la página y si tienes algún problema con tu cuenta envíanos un correo electrónico.']);
             }
             echo json_encode($register);
             
@@ -336,8 +340,8 @@ function saveprofile(){
         'biography' => $data['biography']
     ];
 
-    if ($data['username'] != $data['actual_username']) {
-        $updateData['username'] = $data['username'];
+    if ($data['name']) {
+        $updateData['name'] = $data['name'];
     }
     if ($data['likes']) {
         $updateData['likes'] = $data['likes'];
@@ -396,6 +400,42 @@ function saveSettings(){
     }
 }
 
+function deleteAccount(){
+    $data = getData();
+
+    /*-ReCaptcha----------*/
+    $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify'; 
+    $recaptcha_secret = RECAPTCHA_SECRET; 
+    $recaptcha_response = $data['g-recaptcha-response']; 
+    $recaptcha = file_get_contents($recaptcha_url . '?secret=' . $recaptcha_secret . '&response=' . $recaptcha_response); 
+    $recaptcha = json_decode($recaptcha);
+
+    if ($recaptcha->success == true) {
+
+        $db = new QueryModel();
+
+        $id_user = $_SESSION['userdata']['id'];
+
+        $query = $db->query('SELECT role FROM REL_USER_EXCHANGE WHERE id_user = :id_user AND role = 1', [':id_user'=>$id_user]);
+
+        if(!$query){
+
+            $delete = $db->query('DELETE FROM REG_COMMENTS WHERE id_user = :id_user', [':id_user'=>$id_user]);
+            $delete = $db->query('DELETE FROM REG_TOKENS WHERE id_user = :id_user', [':id_user'=>$id_user]);
+            $delete = $db->query('DELETE FROM REG_WISHGIFTS WHERE id_user = :id_user', [':id_user'=>$id_user]);
+            $delete = $db->query('DELETE FROM REL_USER_EXCHANGE WHERE id_user = :id_user', [':id_user'=>$id_user]);
+            $delete = $db->query('DELETE FROM SYS_USER WHERE id = :id_user', [':id_user'=>$id_user]);
+
+            echo json_encode($delete);
+            
+        }else{
+            echo 10;
+        }
+
+    }else{
+        echo 6;
+    }
+}
 
 
 function sendContactForm(){
@@ -482,15 +522,20 @@ function joinExchange(){
     $db = new QueryModel();
     $id_user = $_SESSION['userdata']['id'];
 
-    $query = $db->query('SELECT id FROM REG_EXCHANGES WHERE code = :code', ['code' =>$data['code']]);
+    $query = $db->query('SELECT id,drawn_on FROM REG_EXCHANGES WHERE code = :code', ['code' =>$data['code']]);
     if($query){
-        $reg = $db->select('REL_USER_EXCHANGE', 'id_exchange = '.$query[0]['id'].' AND id_user = '.$id_user);
-        if(!$reg){
-            $res = $db->insert('REL_USER_EXCHANGE', ['id_exchange'=>$query[0]['id'],'id_user'=>$id_user,'role'=>0]);
-            echo json_encode($res);
+        if(!$query[0]['drawn_on']){
+            $reg = $db->select('REL_USER_EXCHANGE', 'id_exchange = '.$query[0]['id'].' AND id_user = '.$id_user);
+            if(!$reg){
+                $res = $db->insert('REL_USER_EXCHANGE', ['id_exchange'=>$query[0]['id'],'id_user'=>$id_user,'role'=>0]);
+                echo json_encode($res);
+            }else{
+                echo 4;
+            }    
         }else{
-            echo 4;
+            echo 9;
         }
+        
         
     }else{
         echo 3;
@@ -701,12 +746,16 @@ function editExchange(){
         'about' => $data['about'],
         'rules' => $data['rules'],
         'type_gift' => $data['type_gift'],
-        'main_question' => $data['main_question'],
         'min_price' => $data['min_price'],
         'max_price' => $data['max_price'],
         'event_date' => $data['event_date'],
         'timestamp_update'=>timestamp()
     ];
+
+    if(isset($data['main_question'])){
+        $insertData['main_question'] = $data['main_question'];
+    }
+
     // 'admin_participates' => $data['admin_participates'],
     //     'admin_view_raffle' => $data['admin_view_raffle'],
 
@@ -978,32 +1027,39 @@ function sendResultsByEmail(){
                                                 WHEN r.type_result = 'CONTACT' THEN c.wantgift
                                             END AS result_comment,
                                             CASE 
-                                                WHEN r.type_user = 'USER' THEN u.email
-                                                WHEN r.type_user = 'CONTACT' THEN c.email
+                                                WHEN r.type_user = 'USER' THEN us.email
+                                                WHEN r.type_user = 'CONTACT' THEN cs.email
                                             END AS user_email,
                                             CASE 
-                                                WHEN r.type_user = 'USER' THEN u.username
-                                                WHEN r.type_user = 'CONTACT' THEN c.name
+                                                WHEN r.type_user = 'USER' THEN us.username
+                                                WHEN r.type_user = 'CONTACT' THEN cs.name
                                             END AS user_name
                                         FROM REL_RESULT_RAFFLE r
                                         LEFT JOIN SYS_USER u ON r.id_result = u.id AND r.type_result = 'USER'
+                                        LEFT JOIN SYS_USER us ON r.id_user = us.id AND r.type_user = 'USER'
                                         LEFT JOIN REG_CONTACTS c ON r.id_result = c.id AND r.type_result = 'CONTACT'
+                                        LEFT JOIN REG_CONTACTS cs ON r.id_user = cs.id AND r.type_user = 'CONTACT'
                                         LEFT JOIN REG_WISHGIFTS w ON r.id_result = w.id_user AND r.type_result = 'USER' AND w.id_exchange = :id_exchange
                                         WHERE r.id_exchange = :id_exchange
-                                        ", [':id_exchange' => $id_exchange]);
+                                        ", [':id_exchange'=>$id_exchange]);        
 
             require_once("../resources/email.php");
             foreach ($dataRaffle as $value) {
                 $content = "<strong>Te ha tocado regalar a:</strong> " . $value['result_name'] . '<br> <strong>y su respuesta a "' . $exchange[0]['main_question'] . '"<br>fue:</strong> ' . $value['result_comment'] . '<br><br><strong>Notas:</strong> ' . $value['result_note'];
 
                 if ($value['user_email']) {
-                    sendEmailSMTP('admin@giftingrabbit.theblux.com', 'Gifting Rabbit', $value['user_email'], $value['user_name'], "Resultados del intercambio: " . $exchange[0]['name'], "Ha habido un error", ["host" => HOST_EMAIL, "username" => CONTACT_EMAIL, "password" => PASSWORD_EMAIL, "port" => PORT_EMAIL], ['title' => 'Resultados del intercambio: ' . $exchange[0]['name'], 'content' => $content]);
+                    $sendemail = sendEmailSMTP('admin@giftingrabbit.theblux.com', 'Gifting Rabbit', $value['user_email'], $value['user_name'], "Resultados del intercambio: " . $exchange[0]['name'], "Ha habido un error", ["host" => HOST_EMAIL, "username" => CONTACT_EMAIL, "password" => PASSWORD_EMAIL, "port" => PORT_EMAIL], ['title' => 'Resultados del intercambio: ' . $exchange[0]['name'], 'content' => $content]);
                 }
             }
+            
 
             $update = $db->update('REG_EXCHANGES', ['send_emails' => timestamp()], 'id = ' . $id_exchange);
 
-            echo $update;
+            if($update){
+                echo 1;
+            }else{
+                echo 0;
+            }
 
         } catch (Exception $e) {
             echo json_encode("Error: " . $e->getMessage());

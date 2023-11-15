@@ -15,11 +15,15 @@
                 </div>
                 <div class="mb-3 mt-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="text" class="form-control" id="email" placeholder="Enter email" name="email" onblur="checkExist('email','email')" required>
+                    <input type="text" class="form-control" id="email" placeholder="Ingresa tu correo electrónico" name="email" onblur="checkExist('email','email')" required>
                 </div>
                 <div class="mb-3 mt-3">
                     <label for="username" class="form-label">Nombre de usuario</label>
-                    <input type="text" class="form-control" id="username" placeholder="Ingresa un nombre de usuario" name="username" onblur="checkExist('username','username')" required>
+                    <input type="text" class="form-control" id="username" placeholder="Ingresa un nombre de usuario (único)" name="username" onblur="checkExist('username','username')" required>
+                </div>
+                <div class="mb-3 mt-3">
+                    <label for="name" class="form-label">Tu nombre</label>
+                    <input type="text" class="form-control" id="name" placeholder="Ingresa tu nombre" name="name" required>
                 </div>
                 <div class="mb-3">
                     <label for="pwd" class="form-label">Contraseña</label>

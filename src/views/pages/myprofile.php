@@ -36,14 +36,14 @@
                             <p id="view-dislikes"><?php echo $user['dislikes']; ?></p>
                         </div>
                     </div>
-                    <div class="biography">
+                    <div class="biography d-flex flex-column gap-3">
+                        <div>
+                            <strong>Nombre</strong>
+                            <p id="view-name"><?php echo $user['name']; ?></p>
+                        </div>
                         <div>
                             <strong>Biografía</strong>
                             <p id="view-biography"><?php echo $user['biography']; ?></p>
-                        </div>
-                        <div>
-                            <strong>Email:</strong>
-                            <p id="view-email"><span><?php echo $user['email']; ?></span></p>
                         </div>
                         <div>
                             <strong>Usuario desde:</strong>
@@ -63,7 +63,7 @@
                     <h5 class="page-title">Editar mi perfil</h5>
                     <div>
                         <a class="button-secondary" onclick="changeMode('view')"><i class="fa-solid fa-arrow-left"></i> Regresar</a>
-                        <button class="button-primary btn-save" type="submit" onclick="changeMode('view')" id="saveTop">Guardar <i class="fa-solid fa-floppy-disk"></i></button>
+                        <button class="button-primary btn-save" type="submit" id="saveTop">Guardar <i class="fa-solid fa-floppy-disk"></i></button>
                     </div>
                 </div>
 
@@ -97,14 +97,14 @@
                                 <p><textarea class="form-control" type="input" name="dislikes" id="dislikes"><?php echo $user['dislikes']; ?></textarea></p>
                             </div>
                         </div>
-                        <div class="biography">
+                        <div class="biography d-flex flex-column gap-3">
                             <div>
-                                <strong>Biografía</strong>
-                                <p><textarea class="form-control" name="biography" id="biography" cols="30" rows="10"><?php echo $user['biography']; ?></textarea></p>
+                                <strong>Nombre</strong>
+                                <p><input class="form-control" type="text" name="name" id="name" value="<?php echo $user['name']; ?>"></p>
                             </div>
                             <div>
-                                <strong>Email</strong>
-                                <p><input class="form-control" type="email" name="email" id="email" value="<?php echo $user['email']; ?>" onblur="checkExist('email','email','<?php echo $user['email']; ?>')" required></p>
+                                <strong>Biografía</strong>
+                                <p><textarea class="form-control" name="biography" id="biography" cols="30" rows="5"><?php echo $user['biography']; ?></textarea></p>
                             </div>
                         </div>
                     </div>

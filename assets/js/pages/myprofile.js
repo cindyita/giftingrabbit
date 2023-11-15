@@ -18,6 +18,7 @@ $(document).ready(function () {
                     if (res == 1 || res == 11) {
                         message("success", "Tu perfil se ha actualizado");
                         updateData();
+                        changeMode('view');
                     } else {
                         message("error", "Algo salió mal");
                         console.log(res);
@@ -110,6 +111,7 @@ function updateData() {
 
             $("#view-biography").html(user.biography);
             $("#view-email").html(user.email);
+            $("#view-name").html(user.name);
 
             if (user.img_profile) {
                 $(".img-profile img").attr("src", "./assets/img/user/img-profile/" + user.img_profile+'?upd=<?php echo time(); ?>');
@@ -121,6 +123,7 @@ function updateData() {
 
             $("#username").val(user.username);
             $("#actual_username").val(user.username);
+            $("#name").val(user.name);
             $("#birthday").val(user.birthday);
             $("#email").val(user.email);
 

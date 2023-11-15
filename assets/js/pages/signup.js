@@ -37,14 +37,19 @@ $(document).ready(function () {
 
         $('#error-login').fadeOut();
 
-        var formData = $(this).serialize();
+        var timezone = usertimezone();
+        var formData = new FormData(this);
+
+        formData.append('timezone', timezone);
 
         $.ajax({
             url: './src/controllers/actionsController.php?action=signup',
             type: 'POST',
             data: formData,
+            contentType: false,
+            processData: false,
             success: function (res) {
-                if (res == 1) {
+                if (res == 1 || res == 11 || res == 111) {
                     $('#success-login').fadeIn();
                     setTimeout(function() {
                         window.location.href = 'login';
@@ -121,6 +126,14 @@ function checkExist(inputv,element) {
     var input = $('#'+inputv);
     var value = input.val();
 
+    if (/\s/.test(value)) {
+        $(input).css('color', 'red');
+        $(input).css('border', '1px solid red');
+        message("error","El " + element + " no puede contener espacios en blanco.");
+        input.val(value.trim());
+        return false;
+    }
+
     if (element == "email") {
         validemail = 0;
     }
@@ -177,3 +190,6 @@ function checkExist(inputv,element) {
     }
 }
 
+function usertimezone() {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone;
+}

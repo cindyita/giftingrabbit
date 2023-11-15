@@ -11,7 +11,7 @@ $(document).ready(function () {
             processData: false,
             success: function (res) {
                 if (res == 1) {
-                    message("success", "Se ha eliminado al usuario del intercambio");
+                    message("success", "Se ha eliminado al usuario del intercambio. Actualizando..");
                     setTimeout(function() {
                         window.location.reload();
                     }, 2000);
@@ -89,7 +89,7 @@ $(document).ready(function () {
             processData: false,
             success: function (res) {
                 if (res == 1) {
-                    message("success", "Se ha cambiado el admin de este intercambio");
+                    message("success", "Se ha cambiado el admin de este intercambio. Actualizando..");
                     setTimeout(function() {
                         window.location.reload();
                     }, 2500);
@@ -106,6 +106,10 @@ $(document).ready(function () {
 
     $("#editExchangeForm").submit(function (event) {
         event.preventDefault();
+        if ($("#min_price").val() > $("#max_price").val()) {
+            message("error", "El precio mínimo no puede ser mayor al precio máximo");
+            return;
+        }
         var formData = new FormData(this);
         $.ajax({
             url: './src/controllers/actionsController.php?action=editExchange',
@@ -115,7 +119,8 @@ $(document).ready(function () {
             processData: false,
             success: function (res) {
                 if (res == 1) {
-                    message("success", "Se ha editado el intercambio");
+                    hideModal("editExchange");
+                    message("success", "Se ha editado el intercambio. Actualizando..");
                     setTimeout(function() {
                         window.location.reload();
                     }, 2500);
@@ -190,7 +195,7 @@ $(document).ready(function () {
             processData: false,
             success: function (res) {
                 if (res == 1) {
-                    message("success", "Se ha agregado el contacto");
+                    message("success", "Se ha agregado el contacto. Actualizando..");
                     setTimeout(function() {
                         window.location.reload();
                     }, 2000);
@@ -296,7 +301,7 @@ function makeRaffle(id_exchange) {
         success: function (res) {
             console.log(res);
             if (res == 1) {
-                message("success", "¡Se ha realizado el sorteo!");
+                message("success", "¡Se ha realizado el sorteo! Actualizando..");
                 showConfetti();
                 setTimeout(function() {
                     window.location.reload();
@@ -348,11 +353,12 @@ function sendResultsByEmail(id_exchange) {
         type: 'POST',
         data: {id_exchange: id_exchange},
         success: function (res) {
-            if (res == 1 || res == 11) {
+            console.log(res);
+            if (res == 1) {
                 message("success", "¡Se han enviado los resultados por email!");
-                setTimeout(function() {
-                    window.location.reload();
-                }, 2000);
+                // setTimeout(function() {
+                //     window.location.reload();
+                // }, 2000);
             } else if (res == 5) {
                 message("error", "Inicia sesión para realizar esta acción");
             } else if (res == 6) {

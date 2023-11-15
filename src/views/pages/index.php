@@ -90,28 +90,30 @@
         <div class="swiper-content mb-5">
             <div class="swiper mySwiper">
                 <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <img src="assets/img/system/slider/6.webp" alt="img slide 1" loading="lazy" />
-                    <div class="swiper-text">
-                        <h1>Crea intercambios de regalos fácilmente <br>y comparte con tus seres queridos.</h1>
-                        <a href="signup"><button class="button-display mt-3"><span>Registrate</span></button></a>
+                    <div class="swiper-slide">
+                        <img src="assets/img/system/slider/6.webp" alt="img slide 1" loading="lazy" />
+                        <div class="swiper-text">
+                            <h1>Crea intercambios de regalos fácilmente <br>y comparte con tus seres queridos.</h1>
+                            <a href="signup"><button class="button-display mt-3"><span>Registrate</span></button></a>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="assets/img/system/slider/2.webp" alt="img slide 2" loading="lazy" />
+                        <div class="swiper-text">
+                            <h1>¡Realiza un intercambio de regalos esta navidad!</h1>
+                            <a href="signup"><button class="button-display mt-3"><span>Registrate</span></button></a>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="assets/img/system/slider/3.webp" alt="img slide 3" loading="lazy" />
+                        <div class="swiper-text">
+                            <h1>La felicidad está en dar ¡Y también en recibir!</h1>
+                            <a href="signup"><button class="button-display mt-3"><span>Registrate</span></button></a>
+                        </div>
                     </div>
                 </div>
-                <div class="swiper-slide">
-                    <img src="assets/img/system/slider/2.webp" alt="img slide 2" loading="lazy" />
-                    <div class="swiper-text">
-                        <h1>¡Realiza un intercambio de regalos esta navidad!</h1>
-                        <a href="signup"><button class="button-display mt-3"><span>Registrate</span></button></a>
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <img src="assets/img/system/slider/3.webp" alt="img slide 3" loading="lazy" />
-                    <div class="swiper-text">
-                        <h1>La felicidad está en dar ¡Y también en recibir!</h1>
-                        <a href="signup"><button class="button-display mt-3"><span>Registrate</span></button></a>
-                    </div>
-                </div>
-                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
                 <div class="swiper-pagination"></div>
             </div>
         </div>
@@ -264,4 +266,4 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11.0.4/swiper-bundle.min.js"></script>
-    <script async src="./assets/js/pages/index.js"></script>
+    <script async src="./assets/js/pages/index.js?upd=<?php echo VERSION; ?>"></script>

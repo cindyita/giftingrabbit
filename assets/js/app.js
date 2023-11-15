@@ -11,7 +11,6 @@ $(window).on("load", function () {
         $('#superiorBanner').hide();
         localStorage.setItem('notice-privacypolicy', 'true');
     });
-
 });
 
 /**
@@ -59,9 +58,11 @@ function dateFormatting(id) {
 
 function dateFormatting2(id) {
     moment.locale('es');
-    var dateValue = $('#'+id).text();
-    var formattedDate = moment(dateValue, 'YYYY-MM-DD').format('D [de] MMMM [de] YYYY');
-    $('#'+id).text(formattedDate);
+    var dateValue = $('#' + id).text();
+    if (dateValue) {
+        var formattedDate = moment(dateValue, 'YYYY-MM-DD').format('D [de] MMMM [de] YYYY');
+        $('#'+id).text(formattedDate);
+    }
 }
 
 
@@ -94,6 +95,7 @@ function dateFormatting2(id) {
 // }
 function processDatetime(datetime, format = null, relative = false) {
     if (datetime) {
+
         var userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         var newDatetime = moment.tz(datetime+'Z', userTimezone);
 
@@ -108,6 +110,7 @@ function processDatetime(datetime, format = null, relative = false) {
         return newDatetime;
     }
 }
+
 
 /**
  * The function `changeLogoTheme` changes the source of an image element based on the value of the
@@ -131,7 +134,7 @@ function changeLogoTheme() {
  */
 function message(type, text) {
     var toast = (type === 'success') ? 'alert-success' : (type === 'error' ? 'alert-danger' : 'alert-warning');
-    var title = (type === 'success') ? 'Éxito' : (type === 'error') ? 'Error' : (type === 'warning') ? 'Alerta' : "";
+    var title = (type === 'success') ? 'Éxito' : (type === 'error') ? 'Error' : (type === 'warning') ? 'Alerta' : "Alerta";
 
     var html = '<div class="alert-content" id="error-login"><div class="alert-content-flex"><div class="alert-superior alert '+toast+'"><strong> '+title+':</strong> '+text+'</div></div></div>';
 

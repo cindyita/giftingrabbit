@@ -110,11 +110,11 @@
             </div>
             <div class="mb-3 mt-3">
                 <label for="min_price" class="form-label">Precio mínimo:</label>
-                <input type="number" class="form-control" id="min_price" placeholder="Opcional, Precio mínimo de regalo" name="min_price">
+                <input type="number" pattern="[0-9]+([\.,][0-9]+)?" step="any" class="form-control" id="min_price" placeholder="Opcional, Precio mínimo de regalo" name="min_price">
             </div>
             <div class="mb-3 mt-3">
                 <label for="max_price" class="form-label">Precio máximo:</label>
-                <input type="number" class="form-control" id="max_price" placeholder="Opcional, Precio máximo de regalo" name="max_price">
+                <input type="number" pattern="[0-9]+([\.,][0-9]+)?" step="any" class="form-control" id="max_price" placeholder="Opcional, Precio máximo de regalo" name="max_price">
             </div>
             <div class="mb-3 mt-3">
                 <label for="event_date" class="form-label">Día del evento*:</label>

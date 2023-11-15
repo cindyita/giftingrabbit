@@ -51,8 +51,8 @@
 
     <link href="./assets/library/bootstrap5/bootstrap.min.css" rel="stylesheet">
 
-    <script async src="./assets/library/momentjs/momentjs-locales.js"></script>
-    <script async src="./assets/library/momentjs/momentjs-timezone.js"></script>
+    <script src="./assets/library/momentjs/momentjs-locales.js"></script>
+    <script src="./assets/library/momentjs/momentjs-timezone.js"></script>
 
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <script async src="https://cdn.quilljs.com/1.3.6/quill.js"></script>

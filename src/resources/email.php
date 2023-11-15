@@ -68,13 +68,13 @@ function sendEmailSMTP($sender, $senderName, $recipient, $recipientName, $subjec
         $mail->Body    = $body;
 
         if($mail->send()){
-            echo 1;
+            return 1;
         }else{
-            echo "email failed";
+            return "email failed";
         }
         
     } catch (Exception $e) {
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        return "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }
 }
 

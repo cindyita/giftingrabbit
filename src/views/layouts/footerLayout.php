@@ -2,7 +2,7 @@
     <footer>
         <div class="footer">
             <span class="text-center mt-3"><i class="fa-solid fa-heart"></i> Hecho con amor por <a href="https://virtualblux.com">Virtual Blux</a></span>
-            <span class="mt-1 d-flex flex-column flex-md-row gap-3">
+            <span class="mt-1 d-flex flex-column flex-lg-row gap-3">
                 <a href="/">Home</a>
                 <a href="about">Acerca de</a>
                 <a href="termsandconditions">Términos y condiciones</a>
@@ -23,7 +23,7 @@
 <!----------------------------------->
 <?php 
     if(isset($_GET)){
-        echo '<script async src="./assets/js/app.js?version=<?php echo VERSION; ?>"></script>';
+        echo '<script src="./assets/js/app.js?version=<?php echo VERSION; ?>"></script>';
     }
 
     if($scripts){

@@ -5,6 +5,10 @@ $(document).ready(function () {
         if (!validateForm('newExchangeForm')) {
             return;
         }
+        if ($("#min_price").val() > $("#max_price").val()) {
+            message("error", "El precio mínimo no puede ser mayor al precio máximo");
+            return;
+        }
         var formData = new FormData(this);
         $.ajax({
             url: './src/controllers/actionsController.php?action=createExchange',
@@ -49,8 +53,10 @@ $(document).ready(function () {
                     message("error", "No hay ningún intercambio con ese código");
                 } else if (res == 4) {
                     message("warning", "Ya te has unido al intercambio");
+                } else if (res == 9) {
+                    message("error", "Este intercambio ya se ha sorteado, no puedes unirte.");
                 } else {
-                    message("danger", "Error uniendote al intercambio :(");
+                    message("error", "Error uniendote al intercambio :(");
                     console.log(res);
                 }
             },

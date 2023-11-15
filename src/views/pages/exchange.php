@@ -36,6 +36,11 @@
                     <hr>
                 <?php } ?>
 
+                <div class="mb-2">
+                    <h6>Código:</h6>
+                    <button class="button-secondary" onclick="copyToClipboard('<?php echo $exchange['code'] ?>')" title="Da click para copiar el código"><?php echo $exchange['code']; ?></button>
+                </div>
+
                 <div>
                     <h6>Fecha del evento:</h6>
                     <p class="dateFormat"><?php echo $exchange['event_date']; ?></p>
@@ -124,7 +129,7 @@
                                     <a href="user?id=<?php echo $resultRaffle['id_result']; ?>"><img src="./assets/img/<?php echo $resultRaffle['result_profile'] ? 'user/img-profile/' . $resultRaffle['result_profile'] : 'system/defaultimgsq.webp'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.webp'" loading="lazy"></a>
                                 </div>
                                 <div>
-                                    <strong><?php echo $resultRaffle['result_name']; ?></strong>
+                                    <strong><?php echo $resultRaffle['result_name'] ? $resultRaffle['result_name'] : "[Cuenta desconocida]"; ?></strong>
                                 </div>
                             </div>
                         </div>
@@ -132,7 +137,7 @@
                                 <div class="yellow-card-min">
                                     <div class="d-flex gap-2 align-items-center">
                                         <div>
-                                            <a><strong><i class="fa-solid fa-user mx-2"></i> <?php echo $resultRaffle['result_name'] ?></strong></a>
+                                            <a><strong><i class="fa-solid fa-user mx-2"></i> <?php echo $resultRaffle['result_name'] ? $resultRaffle['result_name'] : "[Persona desconocida]" ?></strong></a>
                                         </div>
                                     </div>
                                 </div>
@@ -164,10 +169,10 @@
                                 <div class="d-flex flex-column w-100">
                                     <div class="d-flex justify-content-between">
                                         <span class="user-name d-flex gap-1 flex-column flex-md-row">
-                                            <a href="user?id=<?php echo $resultRaffle['id_result']; ?>"><?php echo $resultRaffle['result_name']; ?></a>
+                                            <a href="user?id=<?php echo $resultRaffle['id_result']; ?>"><?php echo $resultRaffle['result_name'] ? $resultRaffle['result_name'] : "[Cuenta desconocida]"; ?></a>
                                         </span>
                                     </div>
-                                    <span class="py-2 p-md-2"><?php echo $resultRaffle['result_comment']; ?></span>
+                                    <span class="py-2 p-md-2"><?php echo $resultRaffle['result_comment'] ? $resultRaffle['result_comment'] : "-"; ?></span>
                                 </div>
                             </div>
                         </div>
@@ -181,10 +186,10 @@
                                 <div class="d-flex flex-column w-100">
                                     <div class="d-flex justify-content-between">
                                         <span class="user-name d-flex gap-1 flex-column flex-md-row text-warning">
-                                            <a><?php echo $resultRaffle['result_name']; ?></a>
+                                            <a><?php echo $resultRaffle['result_name'] ? $resultRaffle['result_name'] : "[Persona desconocida]"; ?></a>
                                         </span>
                                     </div>
-                                    <span class="py-2 p-md-2"><?php echo $resultRaffle['result_comment']; ?></span>
+                                    <span class="py-2 p-md-2"><?php echo $resultRaffle['result_comment'] ? $resultRaffle['result_comment'] : "-"; ?></span>
                                 </div>
                             </div>
                             <h6>Notas del contacto:</h6>
@@ -557,17 +562,19 @@
                 <label for="type_gift" class="form-label">Tipo de regalo:</label>
                 <input type="text" class="form-control" id="type_gift" placeholder="Ejemplo: Físico, digital, de broma, suéteres, etc." name="type_gift" value="<?php echo $exchange['type_gift']; ?>">
             </div>
+            <?php if (!$exchange['drawn_on']) { ?>
             <div class="mb-3 mt-3">
                 <label for="main_question" class="form-label">Pregunta central*:</label>
                 <input type="text" class="form-control" id="main_question" placeholder="Pregunta default: ¿Qué te gustaría de regalo?" name="main_question" value="<?php echo $exchange['main_question']; ?>" required>
             </div>
+            <?php } ?>
             <div class="mb-3 mt-3">
                 <label for="min_price" class="form-label">Precio mínimo:</label>
-                <input type="number" class="form-control" id="min_price" placeholder="Opcional, Precio mínimo de regalo" name="min_price" value="<?php echo $exchange['min_price'] ? $exchange['min_price'] : ""; ?>">
+                <input type="number" pattern="[0-9]+([\.,][0-9]+)?" step="any" class="form-control" id="min_price" placeholder="Opcional, Precio mínimo de regalo" name="min_price" value="<?php echo $exchange['min_price'] ? $exchange['min_price'] : ""; ?>">
             </div>
             <div class="mb-3 mt-3">
                 <label for="max_price" class="form-label">Precio máximo:</label>
-                <input type="number" class="form-control" id="max_price" placeholder="Opcional, Precio máximo de regalo" name="max_price" value="<?php echo $exchange['max_price'] ? $exchange['max_price'] : ""; ?>">
+                <input type="number" pattern="[0-9]+([\.,][0-9]+)?" step="any" class="form-control" id="max_price" placeholder="Opcional, Precio máximo de regalo" name="max_price" value="<?php echo $exchange['max_price'] ? $exchange['max_price'] : ""; ?>">
             </div>
             <div class="mb-3 mt-3">
                 <label for="event_date" class="form-label">Día del evento*:</label>
@@ -588,7 +595,7 @@
               </select>
             </div> -->
             <input type="hidden" name="id_exchange" value="<?php echo $exchange['id']; ?>">
-            <button type="submit" class="button-primary" data-bs-dismiss="modal">Editar</button>
+            <button type="submit" class="button-primary">Editar</button>
         </form>
       </div>
 

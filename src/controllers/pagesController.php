@@ -241,6 +241,7 @@ class PagesController
                                                 LEFT JOIN REG_WISHGIFTS w ON r.id_result = w.id_user AND r.type_result = 'USER' AND w.id_exchange = :id_exchange
                                                 WHERE r.type_user = 'USER' AND r.id_user = :id_user AND r.id_exchange = :id_exchange
                                     ",[":id_user"=>$id_user,':id_exchange'=>$id])[0];
+                    
                 }
                 require_once "./src/views/pages/exchange.php";
             }else{

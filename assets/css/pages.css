@@ -29,6 +29,10 @@
     position: absolute;
     width: 100%;
 }
+.swiper-pagination-bullet {
+    width: 15px;
+    height: 15px;
+}
 .swiper-pagination-bullet-active {
     background-color: var(--primary);
 }
@@ -36,6 +40,10 @@
     color: var(--secondary);
     font-weight: 600;
     text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+}
+.swiper-button-next, .swiper-button-prev {
+    color: var(--primary);
+    opacity: 0.4;
 }
 
 /*----------LOGIN--------*/

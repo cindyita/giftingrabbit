@@ -16,35 +16,68 @@ $(document).ready(function () {
                 }
             }
 
-            checkExist('email', 'email', $("#actual_email").val());
-            if (!validemail) {
+            if (checkExist('email', 'email', $("#actual_email").val())) {
                 message("error", "El email es inválido o ya existe.");
                 return;
             }
 
             var formData = new FormData(this);
 
-                    $.ajax({
-                        url: './src/controllers/actionsController.php?action=saveSettings',
-                        type: 'POST',
-                        data: formData,
-                        contentType: false,
-                        processData: false,
-                        success: function (res) {
-                            if (res == 1 || res == 11) {
-                                message("success", "Tu perfil se ha actualizado");
-                                changeMode('view');
-                                $('#saveSettings')[0].reset();
-                                updateData();
-                            } else {
-                                message("error", "Algo salió mal");
-                                console.log(res);
-                            }
-                        },
-                        error: function (xhr, status, error) {
-                            console.error('Error en la solicitud. Código de estado: ' + xhr.status);
-                        }
-                    });
+            $.ajax({
+                url: './src/controllers/actionsController.php?action=saveSettings',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    if (res == 1 || res == 11) {
+                        message("success", "Tu configuración se ha actualizado");
+                        changeMode('view');
+                        $('#saveSettings')[0].reset();
+                        updateData();
+                    } else {
+                        message("error", "Algo salió mal");
+                        console.log(res);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error en la solicitud. Código de estado: ' + xhr.status);
+                }
+            });
+    });
+
+    $("#deleteAccountForm").submit(function (event) {
+        event.preventDefault();
+
+        var formData = new FormData(this);
+        
+        $("#deleteAccountbtn").html('Borrando cuenta... <div class="spinner-border"></div>');
+        $.ajax({
+            url: './src/controllers/actionsController.php?action=deleteAccount',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res == 1) {
+                    hideModal("deleteAccount");
+                    message("success", "Se ha borrado tu cuenta ¡Nos vemos!. Actualizando..");
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2500);
+                } else if (res == 10) {
+                    message("error", "No se puede borrar tu cuenta porque tienes intercambios que administras.");
+                } else if (res == 6) {
+                    message("error", "El captcha es inválido. Actualiza la página e intentalo de nuevo.");
+                } else {
+                    message("error", "Algo salió mal");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error en la solicitud. Código de estado: ' + xhr.status);
+            }
+        });
+
     });
 
 });
@@ -160,3 +193,5 @@ function confirmpass() {
     message("error", "Las contraseñas deben ser iguales.");
     return false;
 }
+
+
