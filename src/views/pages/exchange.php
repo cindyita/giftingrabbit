@@ -65,12 +65,6 @@
                         <p><?php echo $exchange['type_gift']; ?></p>
                     </div>
                 <?php } ?>
-                <?php if ($exchange['rules']) { ?>
-                    <div>
-                        <h6>Reglas:</h6>
-                        <p><?php echo $exchange['rules']; ?></p>
-                    </div>
-                <?php } ?>
 
                 <div>
                     <h6>Características:</h6>
@@ -113,6 +107,12 @@
                     <h6>Descripción:</h6>
                     <p><?php echo $exchange['about']; ?></p>
                 </div>
+                <?php if ($exchange['rules']) { ?>
+                    <br><div>
+                        <h6>Reglas:</h6>
+                        <p><?php echo $exchange['rules']; ?></p>
+                    </div>
+                <?php } ?>
             </div>
             <?php } ?>
 
