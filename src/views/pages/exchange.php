@@ -313,8 +313,8 @@
                             <div class="img-user">
                                 <a href="user?id=<?php echo $value['id_user']; ?>"><img src="./assets/img/<?php echo $value['img_profile'] ? 'user/img-profile/'.$value['img_profile'] : 'system/defaultimgsq.webp'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.webp'" loading="lazy"></a>
                             </div>
-                            <div>
-                                <strong><?php echo $value['username']; ?> <?php if($value['id_user'] == $exchange['id_admin']){echo '<span class="text-warning"><i class="fa-solid fa-crown"></i></span>';} ?></strong>
+                            <div>   
+                                <a href="user?id=<?php echo $value['id_user']; ?>"><strong><?php echo $value['username']; ?> <?php if($value['id_user'] == $exchange['id_admin']){echo '<span class="text-warning"><i class="fa-solid fa-crown"></i></span>';} ?></strong></a>
                             </div>
                         </div>
                         <div class="options">
@@ -389,7 +389,7 @@
                                             <div class="d-flex flex-column w-100">
                                                 <div class="d-flex justify-content-between">
                                                     <span class="user-name d-flex gap-1 flex-column flex-md-row">
-                                                        <a href="user?id=1"><?php echo $value['username']; ?> <?php if($value['id_user'] == $exchange['id_admin']){echo '<span class="text-warning"><i class="fa-solid fa-crown"></i></span>';} ?></a> <span class="ms-0 ms-md-2 text-secondary relativedate"><?php echo $value['timestamp_create']; ?></span>
+                                                        <a href="user?id=<?php echo $value['id_user']; ?>"><?php echo $value['username']; ?> <?php if($value['id_user'] == $exchange['id_admin']){echo '<span class="text-warning"><i class="fa-solid fa-crown"></i></span>';} ?></a> <span class="ms-0 ms-md-2 text-secondary relativedate"><?php echo $value['timestamp_create']; ?></span>
                                                     </span>
                                                     <span>
                                                         <?php if (isset($_SESSION['status_login'])) {

@@ -688,7 +688,7 @@ function updateCommentPost(){
                         <div class="d-flex flex-column w-100">
                             <div class="d-flex justify-content-between">
                                 <span class="user-name d-flex gap-1 flex-column flex-md-row">
-                                    <a href="user?id=1">'.$value['username'];
+                                    <a href="user?id='.$value['id_user'].'">'.$value['username'];
                                     if($value['id_user'] == $exchange['id_admin']){
                                         $html .= ' <span class="text-warning"><i class="fa-solid fa-crown"></i></span>';
                                     }
