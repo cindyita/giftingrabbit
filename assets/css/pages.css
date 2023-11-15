@@ -64,7 +64,8 @@
 #loading,
 #text-post-input,
 #raffle-loading,
-#sendEmail-loading {
+#sendEmail-loading,
+#fastRaffle-p2 {
     display: none;
 }
 

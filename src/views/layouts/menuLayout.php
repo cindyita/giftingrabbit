@@ -22,6 +22,10 @@
                                 <i class="fa-solid fa-user"></i>
                                 <span>Mi perfil</span>
                             </a></li>
+                            <li><a class="dropdown-item" href="settings">
+                                <i class="fa-solid fa-gear"></i>
+                                <span>Configuración</span>
+                            </a></li>
                             <li><hr class="dropdown-divider"></hr></li>
                             <li><a class="dropdown-item" href="logout">
                                 <i class="fa-solid fa-right-from-bracket"></i>

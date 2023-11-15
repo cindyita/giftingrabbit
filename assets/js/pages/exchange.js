@@ -297,6 +297,7 @@ function makeRaffle(id_exchange) {
             console.log(res);
             if (res == 1) {
                 message("success", "¡Se ha realizado el sorteo!");
+                showConfetti();
                 setTimeout(function() {
                     window.location.reload();
                 }, 2000);
@@ -367,5 +368,14 @@ function sendResultsByEmail(id_exchange) {
         error: function (xhr, status, error) {
             console.error('Error en la solicitud. Código de estado: ' + xhr.status);
         }
+    });
+}
+
+function showConfetti() {
+    confetti({
+        particleCount: 150,
+        spread: 60,
+        zIndex: 2000,
+        colors: ["#FF8211", "#64F8A9"]
     });
 }

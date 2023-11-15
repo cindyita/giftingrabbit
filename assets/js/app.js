@@ -93,18 +93,20 @@ function dateFormatting2(id) {
 //     return newDatetime;
 // }
 function processDatetime(datetime, format = null, relative = false) {
-    var userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    var newDatetime = moment.tz(datetime+'Z', userTimezone);
+    if (datetime) {
+        var userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        var newDatetime = moment.tz(datetime+'Z', userTimezone);
 
-    if (format) {
-        newDatetime = newDatetime.format(format);
+        if (format) {
+            newDatetime = newDatetime.format(format);
+        }
+
+        if (relative) {
+            newDatetime = newDatetime.fromNow();
+        }
+
+        return newDatetime;
     }
-
-    if (relative) {
-        newDatetime = newDatetime.fromNow();
-    }
-
-    return newDatetime;
 }
 
 /**
@@ -198,4 +200,32 @@ function hideModal(modal) {
     var modalElement = document.getElementById(modal);
     var bootstrapModal = bootstrap.Modal.getInstance(modalElement);
     bootstrapModal.hide();
+}
+
+/**
+ * The function "confetti" creates a confetti effect with 150 particles spread out over 60 degrees.
+ */
+// function confetti() {
+//     confetti({
+//         particleCount: 150,
+//         spread: 60,
+//         zIndex: 999,
+//         colors: ["#FF8211", "#64F8A9"]
+//     });
+// }
+
+
+function validateForm(id) {
+    var isValid = true;
+    $("#" + id + " .required").each(function () {
+        if (!$(this).val()) {
+            isValid = false;
+        }
+    });
+
+    if (!isValid) {
+        message("error", "Llena todos los campos requeridos.");
+    }
+
+    return isValid;
 }

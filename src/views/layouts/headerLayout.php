@@ -61,6 +61,8 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <!-----------/ReCaptcha------------>
 
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.0/dist/confetti.browser.min.js"></script>
+
     <!-------------/required------------>
 
     <link href="./assets/css/app.css?version=<?php echo VERSION; ?>" rel="stylesheet">

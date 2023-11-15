@@ -35,6 +35,10 @@ switch ($action) {
         sendContactForm();
     break;
     /*--------------------*/
+    case 'saveSettings':
+        saveSettings();
+    break;
+    /*--------------------*/
     case 'createExchange':
         createExchange();
     break;
@@ -344,9 +348,6 @@ function saveprofile(){
     if ($data['birthday']) {
         $updateData['birthday'] = $data['birthday'];
     }
-    if ($data['email']) {
-        $updateData['email'] = $data['email'];
-    }
     if ($newimgprofile) {
         $updateData['img_profile'] = $profileFileName;
     }
@@ -373,6 +374,26 @@ function updateProfile() {
     $response['user'] = $user;
 
     echo json_encode($response);
+}
+
+function saveSettings(){
+    $data = getData();
+    $db = new QueryModel();
+
+    if ($data['email']) {
+        $updateData['email'] = $data['email'];
+    }
+
+    if ($data['pass']) {
+        $updateData['password'] = md5($data['pass']);
+    }
+
+    try {
+        $register = $db->update('SYS_USER', $updateData, 'id =' . $_SESSION['userdata']['id']);
+        echo json_encode($register);
+    } catch (Exception $e) {
+        echo json_encode('error: ' . $e->getMessage());
+    }
 }
 
 
@@ -481,7 +502,11 @@ function updateFeedExchanges(){
     $db = new QueryModel();
     $exchanges_user = $db->query("SELECT e.*,r.* FROM REL_USER_EXCHANGE r JOIN VIEW_EXCHANGES e ON r.id_exchange = e.id WHERE r.id_user = :id_user",[":id_user"=>$_SESSION['userdata']['id']]);
     $html = "";
-    foreach ($exchanges_user as $key => $value) {
+    foreach ($exchanges_user as $value) {
+        $crown = '';
+        if ($value['role'] == 1) {
+            $crown = ' <span class="text-warning"><i class="fa-solid fa-crown"></i></span>';
+        }
         $html .= '<div class="green-card">
             <div class="head">
                 <div class="img">
@@ -490,7 +515,7 @@ function updateFeedExchanges(){
                     </a>
                 </div>
                 <div class="info">
-                    <strong><a href="exchange?id='.$value['id'].'">'.$value['name'].'</a></strong>
+                    <strong><a href="exchange?id='.$value['id'].'">'.$value['name'].$crown.'</a></strong>
                     <span>Código: '.$value['code'].'</span>
                     <span>Miembros: '.$value['num_members'].'</span>
                     <span>Fecha del evento: <span class="dateFormat">'.$value['event_date'].'</span></span>
@@ -530,9 +555,11 @@ function deleteExchange(){
     $data = getData();
     $db = new QueryModel();
 
-    $query = $db->query('SELECT img FROM REG_EXCHANGES WHERE id = :id', [':id = '=>$data['id']]);
-    $filePath = '../../assets/img/exchanges/'.$query[0]['img'];
-    deleteFile($filePath);
+    $query = $db->query('SELECT img FROM REG_EXCHANGES WHERE id = :id', [':id'=>$data['id']]);
+    if($query[0]['img']){
+        $filePath = '../../assets/img/exchanges/'.$query[0]['img'];
+        deleteFile($filePath);
+    }
 
     $query = $db->delete('REL_RESULT_RAFFLE', 'id_exchange = '.$data['id']);
     $query = $db->delete('REG_WISHGIFTS', 'id_exchange = '.$data['id']);

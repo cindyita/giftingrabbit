@@ -42,6 +42,10 @@ if(isset($_GET['page'])){
             $pages->updateScripts(["./assets/js/pages/myprofile.js"]);
             $pages->menuHTML();
         break;
+        case 'settings':
+            $pages->updateScripts(["./assets/js/pages/settings.js"]);
+            $pages->menuHTML();
+        break;
         case 'user':
             $pages->updateScripts(["./assets/js/pages/user.js"]);
             $pages->menuHTML();
@@ -84,6 +88,8 @@ $router->add('/forgotpassword', 'PagesController@forgotpassword');
 $router->add('/recoverpass', 'PagesController@recoverpass');
 
 $router->add('/myprofile', 'PagesController@myprofile');
+
+$router->add('/settings', 'PagesController@settings');
 
 $router->add('/user', 'PagesController@user');
 

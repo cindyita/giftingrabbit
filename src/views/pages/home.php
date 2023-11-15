@@ -3,9 +3,10 @@
     <div class="d-flex flex-column gap-3">
 
         <div class="p-3">
-            <div class="d-flex justify-content-center align-items-center gap-3">
-                <button class="button-primary" data-bs-toggle="modal" data-bs-target="#newExchange">Crear intercambio</button>
-                <button class="button-secondary" data-bs-toggle="modal" data-bs-target="#joinExchange">Unirse a un intercambio</button>
+            <div class="d-flex justify-content-center align-items-center gap-3 flex-column flex-lg-row">
+                <button class="button-primary" data-bs-toggle="modal" data-bs-target="#newExchange">Crear intercambio <i class="fa-solid fa-plus"></i></button>
+                <button class="button-secondary" data-bs-toggle="modal" data-bs-target="#joinExchange">Unirse a un intercambio <i class="fa-solid fa-right-to-bracket"></i></button>
+                <button class="button-secondary" data-bs-toggle="modal" data-bs-target="#fastRaffle">Sorteo rápido <i class="fa-solid fa-dice"></i></button>
             </div>
         </div>
 
@@ -89,7 +90,7 @@
             </div>
             <div class="mb-3 mt-3">
                 <label for="name" class="form-label">Nombre del intercambio*:</label>
-                <input type="text" class="form-control" id="name" placeholder="Ejemplo: Navidad Familia Ayala" name="name" required>
+                <input type="text" class="form-control required" id="name" placeholder="Ejemplo: Navidad Familia Ayala" name="name">
             </div>
             <div class="mb-3 mt-3">
                 <label for="about" class="form-label">Descripción del intercambio:</label>
@@ -104,8 +105,8 @@
                 <input type="text" class="form-control" id="type_gift" placeholder="Ejemplo: Físico, digital, de broma, suéteres, etc." name="type_gift">
             </div>
             <div class="mb-3 mt-3">
-                <label for="main_question" class="form-label">Pregunta central:</label>
-                <input type="text" class="form-control" id="main_question" placeholder="Lo verán las personas que van a regalar dependiendo de quien les tocó" name="main_question" value="¿Qué te gustaría de regalo?" required>
+                <label for="main_question" class="form-label">Pregunta central*:</label>
+                <input type="text" class="form-control required" id="main_question" placeholder="Lo verán las personas que van a regalar dependiendo de quien les tocó" name="main_question" value="¿Qué te gustaría de regalo?">
             </div>
             <div class="mb-3 mt-3">
                 <label for="min_price" class="form-label">Precio mínimo:</label>
@@ -117,7 +118,7 @@
             </div>
             <div class="mb-3 mt-3">
                 <label for="event_date" class="form-label">Día del evento*:</label>
-                <input type="date" class="form-control" id="event_date" placeholder="Día en que se realizará la dinámica" name="event_date" required>
+                <input type="date" class="form-control required" id="event_date" placeholder="Día en que se realizará la dinámica" name="event_date">
             </div>
             <div class="mb-3 mt-3">
               <label for="admin_participates" class="form-label">¿El admin(tú) participa en la dinámica?:</label>
@@ -133,7 +134,7 @@
                   <option value="0" selected>No</option>
               </select>
             </div>
-            <button type="submit" class="button-primary" data-bs-dismiss="modal">Crear</button>
+            <button type="submit" class="button-primary">Crear</button>
         </form>
       </div>
 
@@ -216,6 +217,75 @@
             </div>
             <button type="submit" class="button-primary" data-bs-dismiss="modal">Borrar</button>
         </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!--------------------------------------->
+<!------------- Fast raffle -------------->
+<div class="modal" id="fastRaffle">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Sorteo rápido</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+
+        <div id="fastRaffle-content">
+            <div>
+              
+              <button class="button-secondary" data-bs-toggle="collapse" data-bs-target="#fastRaffle-info" title="Información sobre esta funcionalidad">¿Qué es?</button>
+
+              <div id="fastRaffle-info" class="collapse">
+                <p>Si lo que buscas es hacer un intercambio sencillo, un sorteo rápido de turnos o determinar a quien le tocará traer la botana en el evento. ¡Estás en el sitio indicado! Agrega un nombre en las casillas de la izquierda y lo que quieras en las de la derecha, da click en "+" para agregar más casillas y ¡Da click en sortear para revolverlos!</p>
+              </div>
+              <button class="button-primary" onclick="asignSerieNumbers();" title="Asignar serie numerica"><i class="fa-solid fa-arrow-down-1-9"></i></button>
+              <button class="button-primary" onclick="cleanForm();" title="limpiar"><i class="fa-solid fa-eraser"></i></button>
+            </div>
+            <div id="fastRaffle-p1">
+              <form id="fastRaffleForm">
+                <div id="fastRaffle-inputs">
+                  <div class="mb-3 mt-3">
+                      <div class="d-flex gap-2 align-items-center">
+                        <input type="text" class="form-control control-next fr-element">
+                        <span class="text-primary"><i class="fa-solid fa-chevron-right"></i></span>
+                        <input type="text" class="form-control control-next fr-response">
+                        <a><i class="fa-solid fa-circle-xmark text-muted"></i></a>
+                      </div>
+                  </div>
+                  <div class="mb-3 mt-3">
+                      <div class="d-flex gap-2 align-items-center">
+                        <input type="text" class="form-control control-next fr-element">
+                        <span class="text-primary"><i class="fa-solid fa-chevron-right"></i></span>
+                        <input type="text" class="form-control control-next fr-response">
+                        <a><i class="fa-solid fa-circle-xmark text-muted"></i></a>
+                      </div>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                  <a class="button-secondary" onclick="fastRaffleaddInput()" title="Agregar más elementos"><i class="fa-solid fa-plus"></i></a>
+                </div>
+                <div><button class="button-primary" id="fastRaffle-btn" onclick="fastRaffle(event);">Sortear <i class="fa-solid fa-dice"></i></button></div>
+              </form>
+
+            </div>
+
+            <div id="fastRaffle-p2">
+                <div id="fastRaffle-texts" class="p-4">
+                </div>
+                <div><button class="button-primary" onclick="fastRaffleReturn();">Editar/resortear <i class="fa-solid fa-dice"></i></button></div>
+            </div>
+            
+
+        </div>
+
       </div>
 
     </div>

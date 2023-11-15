@@ -156,7 +156,22 @@ class PagesController
         }else{
             header('Location: login');
         }
+    }
 
+    /**
+     * Shows settings page
+     */
+    public static function settings() {
+        self::checkSession();
+        $db = new QueryModel();
+        if($_SESSION['userdata']['id']){
+            $id = $_SESSION['userdata']['id'];
+            $user = $db->query("SELECT * FROM SYS_USER WHERE id = :id",[":id"=>$id]);
+            $user = $user[0];
+            require_once "./src/views/pages/settings.php";
+        }else{
+            header('Location: login');
+        }
     }
 
     /**
