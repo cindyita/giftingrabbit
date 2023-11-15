@@ -17,7 +17,7 @@
                     </div>
                     <br>
                     <div class="ribon" id="view-name">
-                        <?php echo $user['name']; ?>
+                        <?php echo $user['username']; ?>
                     </div>
                 </div>
 
@@ -38,8 +38,8 @@
                     </div>
                     <div class="biography">
                         <div>
-                            <strong>Nombre de usuario</strong>
-                            <p id="view-username"><?php echo $user['username']; ?></p>
+                            <strong>Nombre</strong>
+                            <p id="view-name"><?php echo $user['name']; ?></p>
                         </div>
                         <div>
                             <strong>Biografía</strong>
