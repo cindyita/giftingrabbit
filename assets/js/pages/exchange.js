@@ -290,6 +290,27 @@ function viewContact(info) {
     $("#viewContact-email").text(info['email']);
     $("#viewContact-wantgift").text(info['wantgift']);
     $("#viewContact-note").text(info['note']);
+    const id_exchange = $("#id_exchange").val();
+
+    $("#viewContact-result").html('<div class="spinner-border"></div>');
+
+    $.ajax({
+        url: './src/controllers/actionsController.php?action=resultContact',
+        type: 'POST',
+        data: {id: info['id'],id_exchange:id_exchange},
+        success: function (res) {
+            res = JSON.parse(res)[0];
+            res['type_result'] = res['type_result'] == 'USER' ? 'Usuario' : "Contacto";
+            res['result_comment'] = res['result_comment'] ? res['result_comment'] : "";
+            res['result_note'] = res['result_note'] ? res['result_note'] : "";
+            var html = '<span>Tipo: '+res['type_result']+'</span><br><span>Nombre: '+res['result_name']+'</span><br><span>Respuesta: '+res['result_comment']+'</span><br><span>Notas: '+res['result_note']+'</span>';
+            $("#viewContact-result").html(html);
+        },
+        error: function (xhr, status, error) {
+            console.error('Error en la solicitud. Código de estado: ' + xhr.status);
+        }
+    });
+
 }
 
 function makeRaffle(id_exchange) {

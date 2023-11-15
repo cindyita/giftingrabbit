@@ -88,6 +88,9 @@ switch ($action) {
     case 'newContact':
         newContact();
     break;
+    case 'resultContact':
+        resultContact();
+    break;
     case 'makeRaffle':
         makeRaffle();
     break;
@@ -549,9 +552,21 @@ function updateFeedExchanges(){
     $html = "";
     foreach ($exchanges_user as $value) {
         $crown = '';
+        $drawn = '';
+        $event_past = '';
         if ($value['role'] == 1) {
             $crown = ' <span class="text-warning"><i class="fa-solid fa-crown"></i></span>';
         }
+
+        if ($value['drawn_on']) {
+            $drawn = " <span class='text-info'>[Ya sorteado]</span>";
+        }
+
+        if (strtotime($value['event_date']) < strtotime(date('Y-m-d'))) {
+            $event_past = " <span class='text-danger'>[El evento ya pasó]</span>";
+        }
+
+
         $html .= '<div class="green-card">
             <div class="head">
                 <div class="img">
@@ -560,10 +575,10 @@ function updateFeedExchanges(){
                     </a>
                 </div>
                 <div class="info">
-                    <strong><a href="exchange?id='.$value['id'].'">'.$value['name'].$crown.'</a></strong>
+                    <strong><a href="exchange?id='.$value['id'].'">'.$value['name'].$crown.$drawn.'</a></strong>
                     <span>Código: '.$value['code'].'</span>
-                    <span>Miembros: '.$value['num_members'].'</span>
-                    <span>Fecha del evento: <span class="dateFormat">'.$value['event_date'].'</span></span>
+                    <span class="d-flex gap-2"><span>Usuarios: '.$value['num_members'].'</span><span>Contactos: '.$value['num_contacts'].'</span></span>
+                    <span>Fecha del evento: <span class="dateFormat">'.$value['event_date'].'</span>'.$event_past.'</span>
                 </div>
             </div>
             <div class="options">
@@ -887,6 +902,34 @@ function newContact(){
     ];
 
     $res = $db->insert('REG_CONTACTS', $insertData);
+
+    echo json_encode($res);
+}
+
+function resultContact(){
+    $data = getData();
+    $db = new QueryModel();
+    $id = $data['id'];
+    $id_exchange = $data['id_exchange'];
+
+    $res = $db->query('SELECT r.type_result,
+        CASE 
+            WHEN r.type_result = "USER" THEN u.username
+            WHEN r.type_result = "CONTACT" THEN c.name
+        END AS result_name,
+        CASE 
+            WHEN r.type_result = "USER" THEN NULL
+            WHEN r.type_result = "CONTACT" THEN c.note
+        END AS result_note,
+        CASE 
+            WHEN r.type_result = "USER" THEN w.comment
+            WHEN r.type_result = "CONTACT" THEN c.wantgift
+        END AS result_comment
+     FROM REL_RESULT_RAFFLE r 
+     LEFT JOIN SYS_USER u ON r.id_result = u.id AND r.type_result = "USER" 
+     LEFT JOIN REG_CONTACTS c ON r.id_result = c.id AND r.type_result = "CONTACT" 
+     LEFT JOIN REG_WISHGIFTS w ON r.id_result = w.id_user AND r.type_result = "USER" AND w.id_exchange = :id_exchange
+     WHERE r.id_user = :id AND r.type_user = "CONTACT" AND r.id_exchange = :id_exchange',[':id'=>$id,':id_exchange'=> $id_exchange]);
 
     echo json_encode($res);
 }

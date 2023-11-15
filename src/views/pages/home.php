@@ -27,10 +27,11 @@
                                 <div class="info">
                                     <strong><a href="exchange?id=<?php echo $value['id']; ?>"><?php echo $value['name'];
                                     if ($value['role'] == 1) {
-                                        echo " <span class='text-warning'><i class='fa-solid fa-crown'></i></span>";} ?></a></strong>
+                                        echo " <span class='text-warning'><i class='fa-solid fa-crown'></i></span>";} if ($value['drawn_on']) {
+                                        echo " <span class='text-info'>[Ya sorteado]</span>";} ?></a></strong>
                                     <span>Código: <?php echo $value['code'] ?></span>
-                                    <span>Miembros: <?php echo $value['num_members'] ?></span>
-                                    <span>Fecha del evento: <span class="dateFormat"><?php echo $value['event_date'] ?></span></span>
+                                    <span class="d-flex gap-2"><span>Usuarios: <?php echo $value['num_members'] ?></span><span>Contactos: <?php echo $value['num_contacts'] ?></span></span>
+                                    <span>Fecha del evento: <span class="dateFormat"><?php echo $value['event_date'] ?></span><?php if (strtotime($value['event_date']) < strtotime(date('Y-m-d'))) {echo " <span class='text-danger'>[El evento ya pasó]</span>";} ?></span>
                                 </div>
                             </div>
                             <div class="options">

@@ -654,6 +654,12 @@
             <div class="mb-3">
                 <strong>Notas: </strong><span id="viewContact-note"></span>
             </div>
+            <?php if ($exchange['drawn_on']) { ?>
+            <div>
+                <strong><i class="fa-solid fa-dice"></i> Resultado del contacto:</strong>
+                <p id="viewContact-result"></p>
+            </div>
+            <?php } ?>
         </div>
       </div>
 
@@ -700,6 +706,7 @@
     </div>
   </div>
 </div>
+
 
 <!--------------------------------------->
 <!------------- Confirm delete -------------->
