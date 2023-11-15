@@ -488,14 +488,21 @@ a:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--fontSecondary);
-    color: var(--primary);
+    background-color: rgb(255, 244, 148);
+    color: var(--tertiary);
+    font-weight: 600;
     width: 100%;
     padding: 15px;
     position: fixed;
     top:0;
     left:0;
     z-index:999;
+}
+.superior-banner a {
+    color: var(--primary);
+}
+.superior-banner a:hover {
+    color: var(--tertiary);
 }
 
 #superiorBanner {

@@ -262,6 +262,9 @@ class PagesController
     public static function useofcookies() {
         require_once "./src/views/pages/useofcookies.php";
     }
+    public static function about() {
+        require_once "./src/views/pages/about.php";
+    }
 
     /**
      * Shows contact page

@@ -91,8 +91,8 @@
 <div id="superiorBanner">
     <div class="superior-banner d-flex justify-content-between">
         <span></span>
-        <span>Nuestra página está aún en una versión de desarrollo. Por favor, si encuentra algún error o tiene alguna sugerencia, <a href="contact">escríbanos.</a></span>
-        <a class="cursor-pointer" id="closeSuperiorBanner"><i class="fa-solid fa-circle-xmark text-danger"></i></a>
+        <span>Al utilizar nuestro sitio, aceptas nuestras <a href="privacypolicy">Políticas de Privacidad y Política de Cookies</a>. Esto incluye el uso de cookies para mejorar tu experiencia.</span>
+        <a class="cursor-pointer ms-2" id="closeSuperiorBanner">Aceptar</a>
     </div>
 </div>
 

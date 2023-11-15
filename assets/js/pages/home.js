@@ -209,7 +209,7 @@ function fastRaffle(event) {
                     element: element,
                     response: newResponse
                 });
-                console.log(resultados);
+                //console.log(resultados);
 
                 if (element == newResponse) {
                     message("warning", "Hay muy pocas combinaciones únicas. Vuelve a sortear.");

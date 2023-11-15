@@ -1,9 +1,10 @@
 
     <footer>
         <div class="footer">
-            <span class="text-center mt-2"><i class="fa-solid fa-heart"></i> Hecho con amor por <a href="https://virtualblux.com">Virtual Blux</a></span>
-            <span class="mt-1 d-flex flex-column flex-md-row">
-                <a href="home">Home</a>
+            <span class="text-center mt-3"><i class="fa-solid fa-heart"></i> Hecho con amor por <a href="https://virtualblux.com">Virtual Blux</a></span>
+            <span class="mt-1 d-flex flex-column flex-md-row gap-3">
+                <a href="/">Home</a>
+                <a href="about">Acerca de</a>
                 <a href="termsandconditions">Términos y condiciones</a>
                 <a href="privacypolicy">Política de privacidad</a>
                 <a href="cookies">Uso de cookies</a>

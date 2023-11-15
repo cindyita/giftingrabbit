@@ -244,7 +244,7 @@
               <button class="button-secondary" data-bs-toggle="collapse" data-bs-target="#fastRaffle-info" title="Información sobre esta funcionalidad">¿Qué es?</button>
 
               <div id="fastRaffle-info" class="collapse">
-                <p>Si lo que buscas es hacer un intercambio sencillo, un sorteo rápido de turnos o determinar a quien le tocará traer la botana en el evento. ¡Estás en el sitio indicado! Agrega un nombre en las casillas de la izquierda y lo que quieras en las de la derecha, da click en "+" para agregar más casillas y ¡Da click en sortear para revolverlos!</p>
+                <p>Si lo que buscas es hacer un intercambio sencillo, un sorteo rápido de turnos o determinar a quien le tocará traer la botana en el evento. ¡Estás en el sitio indicado! Agrega un nombre en las casillas de la izquierda y lo que quieras en las de la derecha, da click en "+" para agregar más casillas y ¡Da click en sortear para revolverlos! Evita casillas en blanco, si tienes que agregar un espacio en blanco agrega "-"</p>
               </div>
               <button class="button-primary" onclick="asignSerieNumbers();" title="Asignar serie numerica"><i class="fa-solid fa-arrow-down-1-9"></i></button>
               <button class="button-primary" onclick="cleanForm();" title="limpiar"><i class="fa-solid fa-eraser"></i></button>

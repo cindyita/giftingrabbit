@@ -56,6 +56,9 @@ if(isset($_GET['page'])){
         case 'privacypolicy':
             $pages->menuHTML();
         break;
+        case 'about':
+            $pages->menuHTML();
+        break;
         case 'cookies':
             $pages->menuHTML();
         break;
@@ -96,6 +99,8 @@ $router->add('/user', 'PagesController@user');
 $router->add('/termsandconditions', 'PagesController@termsandconditions');
 
 $router->add('/privacypolicy', 'PagesController@privacypolicy');
+
+$router->add('/about', 'PagesController@about');
 
 $router->add('/cookies', 'PagesController@useofcookies');
 

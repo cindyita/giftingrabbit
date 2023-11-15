@@ -4,12 +4,12 @@ $(window).on("load", function () {
     changeToRelativeTime('relativedate');
     dateFormat('dateFormat');
 
-    if (localStorage.getItem('notice-betaweb') !== 'true') {
+    if (localStorage.getItem('notice-privacypolicy') !== 'true') {
         $('#superiorBanner').show();
     }
     $('#closeSuperiorBanner').click(function () {
         $('#superiorBanner').hide();
-        localStorage.setItem('notice-betaweb', 'true');
+        localStorage.setItem('notice-privacypolicy', 'true');
     });
 
 });
