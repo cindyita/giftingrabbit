@@ -343,7 +343,7 @@ function saveprofile(){
         $newimgprofile = uploadFile($_FILES['img-profile'], $uploadDirectory, $profileFileName);
         $_SESSION['userdata']['img_profile'] = $profileFileName;
     }
-    echo json_encode($_FILES['img-profile']['name']);
+
     // Update data
     $updateData = [
         'biography' => $data['biography']

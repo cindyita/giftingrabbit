@@ -15,15 +15,14 @@ $(document).ready(function () {
                 contentType: false,
                 processData: false,
                 success: function (res) {
-                    console.log(res);
-                    // if (res == 1 || res == 11) {
+                    if (res == 1 || res == 11) {
                         message("success", "Tu perfil se ha actualizado");
                         updateData();
                         changeMode('view');
-                    // } else {
-                    //     message("error", "Algo salió mal");
-                    //     console.log(res);
-                    // }
+                    } else {
+                        message("error", "Algo salió mal");
+                        console.log(res);
+                    }
                 },
                 error: function (xhr, status, error) {
                     console.error('Error en la solicitud. Código de estado: ' + xhr.status);
