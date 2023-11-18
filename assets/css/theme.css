@@ -159,6 +159,16 @@ a:hover {
     transition: 0.3s ease;
     cursor: pointer;
 }
+.button-min {
+    background-color: var(--fontPrimary);
+    border-radius: var(--radius);
+    padding: 5px 10px;
+    border: 2px solid var(--primary);
+    font-weight: 600;
+    font-size: 12pt;
+    color: var(--primary);
+    cursor: pointer;
+}
 .button-secondary {
     background-color: var(--fontSecondary);
 }

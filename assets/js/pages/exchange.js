@@ -1,5 +1,7 @@
 $(document).ready(function () {
 
+    // getCollapse();
+
     $("#kickUserExchange").submit(function (event) {
         event.preventDefault();
         var formData = new FormData(this);
@@ -404,5 +406,67 @@ function showConfetti() {
         spread: 60,
         zIndex: 2000,
         colors: ["#FF8211", "#64F8A9"]
+    });
+}
+
+function entranceLock(id_exchange) {
+    $.ajax({
+        url: './src/controllers/actionsController.php?action=entranceLock',
+        type: 'POST',
+        data: {id_exchange: id_exchange},
+        success: function (res) {
+            console.log(res);
+            if (res == 1) {
+                hideModal('entranceLock');
+                message("success", "Se han bloqueado las entradas al intercambio. Actualizando..");
+                setTimeout(function() {
+                    window.location.reload();
+                }, 2000);
+            } else if (res == 5) {
+                message("error", "Inicia sesión para realizar esta acción");
+            } else if (res == 6) {
+                message("error", "No tienes permisos para realizar esta acción");
+            } else {
+                message("error", "Algo salió mal");
+                console.log(res);
+            }
+            $("#sendEmail-loading").fadeOut();
+            hideModal("sendResultsByEmail");
+            $("#send_email_success").text("Los emails fueron enviados");
+        },
+        error: function (xhr, status, error) {
+            console.error('Error en la solicitud. Código de estado: ' + xhr.status);
+        }
+    });
+}
+
+function entranceUnlock(id_exchange) {
+    $.ajax({
+        url: './src/controllers/actionsController.php?action=entranceUnlock',
+        type: 'POST',
+        data: {id_exchange: id_exchange},
+        success: function (res) {
+            console.log(res);
+            if (res == 1) {
+                hideModal('entranceUnlock');
+                message("success", "Se han desbloqueado las entradas al intercambio. Actualizando..");
+                setTimeout(function() {
+                    window.location.reload();
+                }, 2000);
+            } else if (res == 5) {
+                message("error", "Inicia sesión para realizar esta acción");
+            } else if (res == 6) {
+                message("error", "No tienes permisos para realizar esta acción");
+            } else {
+                message("error", "Algo salió mal");
+                console.log(res);
+            }
+            $("#sendEmail-loading").fadeOut();
+            hideModal("sendResultsByEmail");
+            $("#send_email_success").text("Los emails fueron enviados");
+        },
+        error: function (xhr, status, error) {
+            console.error('Error en la solicitud. Código de estado: ' + xhr.status);
+        }
     });
 }

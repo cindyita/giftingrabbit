@@ -100,6 +100,12 @@ switch ($action) {
     case 'sendResultsByEmail':
         sendResultsByEmail();
     break;
+    case 'entranceLock':
+        entranceLock();
+    break;
+    case 'entranceUnlock':
+        entranceUnlock();
+    break;
     /*---------------------*/
     default:
         echo json_encode("No action defined: ".$action);
@@ -337,7 +343,7 @@ function saveprofile(){
         $newimgprofile = uploadFile($_FILES['img-profile'], $uploadDirectory, $profileFileName);
         $_SESSION['userdata']['img_profile'] = $profileFileName;
     }
-
+    echo json_encode($_FILES['img-profile']['name']);
     // Update data
     $updateData = [
         'biography' => $data['biography']
@@ -525,16 +531,22 @@ function joinExchange(){
     $db = new QueryModel();
     $id_user = $_SESSION['userdata']['id'];
 
-    $query = $db->query('SELECT id,drawn_on FROM REG_EXCHANGES WHERE code = :code', ['code' =>$data['code']]);
+    $query = $db->query('SELECT id,drawn_on,entrance_lock FROM REG_EXCHANGES WHERE code = :code', ['code' =>$data['code']]);
     if($query){
         if(!$query[0]['drawn_on']){
-            $reg = $db->select('REL_USER_EXCHANGE', 'id_exchange = '.$query[0]['id'].' AND id_user = '.$id_user);
-            if(!$reg){
-                $res = $db->insert('REL_USER_EXCHANGE', ['id_exchange'=>$query[0]['id'],'id_user'=>$id_user,'role'=>0]);
-                echo json_encode($res);
+
+            if (!$query[0]['entrance_lock']) {
+                $reg = $db->select('REL_USER_EXCHANGE', 'id_exchange = ' . $query[0]['id'] . ' AND id_user = ' . $id_user);
+                if (!$reg) {
+                    $res = $db->insert('REL_USER_EXCHANGE', ['id_exchange' => $query[0]['id'], 'id_user' => $id_user, 'role' => 0]);
+                    echo json_encode($res);
+                } else {
+                    echo 4;
+                }
             }else{
-                echo 4;
-            }    
+                echo 11;
+            }
+
         }else{
             echo 9;
         }
@@ -1110,8 +1122,55 @@ function sendResultsByEmail(){
     }else{
         echo 6;
     }
-
     
+}
+
+function entranceLock(){
+    $data = getData();
+    $id_exchange = $data['id_exchange'];
+    $db = new QueryModel();
+
+    if (isset($_SESSION['status_login'])) {
+
+        $id_user = $_SESSION['userdata']['id'];
+        $access = $db->query("SELECT role FROM REL_USER_EXCHANGE WHERE id_exchange = :id AND id_user = :id_user",[":id"=>$id_exchange,":id_user"=>$id_user]);
+
+        if ($access[0]['role'] == 1) {
+            try {
+                $update = $db->update('REG_EXCHANGES', ['entrance_lock' => 1], 'id = ' . $id_exchange);
+                echo $update;
+
+            } catch (Exception $e) {
+                echo json_encode("Error: " . $e->getMessage());
+            }
+        }else{
+            echo 6;
+        }
+
+    }else{
+        echo 5;
+    }
+}
+
+function entranceUnlock(){
+    $data = getData();
+    $id_exchange = $data['id_exchange'];
+    $db = new QueryModel();
+
+    $id_user = $_SESSION['userdata']['id'];
+    $access = $db->query("SELECT role FROM REL_USER_EXCHANGE WHERE id_exchange = :id AND id_user = :id_user",[":id"=>$id_exchange,":id_user"=>$id_user]);
+
+    if ($access[0]['role'] == 1) {
+        try {
+            $update = $db->update('REG_EXCHANGES', ['entrance_lock' => 0], 'id = ' . $id_exchange);
+            echo $update;
+
+        } catch (Exception $e) {
+            echo json_encode("Error: " . $e->getMessage());
+        }
+    }else{
+        echo 6;
+    }
 }
 
 /*------------------------------------*/

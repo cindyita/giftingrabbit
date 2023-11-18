@@ -55,6 +55,8 @@ $(document).ready(function () {
                     message("warning", "Ya te has unido al intercambio");
                 } else if (res == 9) {
                     message("error", "Este intercambio ya se ha sorteado, no puedes unirte.");
+                } else if (res == 11) {
+                    message("error", "Este intercambio tiene las entradas bloqueadas, no puedes unirte.");
                 } else {
                     message("error", "Error uniendote al intercambio :(");
                     console.log(res);

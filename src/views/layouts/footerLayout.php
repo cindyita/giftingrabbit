@@ -20,15 +20,13 @@
 </div>
 
 <script async src="./assets/library/bootstrap5/bootstrap.bundle.min.js"></script>
+<script src="./assets/js/app.js?version=<?php echo VERSION; ?>"></script>
 <!----------------------------------->
 <?php 
-    if(isset($_GET)){
-        echo '<script src="./assets/js/app.js?version=<?php echo VERSION; ?>"></script>';
-    }
 
     if($scripts){
         foreach ($scripts as $value) {
-            echo '<script async src="'.$value.'?version='.VERSION.'"></script>';
+            echo '<script src="'.$value.'?version='.VERSION.'"></script>';
         }
     }
 ?>

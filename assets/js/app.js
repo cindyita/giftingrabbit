@@ -1,3 +1,4 @@
+
 $(window).on("load", function () {
     $(".page-overlay").fadeOut(100);
     changeLogoTheme();
@@ -232,3 +233,31 @@ function validateForm(id) {
 
     return isValid;
 }
+
+// /**
+//  * The function saves the state of a collapsible element and toggles its visibility.
+//  * @param collapseId - The `collapseId` parameter is the ID of the collapse element that you want to
+//  * save the state of.
+//  */
+// function saveCollapse(collapseId) {
+//     const collapseElement = $('#' + collapseId);
+
+//     const isCollapsed = !collapseElement.hasClass('show');
+//     localStorage.setItem('isCollapsed', isCollapsed ? 'true' : 'false');
+//     console.log(isCollapsed);
+
+// }
+
+// /**
+//  * The function `getCollapse` checks if a value in the local storage is set to 'true' and if so, it
+//  * saves the collapse state for a specific element.
+//  */
+// function getCollapse() {
+//     const isCollapsed = localStorage.getItem('isCollapsed');
+//     if (isCollapsed === 'true') {
+//         $('#viewRules').addClass("show");
+//     } else {
+//         $('#viewRules').removeClass("show");
+//     }
+//     //console.log(isCollapsed);
+// }

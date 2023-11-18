@@ -4,13 +4,22 @@
         <div>
             <a class="button-secondary" href="home"><i class="fa-solid fa-arrow-left"></i> Regresar a la lista</a>
         </div>
-        <div>
-            <?php if ($exchange['id_admin'] == $id_user) { ?>
-            <button class="button-secondary" data-bs-toggle="modal" data-bs-target="#editExchange">Editar <i class="fa-solid fa-pen-to-square"></i></button>
-                <?php if ($exchange['drawn_on'] && $exchange['admin_view_raffle'] == 1) { ?>
-                    <button class="button-primary" data-bs-toggle="modal" data-bs-target="#viewResultsRaffle" onclick="viewResultsRaffle(<?php echo $id; ?>)">Ver resultados <i class="fa-solid fa-file-lines"></i></button>
-                <?php }
-            } ?>
+        <div class="d-flex gap-2">
+            <div>
+                <?php if ($exchange['id_admin'] == $id_user) { ?>
+                <button class="button-secondary" data-bs-toggle="modal" data-bs-target="#editExchange">Editar <i class="fa-solid fa-pen-to-square"></i></button>
+                    <?php if ($exchange['drawn_on'] && $exchange['admin_view_raffle'] == 1) { ?>
+                        <button class="button-primary" data-bs-toggle="modal" data-bs-target="#viewResultsRaffle" onclick="viewResultsRaffle(<?php echo $id; ?>)">Ver resultados <i class="fa-solid fa-file-lines"></i></button>
+                    <?php }
+                } ?>
+            </div>
+            <div>
+                <?php if ($exchange['entrance_lock'] && $exchange['id_admin'] == $id_user) { ?>
+                    <button title="Entradas bloqueadas" class="button-secondary text-warning" data-bs-toggle="modal" data-bs-target="#entranceUnlock"><i class="fa-solid fa-lock"></i></button>
+                <?php } else if(!$exchange['entrance_lock'] && $exchange['id_admin'] == $id_user) { ?>
+                    <button title="Entradas desbloqueadas" class="button-secondary" data-bs-toggle="modal" data-bs-target="#entranceLock"><i class="fa-solid fa-lock-open"></i></button>
+                <?php } ?>
+            </div>
         </div>
     </div>
 
@@ -110,7 +119,13 @@
                 <?php if ($exchange['rules']) { ?>
                     <br><div>
                         <h6>Reglas:</h6>
-                        <p><?php echo $exchange['rules']; ?></p>
+                        <div id="viewRules">
+                            <?php echo $exchange['rules']; ?>
+                        </div>
+                        <!-- <div id="viewRules" class="collapse show">
+                            <?php echo $exchange['rules']; ?>
+                        </div> -->
+                        <!-- <div class="d-flex"><a class="mt-3 button-min" data-bs-toggle="collapse" data-bs-target="#viewRules" onclick="saveCollapse('viewRules')">Ver reglas</a></div> -->
                     </div>
                 <?php } ?>
             </div>
@@ -815,3 +830,50 @@
   </div>
 </div>
 
+<!--------------------------------------->
+<!------------- close entrance -------------->
+<div class="modal" id="entranceLock">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">¿Quiéres cerrar las entradas a este intercambio?</h4>
+        <a type="button" class="button-close" data-bs-dismiss="modal">
+            <i class="fa-solid fa-xmark"></i>
+        </a>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <p>Si cierras las entradas, otros usuarios ya no podrán unirse a este intercambio hasta que las vuelvas a abrir.</p>
+        <button type="submit" class="button-primary" onclick="entranceLock(<?php echo $id; ?>)">Bloquear entradas <i class="fa-solid fa-lock"></i></button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!--------------------------------------->
+<!------------- open entrance -------------->
+<div class="modal" id="entranceUnlock">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">¿Quiéres abrir las entradas a este intercambio?</h4>
+        <a type="button" class="button-close" data-bs-dismiss="modal">
+            <i class="fa-solid fa-xmark"></i>
+        </a>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <p>Si abres las entradas, otros usuarios ya podrán unirse al intercambio. Puedes volver a cerrar las entradas después.</p>
+        <button type="submit" class="button-primary" onclick="entranceUnlock(<?php echo $id; ?>)">Desbloquear entradas <i class="fa-solid fa-lock-open"></i></button>
+      </div>
+
+    </div>
+  </div>
+</div>
