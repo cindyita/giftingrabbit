@@ -260,6 +260,8 @@ function forgotPassword(){
 
             if (!empty($account)) {
 
+                date_default_timezone_set('UTC');
+
                 $token = bin2hex(random_bytes(32)) . md5($account[0]['email'].date("Y-m-d H:i:s"));
                 $hashedToken = md5($token);
 

@@ -124,10 +124,14 @@ class PagesController
         $token = $_GET['token'];
         $tokens = $db->query("SELECT id_user,expiration_date FROM REG_TOKENS WHERE token = :token", [":token" => md5($token)]);
 
+        date_default_timezone_set('UTC');
+
         if ($tokens && $tokens[0]['expiration_date'] >= date("Y-m-d H:i:s")) {
             require_once "./src/views/pages/recoverpass.php";
-        } else {
-            echo '<div class="main"><div class="white-box d-flex justify-content-center align-items-center"><p>El token es inválido o ya se ha utilizado.</p></div></div>';
+        } else if(!$tokens) {
+            echo '<div class="main"><div class="white-box d-flex justify-content-center align-items-center"><p>El token ya se ha utilizado.</p></div></div>';
+        }else if($tokens[0]['expiration_date'] >= date("Y-m-d H:i:s")) {
+            echo '<div class="main"><div class="white-box d-flex justify-content-center align-items-center"><p>El token ha expirado.</p></div></div>';
         }
     }
 
