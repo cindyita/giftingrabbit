@@ -70,6 +70,9 @@ if(isset($_GET['page'])){
             $pages->updateScripts(["./assets/js/pages/exchange.js"]);
             $pages->menuHTML();
         break;
+        case 'tutorials':
+            $pages->menuHTML();
+        break;
     }
 
 }
@@ -107,6 +110,8 @@ $router->add('/cookies', 'PagesController@useofcookies');
 $router->add('/contact', 'PagesController@contact');
 
 $router->add('/exchange', 'PagesController@exchange');
+
+$router->add('/tutorials', 'PagesController@tutorials');
 
 $router->run();
 

@@ -279,6 +279,13 @@ class PagesController
     }
 
     /**
+     * Shows tutorials page
+     */
+    public static function tutorials() {
+        require_once "./src/views/pages/tutorials.php";
+    }
+
+    /**
      * Muestra la página de error 404 (página no encontrada).
      */
     public static function error404() {

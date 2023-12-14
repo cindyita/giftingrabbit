@@ -211,6 +211,9 @@
                     </div>
                 </div>
             </section>
+            <div class="text-center py-3">
+                <a href="tutorials"><button class="button-display"><span>Ver tutoriales</span></button></a>
+            </div>
         </div>
 
         <br><br><br>
