@@ -248,9 +248,16 @@
                 <?php if($access[0]['role'] == 1){ ?>
                     <hr>
                     <div class="mt-3 d-flex gap-2 align-items-center">
-                        <h6>Han agregado respuestas:</h6><span class="text-secondary d-flex gap-1 flex-wrap">
+                        <h6>Han agregado respuesta:</h6><span class="text-secondary d-flex gap-1 flex-wrap">
                             <?php foreach ($wantGiftNames as $key => $value) {
                                 echo '<span class="card px-1">'.$value['username'] . '</span>';
+                                } ?>
+                        </span>
+                    </div>
+                    <div class="mt-2 d-flex gap-2 align-items-center">
+                        <h6>Faltan de respuesta:</h6><span class="text-secondary d-flex gap-1 flex-wrap">
+                            <?php foreach ($usersNotInWantGifts as $key => $value) {
+                                echo '<span class="card px-1 text-danger">'.$value['username'] . '</span>';
                                 } ?>
                         </span>
                     </div>

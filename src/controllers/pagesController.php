@@ -219,8 +219,17 @@ class PagesController
                     $wantGiftAll = $db->query("SELECT w.*,u.username,u.img_profile FROM REG_WISHGIFTS w LEFT JOIN SYS_USER u ON w.id_user = u.id WHERE w.id_exchange = :id",[":id"=>$id]);
                 }else{
                     $wantGiftAll = 0;
-                    $wantGiftNames = $db->query("SELECT u.username FROM REG_WISHGIFTS w LEFT JOIN SYS_USER u ON w.id_user = u.id WHERE w.id_exchange = :id GROUP BY u.username",[":id"=>$id]);
                 }
+                $wantGiftNames = $db->query("SELECT u.username FROM REG_WISHGIFTS w LEFT JOIN SYS_USER u ON w.id_user = u.id WHERE w.id_exchange = :id GROUP BY u.username",[":id"=>$id]);
+                $usersNotInWantGifts = $db->query("SELECT DISTINCT u.username 
+                        FROM REL_USER_EXCHANGE e 
+                        LEFT JOIN SYS_USER u ON e.id_user = u.id 
+                        WHERE e.id_exchange = :id 
+                        AND u.username NOT IN (
+                            SELECT DISTINCT u.username 
+                            FROM REG_WISHGIFTS w 
+                            LEFT JOIN SYS_USER u ON w.id_user = u.id 
+                            WHERE w.id_exchange = :id)", [":id" => $id]);
                 if ($exchange['drawn_on']) {
                     $resultRaffle = $db->query("SELECT r.id_result,r.type_result,
                                                     CASE 
