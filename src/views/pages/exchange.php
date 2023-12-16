@@ -248,14 +248,14 @@
                 <?php if($access[0]['role'] == 1){ ?>
                     <hr>
                     <div class="mt-3 d-flex gap-2 align-items-center">
-                        <h6>Han agregado respuesta:</h6><span class="text-secondary d-flex gap-1 flex-wrap">
+                        <h6>Han agregado respuesta: (<?php echo count($wantGiftNames); ?>)</h6><span class="text-secondary d-flex gap-1 flex-wrap">
                             <?php foreach ($wantGiftNames as $key => $value) {
                                 echo '<span class="card px-1">'.$value['username'] . '</span>';
                                 } ?>
                         </span>
                     </div>
                     <div class="mt-2 d-flex gap-2 align-items-center">
-                        <h6>Faltan de respuesta:</h6><span class="text-secondary d-flex gap-1 flex-wrap">
+                        <h6>Faltan de respuesta: (<?php echo count($usersNotInWantGifts); ?>)</h6><span class="text-secondary d-flex gap-1 flex-wrap">
                             <?php foreach ($usersNotInWantGifts as $key => $value) {
                                 echo '<span class="card px-1 text-danger">'.$value['username'] . '</span>';
                                 } ?>
@@ -325,7 +325,7 @@
             
             <div class="white-box">
 
-                <h6 class="mb-3">Usuarios que participan:</h6>
+                <h6 class="mb-3">Usuarios que participan: (<?php echo count($users); ?>)</h6>
                 <?php if ($exchange['admin_participates'] == 0) {
                     echo "[Admin no participa]";} ?>
                 <div class="d-flex flex-column gap-2">
@@ -357,7 +357,7 @@
                 <?php } ?>
                 </div>
                 <hr>
-                <h6 class="mb-3 mt-3">Contactos que participan:</h6>
+                <h6 class="mb-3 mt-3">Contactos que participan: (<?php echo count($contacts); ?>)</h6>
                 
                 <div class="d-flex flex-column gap-2">
                 <?php foreach ($contacts as $key => $value) { ?>
@@ -395,7 +395,7 @@
                 <div>
                     <div>
                         <div class="comments w-100">
-                            <h6 class="mb-5">Comentarios:</h6>
+                            <h6 class="mb-5">Comentarios: (<?php echo count($comments); ?>)</h6>
                             <div>
                                 
                                 <div class="d-flex flex-column gap-4 w-100" id="comments-post">
