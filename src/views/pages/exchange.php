@@ -326,62 +326,68 @@
             <div class="white-box">
 
                 <h6 class="mb-3">Usuarios que participan: (<?php echo count($users); ?>)</h6>
+                <div class="button-min" data-bs-toggle="collapse" data-bs-target="#usersExchangeCollapse">Ver usuarios <i class="fa-solid fa-chevron-down"></i></div>
+
                 <?php if ($exchange['admin_participates'] == 0) {
                     echo "[Admin no participa]";} ?>
-                <div class="d-flex flex-column gap-2">
-                <?php foreach ($users as $key => $value) { ?>
-                    <div class="green-card-min">
-                        <div class="d-flex gap-2 align-items-center">
-                            <div class="img-user">
-                                <a href="user?id=<?php echo $value['id_user']; ?>"><img src="./assets/img/<?php echo $value['img_profile'] ? 'user/img-profile/'.$value['img_profile'] : 'system/defaultimgsq.webp'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.webp'" loading="lazy"></a>
+                <div class="collapse pt-2" id="usersExchangeCollapse">
+                    <div class="d-flex flex-column gap-2">
+                    <?php foreach ($users as $key => $value) { ?>
+                        <div class="green-card-min">
+                            <div class="d-flex gap-2 align-items-center">
+                                <div class="img-user">
+                                    <a href="user?id=<?php echo $value['id_user']; ?>"><img src="./assets/img/<?php echo $value['img_profile'] ? 'user/img-profile/'.$value['img_profile'] : 'system/defaultimgsq.webp'; ?>" alt="image profile" onerror="this.src = './assets/img/system/defaultimgsq.webp'" loading="lazy"></a>
+                                </div>
+                                <div>   
+                                    <a href="user?id=<?php echo $value['id_user']; ?>"><strong><?php echo $value['username']; ?> <?php if($value['id_user'] == $exchange['id_admin']){echo '<span class="text-warning"><i class="fa-solid fa-crown"></i></span>';} ?></strong></a>
+                                </div>
                             </div>
-                            <div>   
-                                <a href="user?id=<?php echo $value['id_user']; ?>"><strong><?php echo $value['username']; ?> <?php if($value['id_user'] == $exchange['id_admin']){echo '<span class="text-warning"><i class="fa-solid fa-crown"></i></span>';} ?></strong></a>
+                            <div class="options">
+                                <div class="dropdown">
+                                    <a class="btn button-options" data-bs-toggle="dropdown">
+                                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="user?id=<?php echo $value['id_user']; ?>">Ver usuario <i class="fa-solid fa-eye"></i></a></li>
+                                        <?php if ($exchange['id_admin'] == $id_user && $id_user != $value['id_user']) { ?>
+                                            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#kickUserExchange" onclick="kickUserExchange(<?php echo $id . ',' . $value['id_user'] . ',\'' . $value['username'] . '\''; ?>)">Sacar del intercambio <i class="fa-solid fa-right-from-bracket"></i></a></li>
+                                            <li><a class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#giveAdmin" onclick="giveAdmin(<?php echo $value['id_user'].',\'' . $value['username'] . '\''; ?>)">delegar administración <i class="fa-solid fa-handshake"></i></a></li>
+                                        <?php } ?>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                        <div class="options">
-                            <div class="dropdown">
-                                <a class="btn button-options" data-bs-toggle="dropdown">
-                                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="user?id=<?php echo $value['id_user']; ?>">Ver usuario <i class="fa-solid fa-eye"></i></a></li>
-                                    <?php if ($exchange['id_admin'] == $id_user) { ?>
-                                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#kickUserExchange" onclick="kickUserExchange(<?php echo $id . ',' . $value['id_user'] . ',\'' . $value['username'] . '\''; ?>)">Sacar del intercambio <i class="fa-solid fa-right-from-bracket"></i></a></li>
-                                        <li><a class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#giveAdmin" onclick="giveAdmin(<?php echo $value['id_user'].',\'' . $value['username'] . '\''; ?>)">delegar administración <i class="fa-solid fa-handshake"></i></a></li>
-                                    <?php } ?>
-                                </ul>
-                            </div>
-                        </div>
+                    <?php } ?>
                     </div>
-                <?php } ?>
                 </div>
                 <hr>
                 <h6 class="mb-3 mt-3">Contactos que participan: (<?php echo count($contacts); ?>)</h6>
-                
-                <div class="d-flex flex-column gap-2">
-                <?php foreach ($contacts as $key => $value) { ?>
-                    <div class="yellow-card-min">
-                        <div class="d-flex gap-2 align-items-center">
-                            <div>
-                                <a <?php if ($exchange['id_admin'] == $id_user) { ?> class="cursor-pointer"  data-bs-toggle="modal" data-bs-target="#viewContact" onclick="viewContact(<?php echo htmlspecialchars(json_encode($value)); ?>)" <?php } ?>><strong><i class="fa-solid fa-user mx-2"></i> <?php echo $value['name']; ?></strong></a>
+                <div class="button-min" data-bs-toggle="collapse" data-bs-target="#contactsExchangeCollapse">Ver contactos <i class="fa-solid fa-chevron-down"></i></div>
+                <div id="contactsExchangeCollapse" class="collapse pt-2">
+                    <div class="d-flex flex-column gap-2">
+                    <?php foreach ($contacts as $key => $value) { ?>
+                        <div class="yellow-card-min">
+                            <div class="d-flex gap-2 align-items-center">
+                                <div>
+                                    <a <?php if ($exchange['id_admin'] == $id_user) { ?> class="cursor-pointer"  data-bs-toggle="modal" data-bs-target="#viewContact" onclick="viewContact(<?php echo htmlspecialchars(json_encode($value)); ?>)" <?php } ?>><strong><i class="fa-solid fa-user mx-2"></i> <?php echo $value['name']; ?></strong></a>
+                                </div>
                             </div>
-                        </div>
-                        <?php if ($exchange['id_admin'] == $id_user) { ?>
-                        <div class="options">
-                            <div class="dropdown">
-                                <a class="btn button-options" data-bs-toggle="dropdown">
-                                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                                </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#viewContact" onclick="viewContact(<?php echo htmlspecialchars(json_encode($value)); ?>)">Ver contacto <i class="fa-solid fa-eye"></i></a></li>
-                                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteContact" onclick="deleteContact(<?php echo $value['id'] . ',' . $value['name'] . '\''; ?>)">Borrar contacto <i class="fa-solid fa-trash"></i></a></li>
-                                    </ul>
+                            <?php if ($exchange['id_admin'] == $id_user) { ?>
+                            <div class="options">
+                                <div class="dropdown">
+                                    <a class="btn button-options" data-bs-toggle="dropdown">
+                                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                                    </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#viewContact" onclick="viewContact(<?php echo htmlspecialchars(json_encode($value)); ?>)">Ver contacto <i class="fa-solid fa-eye"></i></a></li>
+                                            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteContact" onclick="deleteContact(<?php echo $value['id'] . ',' . $value['name'] . '\''; ?>)">Borrar contacto <i class="fa-solid fa-trash"></i></a></li>
+                                        </ul>
+                                </div>
                             </div>
+                            <?php } ?>
                         </div>
-                        <?php } ?>
+                    <?php } ?>
                     </div>
-                <?php } ?>
                 </div>
                 <?php if ($exchange['id_admin'] == $id_user) { ?>
                 <div class="mt-3">
